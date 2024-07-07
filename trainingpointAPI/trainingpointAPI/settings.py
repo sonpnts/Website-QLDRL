@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'cloudinary',
     'drf_yasg',
-
+'corsheaders',
 ]
 
 CKEDITOR_UPLOAD_PATH = "ckeditors/images"
@@ -59,8 +59,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True  # Cho phép tất cả các nguồn gốc
 
 ROOT_URLCONF = 'trainingpointAPI.urls'
 

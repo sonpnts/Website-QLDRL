@@ -94,7 +94,7 @@ const DangKy = ({ route, navigation }) => {
         }
 
         setErrors(newErrors);
-        let message = '';
+        
         if (valid) {
             let tk_valid = false; // Đã có tài khoản
             try {
@@ -103,14 +103,12 @@ const DangKy = ({ route, navigation }) => {
                     const res = check.data.is_valid;
                     if (res) {
                         tk_valid= true;
-                        message = check.data.message;
                     }
                 }
             } catch (ex) {
                 setLoading(false);
                 Alert.alert('Có lỗi gì đó đã xảy ra', 'Tài khoản sinh viên đã tồn tại!');
             }
-
             if (!tk_valid) {
                 navigation.navigate('OTP', { email: user.email });
             } else {
