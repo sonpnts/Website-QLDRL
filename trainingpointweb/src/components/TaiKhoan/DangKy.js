@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Form, Button, Container, Row, Col, Alert, Spinner } from "react-bootstrap";
-import axios from 'axios';
+import React, { useState, useRef   } from "react";
+import { Form, Button, Container, Row, Col, Alert, Spinner, Modal } from "react-bootstrap";
+// import axios from 'axios';
 import APIs, { endpoints } from "../../configs/APIs";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import sendEmail from "./send_mail";
+import Styles from './Styles.css';
+// import { set } from "react-datepicker/dist/date_utils";
 
 const DangKy = () => {
     const [user, setUser] = useState({
@@ -16,16 +19,37 @@ const DangKy = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const nav = useNavigate();
-    const location = useLocation();
+    const [otp, setOtp] = useState(['', '', '', '']);
+    const refs = useRef([]); 
+    const [randomOTP, setRandomOTP] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const handleClose = () => setShowModal(false);
+    const handleShow = () => setShowModal(true);
 
-    const [success, setSuccess] = useState(false);
     const [errors, setErrors] = useState({
         email: "",
         username: "",
         password: "",
         avatar: ""
     });
-    // const history = useHistory();
+
+    const generateOTP = () => {
+        const randomNumber = Math.floor(1000 + Math.random() * 9000);
+        const otpNum = randomNumber.toString().padStart(4, '0');
+        setRandomOTP(otpNum);
+        return otpNum;
+    };
+    const handleChangeText = (num, index) => {
+        if (/^\d*$/.test(num) && num.length <= 1) {
+            const newOtp = [...otp];
+            newOtp[index] = num;
+            setOtp(newOtp);
+
+            if (num.length === 1 && index < otp.length - 1 && refs.current[index + 1]) {
+                refs.current[index + 1].focus();
+            }
+        }
+    };
 
     const change = (field, value) => {
         setUser(current => ({ ...current, [field]: value }));
@@ -96,12 +120,12 @@ const DangKy = () => {
             let tk_valid = false;
             try {
                 const check = await APIs.get(`${endpoints['tai_khoan_is_valid']}?email=${user.email}&username=${user.username}`);
-                if (check.status == 200) {
+                if (check.status === 200) {
                     const res = check.data.is_valid;
                     // console.log(res);
                     if (res === true) {
                         tk_valid= true;
-                        // message = check.data.message;
+                        
                     }
                 }
             } catch (ex) {
@@ -110,63 +134,82 @@ const DangKy = () => {
             }
             console.log(tk_valid);
             if (!tk_valid) {
-                // console.log('Vô');
-                // console.log(user.email);
-                nav("/otp", { state: { email: user.email  } });
+                setLoading(true);
+               
+                try {
+                    const otp = generateOTP(); // Tạo và lưu OTP ngẫu nhiên
+                    const body = "Mã OTP của bạn là:" + otp;
+                    const header = "Xác thực mã OTP tạo tài khoản sinh viên";
+                    const res = await sendEmail(user.email, header, body); // Gửi email chứa OTP
+                    if (res.status === 200) {
+                        // console.log(otp);
+                        console.log('Gửi email thành công!',otp);
+                        setLoading(false);
+                        handleShow();
+                    }
+                    // nav("/otp", { state: { email: user.email, otp: otp } }); // Điều hướng đến màn hình OTP với thông tin email và otp
+                } catch (error) {
+                    console.error('Có lỗi xảy ra trong quá trình đăng ký:', error.message);
+                    alert('Có lỗi xảy ra trong quá trình đăng ký. Vui lòng thử lại sau.');
+                }
             }
         }
         
     };
 
-    const PostTaiKhoan = async () => {
-        if (success) {
-            try {
-                setLoading(true);
-                let form = new FormData();
-                for (let key in user) {
-                    if (key === "avatar") {
-                        form.append(key, user.avatar);
-                    } else {
-                        form.append(key, user[key]);
-                    }
-                }
-
-                let res = await APIs.post(endpoints['dang_ky'], form, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-
-                setLoading(false);
-                if (res.status === 201) {
-                    Alert.alert('Tạo tài khoản thành công!');
-                    nav("/sinhviendangky", { email: user.email });
-                }
-
-            } catch (ex) {
-                console.log(ex);
-                Alert.alert('Có lỗi gì đó đã xảy ra trong lúc tạo tài khoản!', ex.message);
-            } finally {
-                setLoading(false);
-            }
+    const handleSubmit = () => {
+        const otpString = otp.join('');
+        if (otpString === randomOTP) {
+            // setSuccess(true); // OTP matched, proceed with registration
+            handleClose(); // Close modal after successful OTP verification
+            PostTaiKhoan();
+        } else {
+            alert('Mã OTP không chính xác. Vui lòng kiểm tra lại.');
         }
+    };
+
+   
+
+    const PostTaiKhoan = async () => {
+        
+        try {
+            setLoading(true);
+            let form = new FormData();
+            console.log(user);
+            for (let key in user) {
+                if (key === "avatar") {
+                    form.append(key, user.avatar);
+                } else {
+                    form.append(key, user[key]);
+                }
+            }
+            console.log("FormData:", form);
+            let res = await APIs.post(endpoints['dang_ky'], form, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            setLoading(false);
+            if (res.status === 201) {
+                console.error('Tạo tài khoản thành công!');
+                nav("/sinh-vien-dang-ky", {state: { email: user.email }});
+            }
+
+        } catch (ex) {
+            // console.log(ex);
+            console.error('Có lỗi gì đó đã xảy ra trong lúc tạo tài khoản!', ex.message);
+        } finally {
+            setLoading(false);
+        }
+        
     };
 
     const login = () => {
         nav("/dang-nhap");
     };
 
-    useEffect(() => {
-        if (location.state && location.state.success) {
-            setSuccess(location.state.success);
-        }
-    }, [location]);
-
-    useEffect(() => {
-        if (success) {
-            PostTaiKhoan();
-        }
-    }, [success]);
+   
 
     return (
         <Container className="mt-5">
@@ -199,22 +242,27 @@ const DangKy = () => {
                             />
                             {errors.username && <Alert variant="danger">{errors.username}</Alert>}
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Mật khẩu</Form.Label>
+                        <Form.Group className="mb-3 position-relative" controlId="formBasicPasswordInput">
+                        <Form.Label>Mật khẩu</Form.Label>
                             <Form.Control
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Nhập mật khẩu"
                                 value={user.password}
                                 onChange={handlePasswordChange}
                             />
-                            <Form.Check
-                                type="checkbox"
-                                label="Hiển thị mật khẩu"
-                                onChange={() => setShowPassword(!showPassword)}
-                            />
+                            <div className="position-absolute end-0 bottom-50 translate-middle-y">
+                                <Form.Check
+                                    id="formBasicShowPasswordCheckbox"
+                                    type="checkbox"
+                                    className="cursor-pointer"
+                                    label={<i className={`bi bi-eye${showPassword ? "-slash" : ""}`}></i>}
+                                    onChange={() => setShowPassword(!showPassword)}
+                                />
+                            </div>                      
                             {errors.password && <Alert variant="danger">{errors.password}</Alert>}
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formConfirmPassword">
+
+                        <Form.Group className="mb-3 position-relative" controlId="formConfirmPassword">
                             <Form.Label>Xác nhận mật khẩu</Form.Label>
                             <Form.Control
                                 type={showPassword ? "text" : "password"}
@@ -222,22 +270,72 @@ const DangKy = () => {
                                 value={confirmPassword}
                                 onChange={handleConfirmPasswordChange}
                             />
+                            <div className="position-absolute end-0 bottom-50 translate-middle-y">
+                                <Form.Check
+                                    id="formConfirmShowPasswordCheckbox"
+                                    type="checkbox"
+                                    className="cursor-pointer"
+                                    label={<i className={`bi bi-eye${showPassword ? "-slash" : ""}`}></i>}
+                                    onChange={() => setShowPassword(!showPassword)}
+                                />
+                            </div>
                             {errors.confirmPassword && <Alert variant="danger">{errors.confirmPassword}</Alert>}
                         </Form.Group>
+
                         {loading ? <Spinner animation="border" /> : 
                             <>
-                                <Button variant="primary" className="mb-3" onClick={validateDangKy}>
+                                <Button variant="outline-primary" className="mb-3" onClick={validateDangKy}>
                                     Đăng ký
                                 </Button>
                             </>
                         }
-                        <Button variant="secondary" onClick={login}>
+                        <Button variant="outline-secondary" className="mb-3 " onClick={login}>
                             Đã có tài khoản? Đăng nhập
                         </Button>
                     </Form>
                 </Col>
             </Row>
+
+            <Modal show={showModal} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Nhập mã OTP</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form className={`${Styles.modalForm}`}>
+                    <Form.Group className={`${Styles.otpInputGroup}`}>
+                        {otp.map((value, index) => (
+                            <Form.Control
+                                key={index}
+                                ref={ref => refs.current[index] = ref}
+                                className={`${Styles.OTP_input}`}
+                                value={value}
+                                onChange={(e) => handleChangeText(e.target.value, index)}
+                                type="number"
+                                maxLength={1}
+                                // onKeyDown={(e) => {
+                                //     if (e.keyCode === 13 && index < otp.length - 1) {
+                                //         refs.current[index + 1].focus();
+                                //     }
+                                // }}
+                            />
+                        ))}
+                    </Form.Group>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Đóng
+                </Button>
+                <Button variant="primary" onClick={handleSubmit}>
+                    Xác nhận
+                </Button>
+            </Modal.Footer>
+        </Modal>
         </Container>
+
+    
+    
+
     );
 };
 

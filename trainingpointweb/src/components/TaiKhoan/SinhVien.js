@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Container, Form, Button, Row, Col, Alert } from 'react-bootstrap';
-import DateTimePicker from 'react-datetime-picker';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Container, Form, Button } from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'; // Import CSS for styling
 import APIs, { endpoints } from '../../configs/APIs';
-import Styles from './Styles';
+import Styles from './Styles.css';
+import moment from 'moment';
 
-const SinhVienDangKy = ({ history }) => {
-    const { email } = useParams();
+const SinhVienDangKy = () => {
+    const nav = useNavigate();
+    const location = useLocation();
+    const email = location.state?.email;
     const [sv, setSv] = useState({
         email: email || '',
         mssv: email ? email.slice(0, 10) : '',
         ho_ten: '',
-        ngay_sinh: new Date('2000-01-01'),
+        ngay_sinh: '2000-01-01', // Initialize as a Date object
         lop: '',
         dia_chi: '',
         gioi_tinh: '1',
@@ -37,7 +41,7 @@ const SinhVienDangKy = ({ history }) => {
             }
         } catch (error) {
             console.error(error);
-            Alert.alert('Lỗi', 'Không thể tải dữ liệu khoa');
+            alert('Lỗi', 'Không thể tải dữ liệu khoa');
         }
     };
 
@@ -52,16 +56,17 @@ const SinhVienDangKy = ({ history }) => {
             }
         } catch (error) {
             console.error(error);
-            Alert.alert('Lỗi', 'Không thể tải dữ liệu lớp');
+            alert('Lỗi', 'Không thể tải dữ liệu lớp');
         }
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!validateFields()) return;
-
+        
         setLoading(true);
-
+        setSv({ ...sv, ngay_sinh: moment(sv.ngay_sinh).format('YYYY-MM-DD') });
+        console.log(sv.ngay_sinh);
         try {
             const response = await APIs.post(endpoints['sinh_vien'], sv, {
                 headers: {
@@ -70,14 +75,13 @@ const SinhVienDangKy = ({ history }) => {
             });
             if (response.status === 201) {
                 console.log(response.data);
-                Alert.alert('Thành công', 'Cập nhật thông tin thành công!');
-                // history.push('/dang-nhap');
-                history.goBack();
+                alert('Thành công', 'Cập nhật thông tin thành công!');
+                nav('/dang-nhap');
             } else {
-                Alert.alert('Thất bại', 'Có lỗi xảy ra, vui lòng thử lại.');
+                alert('Thất bại', 'Có lỗi xảy ra, vui lòng thử lại.');
             }
         } catch (error) {
-            Alert.alert('Lỗi', error.message);
+            alert('Lỗi', error.message);
         } finally {
             setLoading(false);
         }
@@ -86,15 +90,20 @@ const SinhVienDangKy = ({ history }) => {
     const validateFields = () => {
         const { email, ho_ten, ngay_sinh, lop, dia_chi, gioi_tinh } = sv;
         if (!email || !ho_ten || !ngay_sinh || !lop || !dia_chi || !gioi_tinh) {
-            Alert.alert('Thông báo', 'Vui lòng điền đầy đủ thông tin.');
+            alert('Thông báo', 'Vui lòng điền đầy đủ thông tin.');
             return false;
         }
         return true;
     };
 
     const handleDateChange = (date) => {
-        setSv({ ...sv, ngay_sinh: date });
+        // Ensure date is in YYYY-MM-DD format when saving to sv.ngay_sinh
+        const formattedDate = moment(date).format('YYYY-MM-DD');
+        setSv({ ...sv, ngay_sinh: formattedDate });
     };
+    // const handleDateChange = (date) => {
+    //     setSv({ ...sv, ngay_sinh: date });
+    // };
 
     return (
         <Container className={Styles.containerlogin}>
@@ -124,13 +133,14 @@ const SinhVienDangKy = ({ history }) => {
 
                 <Form.Group controlId="formNgaySinh">
                     <Form.Label>Ngày sinh</Form.Label>
-                    <DateTimePicker
+                    <div></div>
+                    <DatePicker
+                        selected={sv.ngay_sinh}
                         onChange={handleDateChange}
-                        value={sv.ngay_sinh}
-                        format="dd/MM/yyyy"
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control"
                     />
                 </Form.Group>
-
                 <Form.Group controlId="formKhoa">
                     <Form.Label>Chọn khoa</Form.Label>
                     <Form.Control
@@ -155,7 +165,10 @@ const SinhVienDangKy = ({ history }) => {
                     <Form.Control
                         as="select"
                         value={selectedLop}
-                        onChange={(e) => setSv({ ...sv, lop: e.target.value })}
+                        onChange={(e) => {
+                            setSv({ ...sv, lop: e.target.value });
+                            setSelectedLop(e.target.value);
+                        }}
                         disabled={!selectedKhoa}
                     >
                         <option value="">Chọn lớp</option>

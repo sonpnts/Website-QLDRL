@@ -1,0 +1,46 @@
+.modalForm {
+    font-family: Arial, sans-serif; /* Thiết lập font chữ cho form */
+    padding: 20px; /* Khoảng cách giữa các thành phần trong form */
+    margin-top: 30%;
+}
+.otpInputGroup {
+    display: flex;
+    gap: 10px; /* Khoảng cách giữa các ô nhập OTP */
+}
+.OTP_input {
+    width: 50px; /* Độ rộng của từng ô nhập OTP */
+    height: 40px; /* Chiều cao của từng ô nhập OTP */
+    font-size: 18px; /* Cỡ chữ của số nhập OTP */
+    margin: 0 5px; /* Khoảng cách giữa các ô nhập OTP */
+    text-align: center; /* Căn giữa nội dung số trong ô nhập OTP */
+    border: 1px solid #ccc; /* Viền của ô nhập OTP */
+    border-radius: 5px; /* Độ cong viền */
+}
+
+.OTP_input:focus {
+    outline: none; /* Loại bỏ đường viền khi ô nhập OTP có focus */
+    border-color: #007bff; /* Màu viền khi ô nhập OTP có focus */
+}
+/* Container for login */
+.containerlogin {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+/* Subject (Header) */
+.subject {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* Align item center */
+.align_item_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

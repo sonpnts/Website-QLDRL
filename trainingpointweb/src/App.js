@@ -3,13 +3,13 @@ import React, { useReducer, useState, useEffect } from 'react';
 import { BrowserRouter, Route, Switch, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DangKy from './components/TaiKhoan/DangKy';
-import OTP from './components/TaiKhoan/OTP';
+// import OTP from './components/TaiKhoan/OTP';
 // import ThemTroLySinhVien from './components/Home/ThemTroLySinhVien';
 import DangNhap from './components/TaiKhoan/DangNhap';
 // import Main from './components/Home/Main';
 // import BaiViet from './components/BanTin/BaiViet';
 // import DangXuat from './components/TaiKhoan/DangXuat';
-// import SinhVienDangKy from './components/TaiKhoan/SinhVien';
+import SinhVienDangKy from './components/TaiKhoan/SinhVien';
 // import ExportBaoCao from './components/QuanLy/Export';
 // import ChatScreen from './components/ChatFireBase/ChatScreen';
 // import DiemDanh from './components/QuanLy/UploadFileDiemDanh';
@@ -124,7 +124,8 @@ const App = () => {
             <>
               <Route path="/dang-nhap" element={<DangNhap />} />
               <Route path="/dang-ky" element={<DangKy />} />
-              <Route path="/otp" element={<OTP />} />
+              {/* <Route path="/otp" element={<OTP />} /> */}
+              <Route path="/sinh-vien-dang-ky" element={<SinhVienDangKy />} />
             </>
           {/* )} */}
         </Routes>

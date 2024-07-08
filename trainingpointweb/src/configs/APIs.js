@@ -72,15 +72,7 @@ export const endpoints = {
 
 }
 
-// export function authAPI() {
-//     const accessToken = localStorage.getItem('access-token');
-//     return axios.create({
-//         baseURL: BASE_URL,
-//         headers: {
-//             Authorization: `Bearer ${accessToken}`
-//         }
-//     });
-// }
+
 
 export const authAPI = () => {
     return axios.create({
@@ -90,13 +82,7 @@ export const authAPI = () => {
         }
     });
 }
-// module.exports = {
-    
-//     // formatNS,
-//     // formatDate,
-//     // endpoints,
-//     authAPI
-// };
+
 
 export default axios.create({
     baseURL: BASE_URL
