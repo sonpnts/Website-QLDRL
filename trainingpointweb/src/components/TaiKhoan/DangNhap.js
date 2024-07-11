@@ -1,10 +1,7 @@
 import React, { useState, useContext } from 'react';
-// import { useHistory } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
-// import axios from 'axios';
-import MyContext from "../../configs/MyContext";
+import {MyDispatchContext, MyUserContext} from "../../configs/MyContext";
 import APIs, { endpoints, authAPI } from "../../configs/APIs";
 import cookie from "react-cookies";
 
@@ -14,23 +11,20 @@ const DangNhap = () => {
     const [error, setError] = useState('');
     const nav = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
-    // const history = useHistory();
-    const [user, dispatch] = useContext(MyContext);
-
+    const dispatch = useContext(MyDispatchContext);
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
     };
-
     const login = async () => {
         
         try {
             let res = await APIs.post(endpoints['dang_nhap'], {
                 'username': username,
                 'password': password,
-                // 'client_id': "sdUIX9LsM0sEZH8ipS6op9WPiNjEK8mGU2wV1v8u",
-                // 'client_secret': "rUygoi2fiap7rBvHjOULOulzYWDItVEQ8xC2QkPgn8iD0xIuSNB6gFvUhtHMtJFxg8GGveIkIYK7JDClKknom3ETDZop5Le8BRezqehWcRywwGHTxb6xjtio5xwRLAq7",
-                 'client_id': 'YN17cy35cApl9PUiBuPCO0eTKgEEFtVWTV7I67lV',
-                'client_secret': '0LpVpqTQ6fcHCwCSfCqKx0JcEzFfGHnf857IuKgtsf2sl1KX3HdqlpTQBUSGiTUm3CaZeqtYZCMXn59Cqfc79pfKu1LVtNUNbIBbO0JnrfbqvAmB3N9xRCHLhDBJI1YM',
+                'client_id': "sdUIX9LsM0sEZH8ipS6op9WPiNjEK8mGU2wV1v8u",
+                'client_secret': "rUygoi2fiap7rBvHjOULOulzYWDItVEQ8xC2QkPgn8iD0xIuSNB6gFvUhtHMtJFxg8GGveIkIYK7JDClKknom3ETDZop5Le8BRezqehWcRywwGHTxb6xjtio5xwRLAq7",
+                //  'client_id': 'YN17cy35cApl9PUiBuPCO0eTKgEEFtVWTV7I67lV',
+                // 'client_secret': '0LpVpqTQ6fcHCwCSfCqKx0JcEzFfGHnf857IuKgtsf2sl1KX3HdqlpTQBUSGiTUm3CaZeqtYZCMXn59Cqfc79pfKu1LVtNUNbIBbO0JnrfbqvAmB3N9xRCHLhDBJI1YM',
                 'grant_type': "password"
             }, {
                 headers: {
@@ -42,14 +36,13 @@ const DangNhap = () => {
                 cookie.save("token", res.data.access_token);
                 console.info(res.data);
                 // console.log();
-                let user = await authAPI(cookie.load("token")).get(endpoints['current_taikhoan']);
-                cookie.save('user', user.data);
-                console.log(cookie.load('user'));
-                // setRole(user.data.role);
-                // setIsAuthenticated(true);
+                let userdata = await authAPI(cookie.load("token")).get(endpoints['current_taikhoan']);
+                cookie.save('user', userdata.data);
+               
+
                 dispatch({
                     "type": "login",
-                    "payload": user.data
+                    "payload": userdata.data
                 });
                 let firebase = await APIs.get(endpoints['firebase'], {
                     headers: {
@@ -59,7 +52,7 @@ const DangNhap = () => {
                 cookie.save('firebase-token', firebase.data.token);
                 // console.log(cookie.load('firebase-token'));
                 console.log("Đăng nhập thành công!");
-                nav("/main"); // Điều hướng tới trang chính sau khi đăng nhập thành công
+                nav("/"); // Điều hướng tới trang chính sau khi đăng nhập thành công
             } else {
                 setError("Sai tên đăng nhập hoặc mật khẩu");
             }

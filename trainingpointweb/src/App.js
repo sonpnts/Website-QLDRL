@@ -3,12 +3,14 @@ import React, { useReducer, useState, useEffect } from 'react';
 import { BrowserRouter, Route, Switch, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DangKy from './components/TaiKhoan/DangKy';
+import GoogleLogin from './components/TaiKhoan/Google';
 // import OTP from './components/TaiKhoan/OTP';
 // import ThemTroLySinhVien from './components/Home/ThemTroLySinhVien';
 import DangNhap from './components/TaiKhoan/DangNhap';
 // import Main from './components/Home/Main';
 // import BaiViet from './components/BanTin/BaiViet';
-// import DangXuat from './components/TaiKhoan/DangXuat';
+import BanTin from './components/BanTin/BanTin';
+import DangXuat from './components/TaiKhoan/DangXuat';
 import SinhVienDangKy from './components/TaiKhoan/SinhVien';
 // import ExportBaoCao from './components/QuanLy/Export';
 // import ChatScreen from './components/ChatFireBase/ChatScreen';
@@ -27,14 +29,13 @@ import SinhVienDangKy from './components/TaiKhoan/SinhVien';
 // import HDNKChuaDiemDanh from './components/SinhVien/HDNKChuaDiemDanh';
 // import HDNKDiemDanh from './components/SinhVien/HDNKDiemDanh';
 // import MinhChung from './components/SinhVien/MinhChung';
-import MyContext from './configs/MyContext';
+import { MyDispatchContext, MyUserContext } from './configs/MyContext';
 // import { useReducer } from "react";
 import MyUserReducer from './reducers/MyUserReducer';
 import { auth } from './configs/Firebase'; 
 import { signInWithCustomToken } from 'firebase/auth';
 import axios from 'axios';
 import cookie from "react-cookies";
-
 
 const App = () => {
   const [user, dispatch] = useReducer(MyUserReducer, cookie.load("user") || null);
@@ -92,8 +93,8 @@ const App = () => {
 
   return (
     <BrowserRouter>
-    <MyContext.Provider value={[user, dispatch]}>
-      {/* <Router> */}
+    <MyUserContext.Provider value={user}>
+      <MyDispatchContext.Provider value={dispatch}>
         <Routes>
           {/* {isAuthenticated ? ( */}
             <>
@@ -126,11 +127,14 @@ const App = () => {
               <Route path="/dang-ky" element={<DangKy />} />
               {/* <Route path="/otp" element={<OTP />} /> */}
               <Route path="/sinh-vien-dang-ky" element={<SinhVienDangKy />} />
+              {/* <Route path="/google" element={<GoogleLogin />} /> */}
+              <Route path="/" element={<BanTin />} />
+              <Route path="/dang-xuat" element={<DangXuat />} />
             </>
           {/* )} */}
         </Routes>
-      {/* </Router> */}
-    </MyContext.Provider>
+      </MyDispatchContext.Provider>
+    </MyUserContext.Provider>
     </BrowserRouter>
 
   );

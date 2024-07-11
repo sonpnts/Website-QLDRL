@@ -2,7 +2,7 @@ import axios from "axios";
 import moment from "moment";
 import cookie from "react-cookies";
 
-export const BASE_URL = 'http://192.168.1.218:8000/';
+// export const BASE_URL = 'http://192.168.1.218:8000/';
 
 export const formatNS= (dateString) => {
     const [year, month, day] = dateString.split('-');
@@ -14,7 +14,7 @@ export const formatDate = (date)=>{
     return moment(date).format(' HH:mm - DD/MM/YYYY');
 };
 
-// export const BASE_URL = 'https://sonpnts.pythonanywhere.com/'
+export const BASE_URL = 'https://sonpnts.pythonanywhere.com/'
 
 export const endpoints = {
     'bao-cao': '/bao-cao/',
@@ -75,10 +75,11 @@ export const endpoints = {
 
 
 export const authAPI = () => {
+    const token = cookie.load('token');
     return axios.create({
         baseURL: BASE_URL,
         headers: {
-            'Authorization': `Bearer ${cookie.load('token')}`
+            'Authorization': `Bearer ${token}`
         }
     });
 }
