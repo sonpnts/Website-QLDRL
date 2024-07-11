@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Alert, Spinner } from 'react-bootstrap';
 import {MyDispatchContext, MyUserContext} from "../../configs/MyContext";
 import APIs, { endpoints, authAPI } from "../../configs/APIs";
 import cookie from "react-cookies";
@@ -8,6 +8,7 @@ import cookie from "react-cookies";
 const DangNhap = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const nav = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
@@ -16,7 +17,7 @@ const DangNhap = () => {
         setShowPassword(!showPassword);
     };
     const login = async () => {
-        
+        setLoading(true);
         try {
             let res = await APIs.post(endpoints['dang_nhap'], {
                 'username': username,
@@ -50,6 +51,7 @@ const DangNhap = () => {
                     },
                 });
                 cookie.save('firebase-token', firebase.data.token);
+                setLoading(false);
                 // console.log(cookie.load('firebase-token'));
                 console.log("Đăng nhập thành công!");
                 nav("/"); // Điều hướng tới trang chính sau khi đăng nhập thành công
@@ -102,9 +104,14 @@ const DangNhap = () => {
                             />
                         </Form.Group>
 
-                        <Button variant="primary" onClick={login} className="mb-3">
-                            Đăng nhập
-                        </Button>
+                        {loading ? <Spinner animation="border" /> : 
+                            <>
+                                <Button variant="primary" onClick={login} className="mb-3">
+                                    Đăng nhập
+                                </Button>
+                            </>
+                        }
+                        
                         <Button variant="secondary" onClick={register}>
                             Đăng ký
                         </Button>

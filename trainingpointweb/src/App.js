@@ -3,6 +3,7 @@ import React, { useReducer, useState, useEffect } from 'react';
 import { BrowserRouter, Route, Switch, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DangKy from './components/TaiKhoan/DangKy';
+import Header from './components/Commons/Header';
 import GoogleLogin from './components/TaiKhoan/Google';
 // import OTP from './components/TaiKhoan/OTP';
 // import ThemTroLySinhVien from './components/Home/ThemTroLySinhVien';
@@ -95,6 +96,7 @@ const App = () => {
     <BrowserRouter>
     <MyUserContext.Provider value={user}>
       <MyDispatchContext.Provider value={dispatch}>
+        <Header />
         <Routes>
           {/* {isAuthenticated ? ( */}
             <>

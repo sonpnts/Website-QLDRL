@@ -43,7 +43,8 @@ const BanTin = () => {
         setPage(1);
         try {
             setLoading(true);
-            let baiviets = await APIs.get(`${endpoints['bai_viet']}?q=${q}`);
+            let baiviets = await authAPI().get(`${endpoints['bai_viet']}?q=${q}`);
+            console.log(baiviets.data);
             if(baiviets.data.count === 0)
             {
                 // setPage(1);
@@ -90,7 +91,7 @@ const BanTin = () => {
                 <input type="text" placeholder="Nhập từ khóa..." onChange={handleTextChange} value={q} />
                 <button onClick={handleSearch}>Tìm kiếm</button>
             </div>
-            {baiViets.length === 0 ? <p>Hello</p> :
+            {baiViets.length === 0 ? <p>Không có bài viết nào</p> :
                 <>
                     {baiViets.map(b => (
                         <BaiViet
