@@ -14,7 +14,7 @@ import BanTin from './components/BanTin/BanTin';
 import DangXuat from './components/TaiKhoan/DangXuat';
 import SinhVienDangKy from './components/TaiKhoan/SinhVien';
 // import ExportBaoCao from './components/QuanLy/Export';
-// import ChatScreen from './components/ChatFireBase/ChatScreen';
+import ChatScreen from './components/ChatFireBase/ChatScreen';
 // import DiemDanh from './components/QuanLy/UploadFileDiemDanh';
 // import CreatePost from './components/QuanLy/DangBaiViet';
 // import HoatDong from './components/QuanLy/HoatDong';
@@ -31,6 +31,7 @@ import SinhVienDangKy from './components/TaiKhoan/SinhVien';
 // import HDNKDiemDanh from './components/SinhVien/HDNKDiemDanh';
 // import MinhChung from './components/SinhVien/MinhChung';
 import { MyDispatchContext, MyUserContext } from './configs/MyContext';
+import UserInfo from './components/TaiKhoan/TaiKhoan';
 // import { useReducer } from "react";
 import MyUserReducer from './reducers/MyUserReducer';
 import { auth } from './configs/Firebase'; 
@@ -106,7 +107,7 @@ const App = () => {
               {/* <Route path="/sinh-vien-dang-ky" element={<SinhVienDangKy />} />
               <Route path="/them-tro-ly-sinh-vien" element={<ThemTroLySinhVien />} />
               <Route path="/export-bao-cao" element={<ExportBaoCao />} />
-              <Route path="/chat" element={<ChatScreen />} />
+              
               <Route path="/diem-danh" element={<DiemDanh />} />
               <Route path="/create-post" element={<CreatePost />} />
               <Route path="/hoat-dong" element={<HoatDong />} />
@@ -132,6 +133,8 @@ const App = () => {
               {/* <Route path="/google" element={<GoogleLogin />} /> */}
               <Route path="/" element={<BanTin />} />
               <Route path="/dang-xuat" element={<DangXuat />} />
+              <Route path="/profile" element={<UserInfo />} />
+              <Route path="/chat" element={<ChatScreen />} />
             </>
           {/* )} */}
         </Routes>

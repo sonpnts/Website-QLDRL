@@ -45,13 +45,13 @@ const DangNhap = () => {
                     "type": "login",
                     "payload": userdata.data
                 });
-                let firebase = await APIs.get(endpoints['firebase'], {
-                    headers: {
-                        Authorization: `Bearer ${cookie.load('token')}`,
-                    },
-                });
-                cookie.save('firebase-token', firebase.data.token);
-                setLoading(false);
+                // let firebase = await APIs.get(endpoints['firebase'], {
+                //     headers: {
+                //         Authorization: `Bearer ${cookie.load('token')}`,
+                //     },
+                // });
+                // cookie.save('firebase-token', firebase.data.token);
+                // setLoading(false);
                 // console.log(cookie.load('firebase-token'));
                 console.log("Đăng nhập thành công!");
                 nav("/"); // Điều hướng tới trang chính sau khi đăng nhập thành công

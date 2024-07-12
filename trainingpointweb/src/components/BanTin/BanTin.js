@@ -30,7 +30,6 @@ const BanTin = () => {
                     return [...current, ...baiviets.data.results];
                 });
             }
-            
 
         } catch (ex) {
             console.log("Lỗi", ex);
@@ -48,7 +47,8 @@ const BanTin = () => {
             if(baiviets.data.count === 0)
             {
                 // setPage(1);
-                loadBaiViets();
+                setBaiViets([]);
+                // loadBaiViets();
             }
             else{
                 setBaiViets(baiviets.data.results);
@@ -71,7 +71,6 @@ const BanTin = () => {
         }
     };
 
-
     const handleRefresh = useCallback(() => {
         setRefreshing(true);
         setPage(1);
@@ -87,9 +86,20 @@ const BanTin = () => {
 
     return (
         <div onScroll={loadMore}>
-            <div style={{ margin: 10 }}>
-                <input type="text" placeholder="Nhập từ khóa..." onChange={handleTextChange} value={q} />
-                <button onClick={handleSearch}>Tìm kiếm</button>
+            <div style={{ margin: 10, display: 'flex', justifyContent: 'flex-end' }}>
+                <input 
+                    type="text" 
+                    placeholder="Nhập từ khóa..." 
+                    onChange={handleTextChange} 
+                    value={q} 
+                    style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc', marginRight: '10px', width: '300px' }} 
+                />
+                <button 
+                    onClick={handleSearch} 
+                    style={{ padding: '10px 15px', borderRadius: '5px', border: 'none', backgroundColor: '#007bff', color: '#fff', cursor: 'pointer' }}
+                >
+                    Tìm kiếm
+                </button>
             </div>
             {baiViets.length === 0 ? <p>Không có bài viết nào</p> :
                 <>

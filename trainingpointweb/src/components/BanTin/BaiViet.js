@@ -17,6 +17,7 @@ const BaiViet = ({ baiviet = null }) => {
     const maxDisplayWords = 20;
     const user = useContext(MyUserContext);
     const dispatch = useContext(MyDispatchContext);
+    const [loading, setLoaing] = useState(false);
     const toggleExpand = () => {
         setExpanded(!expanded);
     };
@@ -67,6 +68,7 @@ const BaiViet = ({ baiviet = null }) => {
 
     const handleRegistration = async (id) => {
         try {
+            setLoaing(true);
             const response = await authAPI().post(endpoints['dang_ky_hoat_dong'](id), null);
             if (response.status === 201) {
                 setRegistered(true);
@@ -74,6 +76,7 @@ const BaiViet = ({ baiviet = null }) => {
         } catch (error) {
             console.error("Lỗi khi xử lý đăng ký:", error);
         }
+        setLoaing(false);
     };
 
     const getHoatDong = async (id) => {
@@ -109,10 +112,10 @@ const BaiViet = ({ baiviet = null }) => {
         <div className="container">
             {baiViet === null ? <></> : (
                 <>
-                    <Card style={{ width: '60%', marginBottom: '20px', borderRadius:'10px' }}>
+                    <Card style={{ width: '50%',marginBottom: '20px', borderRadius:'10px' }}>
                     
                     <Card.Body>
-                        <Card.Title>{baiViet.title}</Card.Title>
+                        <Card.Title >{baiViet.title}</Card.Title>
                         <Card.Text>
                         {baiViet.content}
                         <br />
@@ -122,7 +125,7 @@ const BaiViet = ({ baiviet = null }) => {
                         <br />
                         Điều: {hoatdong ? hoatdong.dieu : 'Loading...'}
                         </Card.Text>
-                        <Card.Img variant="top" src={baiViet.image} style={{  objectFit: 'cover', marginBottom:'20px' }} />
+                        <Card.Img variant="top" src={baiViet.image} style={{  objectFit: 'cover', marginBottom:'20px', width:'60%', display: 'block',  marginLeft: 'auto',  marginRight: 'auto'  }} />
                         <div className="d-flex justify-content-center">
                             <Button className="mx-2" variant={liked ? 'primary' : 'outline-primary'} onClick={() => handleLike(baiViet.id)} disabled={!user} >
                                 {liked ? 'Đã Thích' : 'Thích'}
@@ -135,9 +138,14 @@ const BaiViet = ({ baiviet = null }) => {
                                     Đã Đăng Ký
                                 </Button>
                             ) : (
-                                <Button className="mx-2" onClick={() => handleRegistration(baiViet.hd_ngoaikhoa)} variant="outline-dark" disabled={!user || user.role !== 4}>
-                                    Đăng ký
-                                </Button>
+                                <Button 
+                                className="mx-2" 
+                                onClick={() => handleRegistration(baiViet.hd_ngoaikhoa)} 
+                                variant="outline-dark" 
+                                disabled={!user || user.role !== 4 || loading} // Disable khi loading
+                            >
+                                {loading ? 'Đang đăng ký...' : 'Đăng ký'} {/* Thay đổi text khi loading */}
+                            </Button>
                             )}
                         </div>
                         

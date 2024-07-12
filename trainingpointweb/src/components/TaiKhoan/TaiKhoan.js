@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { Avatar, Button as PaperButton, Card, Form } from 'react-bootstrap'; // Assuming you have react-bootstrap installed
-import { endpoints } from '../../configs/APIs';
-import Styles from './Styles';
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import { Form, Card, Button, Alert, Image } from 'react-bootstrap';
+import { authAPI, endpoints } from '../../configs/APIs';
+import './Styles.css'; // Make sure to adjust the path to your CSS file accordingly
+import { auth } from '../../configs/Firebase';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { MyDispatchContext, MyUserContext } from '../../configs/MyContext';
+import moment from 'moment';
 
-const UserInfo = ({ navigation }) => {
+const UserInfo = () => {
+    // const user = useContext(MyUserContext);
     const [user, setUser] = useState(null);
+    const [avatarFile, setAvatarFile] = useState(null);
+
     const [sv, setSv] = useState(null);
+    const fileInputRef = useRef(null);
     const [lops, setLops] = useState([]);
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [changedFields, setChangedFields] = useState([]);
     const [errors, setErrors] = useState({
         avatar: ""
@@ -24,25 +31,15 @@ const UserInfo = ({ navigation }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                // Simulating AsyncStorage behavior with local storage for demo purposes
-                const token = localStorage.getItem("access-token");
-                const reslop = await APIs.get(endpoints['lop']);
-                const response = await APIs.get(endpoints['current_taikhoan'], {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const reslop = await authAPI().get(endpoints['lop']);
+                const response = await authAPI().get(endpoints['current_taikhoan']);
 
                 setLops(reslop.data.results);
                 setUser(response.data);
 
                 // If the user is a student, fetch student information
                 if (response.data.role === 4) {
-                    const ressv = await APIs.get(endpoints['current_sinhvien'], {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    });
+                    const ressv = await authAPI().get(endpoints['current_sinhvien']);
                     setSv(ressv.data);
                 }
 
@@ -58,19 +55,12 @@ const UserInfo = ({ navigation }) => {
         const foundClass = Array.isArray(lops) && lops.find(lop => lop.id === classId);
         return foundClass ? foundClass.ten_lop : "";
     };
-
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
-    };
-
-    const hideDatePicker = () => {
-        setDatePickerVisibility(false);
-    };
+  
 
     const handleConfirm = (date) => {
-        const selectedDate = date.toISOString().slice(0, 10); // Get yyyy-MM-dd format
-        change("ngay_sinh", selectedDate);
-        hideDatePicker();
+        const formattedDate = moment(date).format('YYYY-MM-DD');
+        // change("ngay_sinh", formattedDate);
+        changesv("ngay_sinh", formattedDate);
     };
 
     const change = (field, value) => {
@@ -88,16 +78,15 @@ const UserInfo = ({ navigation }) => {
         }
     };
 
-    const handleChooseAvatar = async () => {
-        const result = await window.prompt("Enter image URL (for demo only):");
-        if (result) {
-            change('avatar', result);
-        }
+    const handleChooseAvatar = (e) => {
+        const file = e.target.files[0];
+        setAvatarFile(file);
+        change('avatar', file);
     };
+
 
     const changinfo = async () => {
         try {
-            const token = localStorage.getItem("access-token");
             const form = new FormData();
             changedFields.forEach(field => {
                 if (field === 'avatar') {
@@ -109,33 +98,33 @@ const UserInfo = ({ navigation }) => {
                 }
             });
             console.log(form);
-            const response = await APIs.patch(endpoints['current_taikhoan'], form, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/form-data'
+            if (form) {
+                const response = await authAPI().patch(endpoints['current_taikhoan'], form, {
+                    headers: {
+                        'Content-Type': 'application/form-data'
+                    }
+                });
+                if (response.status === 200) {
+                    alert('Cập nhật thông tin tài khoản thành công!');
+                    setChangedFields([]); 
                 }
-            });
+            }
             if (user.role === 4 && sv) {
-                // Create object containing changed fields of student
                 const updatedSvData = {};
                 changedFields.forEach(field => {
                     updatedSvData[field] = sv[field];
                 });
                 console.log(updatedSvData);
-                const ressv = await APIs.patch(endpoints['current_sinhvien'], updatedSvData, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
+                if (updatedSvData.ngay_sinh>0){
+                    const ressv = await authAPI().patch(endpoints['current_sinhvien'], updatedSvData);
+                    if (ressv.status === 200) {
+                        alert('Cập nhật thông tin sinh viên thành công!');
+                        setChangedFields([]); 
                     }
-                });
-                if (ressv.status === 200) {
-                    Alert.alert('Thông báo', 'Cập nhật thông tin sinh viên thành công!');
-                    setChangedFields([]); // Clear list of changed fields after successful update
                 }
+            
             }
-            if (response.status === 200) {
-                Alert.alert('Thông báo', 'Cập nhật thông tin tài khoản thành công!');
-                setChangedFields([]); // Clear list of changed fields after successful update
-            }
+           
         } catch (error) {
             console.error("Error updating information:", error);
         }
@@ -143,109 +132,136 @@ const UserInfo = ({ navigation }) => {
 
     if (!user) {
         return (
-            <View style={[Styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-                <ActivityIndicator size="large" color="#0000ff" />
-            </View>
+            <div className="container" style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <p>Loading...</p>
+            </div>
         );
     }
 
     return (
-        <ScrollView>
-            <View className="container">
-                <Card className="my-3">
-                    <Card.Body>
-                        <View className="text-center mb-4">
-                            <TouchableOpacity onPress={handleChooseAvatar}>
-                                <Avatar.Image 
-                                    src={changedFields.includes('avatar') ? user.avatar : user.avatar} 
-                                    size={150} 
-                                    className="mb-3"
-                                />
-                            </TouchableOpacity>
-                            { errors.avatar ? <Text className="text-danger">{errors.avatar}</Text> : null}
-                        </View>
-                        <Form>
-                            <Form.Group controlId="username">
-                                <Form.Label>Username</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={user.username}
-                                    onChange={(e) => change("username", e.target.value)}
-                                />
-                            </Form.Group>
-                            <Form.Group controlId="email">
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control
-                                    type="email"
-                                    value={user.email}
-                                    disabled
-                                />
-                            </Form.Group>
-                            <Form.Group controlId="role">
-                                <Form.Label>Loại tài khoản</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={roles[user.role]}
-                                    disabled
-                                />
-                            </Form.Group>
-                            {user.role === 4 && sv && (
-                                <>
-                                    <Form.Group controlId="ho_ten">
-                                        <Form.Label>Họ và tên</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            value={sv.ho_ten}
-                                            disabled
+        <div className="container">
+            <Card className="my-3">
+                <Card.Body>
+                <div className="text-center mb-4">
+                        <Image
+                            src={avatarFile ? URL.createObjectURL(avatarFile) : user.avatar || 'placeholder-image-url'}
+                            style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                            roundedCircle
+                            className="mb-3"
+                            onClick={() => fileInputRef.current.click()}
+                        />
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            style={{ display: 'none' }}
+                            onChange={handleChooseAvatar}
+                        />
+                        {/* <Form.Group className="mb-3">
+                            <Form.Label>Ảnh đại diện</Form.Label>
+                            <Form.Control type="file" onChange={handleChooseAvatar} />
+                        </Form.Group> */}
+                        { errors.avatar ? <p className="text-danger">{errors.avatar}</p> : null}
+                    </div>
+                    <Form>
+                        <Form.Group controlId="username">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={user.username}
+                                onChange={(e) => change("username", e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="email">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                type="email"
+                                value={user.email}
+                                disabled
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="role">
+                            <Form.Label>Loại tài khoản</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={roles[user.role]}
+                                disabled
+                            />
+                        </Form.Group>
+                        {user.role === 4 && sv && (
+                            <>
+                                <Form.Group controlId="ho_ten">
+                                    <Form.Label>Họ và tên</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={sv.ho_ten}
+                                        disabled
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="dia_chi">
+                                    <Form.Label>Địa chỉ</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={sv.dia_chi}
+                                        onChange={(e) => changesv("dia_chi", e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="gioi_tinh">
+                                    <Form.Label>Giới tính</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={sv.gioi_tinh === 1 ? 'Nam' : 'Nữ'}
+                                        disabled
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="lop">
+                                    <Form.Label>Lớp</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={findClassName(sv.lop)}
+                                        disabled
+                                    />
+                                </Form.Group>
+                                {/* <Form.Group controlId="ngay_sinh">
+                                    <Form.Label>Ngày sinh</Form.Label>
+                                    <button onClick={showDatePicker}>
+                                        <p>{sv.ngay_sinh}</p>
+                                    </button>
+                                    {isDatePickerVisible && (
+                                        <DatePicker
+                                            selected={new Date(sv.ngay_sinh)}
+                                            onChange={handleConfirm}
+                                            dateFormat="dd/MM/yyyy"
+                                            showYearDropdown
+                                            showMonthDropdown
+                                            dropdownMode="select"
                                         />
-                                    </Form.Group>
-                                    <Form.Group controlId="dia_chi">
-                                        <Form.Label>Địa chỉ</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            value={sv.dia_chi}
-                                            onChange={(e) => changesv("dia_chi", e.target.value)}
-                                        />
-                                    </Form.Group>
-                                    <Form.Group controlId="gioi_tinh">
-                                        <Form.Label>Giới tính</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            value={sv.gioi_tinh === 1 ? 'Nam' : 'Nữ'}
-                                            disabled
-                                        />
-                                    </Form.Group>
-                                    <Form.Group controlId="lop">
-                                        <Form.Label>Lớp</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            value={findClassName(sv.lop)}
-                                            disabled
-                                        />
-                                    </Form.Group>
-                                    <Form.Group controlId="ngay_sinh">
-                                        <Form.Label>Ngày sinh</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            value={sv.ngay_sinh}
-                                            disabled
-                                        />
-                                    </Form.Group>
-                                </>
-                            )}
-                        </Form>
-                    </Card.Body>
-                </Card>
-                <PaperButton 
-                    variant="contained" 
-                    className="my-3"
-                    onClick={changinfo}
-                    disabled={!changedFields.length} // Disable button when no information is changed
-                >
-                    Chỉnh sửa thông tin
-                </PaperButton>
-            </View>
-        </ScrollView>
+                                    )}
+                                </Form.Group> */}
+
+                                <Form.Group controlId="formNgaySinh">
+                                    <Form.Label>Ngày sinh</Form.Label>
+                                    <div></div>
+                                    <DatePicker
+                                        selected={sv.ngay_sinh}
+                                        onChange={handleConfirm}
+                                        dateFormat="dd/MM/yyyy"
+                                        className="form-control"
+                                    />
+                                </Form.Group>
+                            </>
+                        )}
+                    </Form>
+                </Card.Body>
+            </Card>
+            <Button 
+                variant="contained" 
+                className="my-3"
+                onClick={changinfo}
+                disabled={!changedFields.length} // Disable button when no information is changed
+            >
+                Chỉnh sửa thông tin
+            </Button>
+        </div>
     );
 };
 

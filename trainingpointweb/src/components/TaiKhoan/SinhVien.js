@@ -101,9 +101,7 @@ const SinhVienDangKy = () => {
         const formattedDate = moment(date).format('YYYY-MM-DD');
         setSv({ ...sv, ngay_sinh: formattedDate });
     };
-    // const handleDateChange = (date) => {
-    //     setSv({ ...sv, ngay_sinh: date });
-    // };
+
 
     return (
         <Container className={Styles.containerlogin}>

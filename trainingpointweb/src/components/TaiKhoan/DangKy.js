@@ -209,7 +209,6 @@ const DangKy = () => {
         nav("/dang-nhap");
     };
 
-   
 
     return (
         <Container className="mt-5">
