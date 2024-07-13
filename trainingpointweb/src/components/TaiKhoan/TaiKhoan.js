@@ -104,9 +104,11 @@ const UserInfo = () => {
                         'Content-Type': 'application/form-data'
                     }
                 });
-                if (response.status === 200) {
-                    alert('Cập nhật thông tin tài khoản thành công!');
-                    setChangedFields([]); 
+                if(user.role===2){
+                    if (response.status === 200) {
+                        alert('Cập nhật thông tin tài khoản thành công!');
+                        setChangedFields([]); 
+                    }
                 }
             }
             if (user.role === 4 && sv) {
@@ -115,7 +117,7 @@ const UserInfo = () => {
                     updatedSvData[field] = sv[field];
                 });
                 console.log(updatedSvData);
-                if (updatedSvData.ngay_sinh>0){
+                if (updatedSvData.ngay_sinh){
                     const ressv = await authAPI().patch(endpoints['current_sinhvien'], updatedSvData);
                     if (ressv.status === 200) {
                         alert('Cập nhật thông tin sinh viên thành công!');

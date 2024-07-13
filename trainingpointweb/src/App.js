@@ -13,7 +13,7 @@ import DangNhap from './components/TaiKhoan/DangNhap';
 import BanTin from './components/BanTin/BanTin';
 import DangXuat from './components/TaiKhoan/DangXuat';
 import SinhVienDangKy from './components/TaiKhoan/SinhVien';
-// import ExportBaoCao from './components/QuanLy/Export';
+import ExportBaoCao from './components/QuanLy/Export';
 import ChatScreen from './components/ChatFireBase/ChatScreen';
 // import DiemDanh from './components/QuanLy/UploadFileDiemDanh';
 // import CreatePost from './components/QuanLy/DangBaiViet';
@@ -28,7 +28,7 @@ import ChatScreen from './components/ChatFireBase/ChatScreen';
 // import ChiTietBaoThieu from './components/QuanLy/ChiTietBaoThieu';
 // import ThanhTichNgoaiKhoa from './components/QuanLy/ThanhTichNgoaiKhoa';
 // import HDNKChuaDiemDanh from './components/SinhVien/HDNKChuaDiemDanh';
-// import HDNKDiemDanh from './components/SinhVien/HDNKDiemDanh';
+import HDNKDiemDanh from './components/SinhVien/HDNKDiemDanh';
 // import MinhChung from './components/SinhVien/MinhChung';
 import { MyDispatchContext, MyUserContext } from './configs/MyContext';
 import UserInfo from './components/TaiKhoan/TaiKhoan';
@@ -120,21 +120,31 @@ const App = () => {
               <Route path="/danh-sach-sinh-vien" element={<DanhSachSinhVien />} />
               <Route path="/chi-tiet-bao-thieu" element={<ChiTietBaoThieu />} />
               <Route path="/thanh-tich-ngoai-khoa" element={<ThanhTichNgoaiKhoa />} />
-              <Route path="/hdnk-chua-diem-danh" element={<HDNKChuaDiemDanh />} />
-              <Route path="/hdnk-diem-danh" element={<HDNKDiemDanh />} />
-              <Route path="/minh-chung" element={<MinhChung />} /> */}
+               */}
             </>
           ) : (
             <>
               <Route path="/dang-nhap" element={<DangNhap />} />
               <Route path="/dang-ky" element={<DangKy />} />
-              {/* <Route path="/otp" element={<OTP />} /> */}
+              
               <Route path="/sinh-vien-dang-ky" element={<SinhVienDangKy />} />
               {/* <Route path="/google" element={<GoogleLogin />} /> */}
               <Route path="/" element={<BanTin />} />
               <Route path="/dang-xuat" element={<DangXuat />} />
               <Route path="/profile" element={<UserInfo />} />
+
+
               <Route path="/chat" element={<ChatScreen />} />
+
+
+              <Route path="/export-bao-cao" element={<ExportBaoCao />} />
+
+
+
+              {/* <Route path="/hdnk-chua-diem-danh" element={<HDNKChuaDiemDanh />} /> */}
+              <Route path="/hdnk-diem-danh" element={<HDNKDiemDanh />} />
+              {/* <Route path="/minh-chung" element={<MinhChung />} /> */}
+
             </>
           {/* )} */}
         </Routes>

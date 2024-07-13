@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Badge, Button, Col, Container, Form, Image, Nav, Navbar, NavDropdown, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { MyDispatchContext, MyUserContext } from "../../configs/MyContext";
@@ -10,7 +10,7 @@ const Header = () => {
     const user = useContext(MyUserContext);
     const dispatch = useContext(MyDispatchContext);
     const [hovered, setHovered] = useState(null);
-
+    
     const nav = useNavigate();
     const handleLogout = () => {
         dispatch({ type: "logout" });
@@ -23,12 +23,12 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">
-                        <Link className={`nav-link ${hovered === 'home' ? 'animate__animated animate__bounce' : ''}`} to="/" 
+                        <Nav.Link className={`nav-link ${hovered === 'home' ? 'animate__animated animate__bounce' : ''}`} href="/" 
                         onMouseEnter={() => setHovered('home')}
                         onMouseLeave={() => setHovered(null)}
                         >
                             <i className="fa-solid fa-house"></i> Trang chủ
-                        </Link>
+                        </Nav.Link>
                         {user === null ? (
                             <>
                                 <Link 
@@ -50,22 +50,65 @@ const Header = () => {
                             </>
                         ) : (
                             <>
-                                <Link 
-                                    to="/chat" 
-                                    className={`nav-link text-info ${hovered === 'chat' ? 'animate__animated animate__bounce' : ''}`}
-                                    onMouseEnter={() => setHovered('chat')}
-                                    onMouseLeave={() => setHovered(null)}
-                                >
-                                    <i className="fa-solid fa-comments"></i> Chat
-                                </Link>
+                           {(user.role === 2 || user.role === 3) && (
+                                <>
+                                 
+                                 <>
+                                    {(user.role === 4 ) && (
+                                        <>
+                                            <Link 
+                                                to="/chat" 
+                                                className={`nav-link text-info ${hovered === 'chat' ? 'animate__animated animate__bounce' : ''}`}
+                                                onMouseEnter={() => setHovered('chat')}
+                                                onMouseLeave={() => setHovered(null)}
+                                            >
+                                                <i className="fa-solid fa-comments"></i> Chat
+                                            </Link>
+                                        </>
+                                    )}
+                                </>
+                                <NavDropdown title="Hoạt động" id="basic-nav-dropdown">
+                                    <NavDropdown.Item href="#action/3.1" class="nav-link text-info">Quản lý các hoạt động</NavDropdown.Item>
+                                    <NavDropdown.Item href="#action/3.2">
+                                        Tạo hoạt động
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item href="#action/3.3">Xem lại hoạt động đã xóa</NavDropdown.Item>
+                                </NavDropdown>
+                                <NavDropdown title="Thao tác" id="basic-nav-dropdown" >
+                                    <NavDropdown.Item href="">Điểm danh sinh viên</NavDropdown.Item>
+                                    <NavDropdown.Item href="">
+                                        Báo thiếu
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item href="/export-bao-cao" title="Xuất báo cáo" class="nav-link text-info ">
+
+                                    <i class="fa-solid fa-file-export"></i> Xuất báo cáo
+                                    </NavDropdown.Item>
+                                
+                                    <NavDropdown.Item href="">
+                                        Xem thành tích sinh viên
+                                    </NavDropdown.Item>
+                                    <>
+                                        {user.role === 2 && (
+                                        <>
+                                            <NavDropdown.Item href="">Thêm trợ lý sinh viên khoa</NavDropdown.Item>
+                                        </>
+                                        )}
+                                    </>
+                                    <NavDropdown.Item href="">Tin nhắn hỗ trợ</NavDropdown.Item>
+                                </NavDropdown>
+                                </>
+                            )}
                                 <Link 
                                     to="/profile" 
                                     className={`nav-link text-success ${hovered === 'profile' ? 'animate__animated animate__bounce' : ''}`}
                                     onMouseEnter={() => setHovered('profile')}
                                     onMouseLeave={() => setHovered(null)}
                                 >
-                                    <Image src={user.avatar} width="40" height="40" roundedCircle /> {user.username}
+                                    <Image src={user.avatar} width="30" height="30" roundedCircle /> 
+                                    
                                 </Link>
+                                <Nav.Link href="/profile" style={{marginLeft:0}} className="nav-link text-infot">{user.username}</Nav.Link>
+
                                 <Link 
                                     to="#" 
                                     onClick={handleLogout} 
@@ -75,9 +118,12 @@ const Header = () => {
                                 >
                                     <i className="fa-solid fa-right-from-bracket"></i> Logout
                                 </Link>
-                            </>
+                             
+
+                         </>
                         )}
                     </Nav>
+                    
                 </Navbar.Collapse>
             </Container>
         </Navbar>

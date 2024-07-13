@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0d5a70b0-8802-4011-89a8-8c3f513c968a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainingpointweb/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/trainingpointweb/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainingpointweb/src/components/TaiKhoan/DangKy.js" beforeDir="false" afterPath="$PROJECT_DIR$/trainingpointweb/src/components/TaiKhoan/DangKy.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trainingpointweb/src/components/TaiKhoan/TaiKhoan.js" beforeDir="false" afterPath="$PROJECT_DIR$/trainingpointweb/src/components/TaiKhoan/TaiKhoan.js" afterDir="false" />
-    </list>
+    <list default="true" id="0d5a70b0-8802-4011-89a8-8c3f513c968a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -77,6 +72,7 @@
       <workItem from="1720494861368" duration="119000" />
       <workItem from="1720673138341" duration="55000" />
       <workItem from="1720696490537" duration="4518000" />
+      <workItem from="1720756077957" duration="157000" />
     </task>
     <task id="LOCAL-00001" summary="update 1">
       <option name="closed" value="true" />
@@ -118,7 +114,23 @@
       <option name="project" value="LOCAL" />
       <updated>1720697304922</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="update react js">
+      <option name="closed" value="true" />
+      <created>1720756135720</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1720756135722</updated>
+    </task>
+    <task id="LOCAL-00007" summary="update react js">
+      <option name="closed" value="true" />
+      <created>1720756192671</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1720756192671</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
