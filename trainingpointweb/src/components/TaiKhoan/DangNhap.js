@@ -61,7 +61,8 @@ const DangNhap = () => {
 
         } catch (ex) {
             console.error("Lỗi tại màn hình đăng nhập:", ex);
-            setError("Có lỗi xảy ra, vui lòng thử lại sau.");
+            setError("Sai tên hoặc mật khẩu, vui lòng thử lại.");
+            setLoading(false);
         }
     };
 
