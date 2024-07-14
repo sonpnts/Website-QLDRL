@@ -4,12 +4,8 @@ import { BrowserRouter, Route, Switch, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DangKy from './components/TaiKhoan/DangKy';
 import Header from './components/Commons/Header';
-import GoogleLogin from './components/TaiKhoan/Google';
-// import OTP from './components/TaiKhoan/OTP';
 // import ThemTroLySinhVien from './components/Home/ThemTroLySinhVien';
 import DangNhap from './components/TaiKhoan/DangNhap';
-// import Main from './components/Home/Main';
-// import BaiViet from './components/BanTin/BaiViet';
 import BanTin from './components/BanTin/BanTin';
 import DangXuat from './components/TaiKhoan/DangXuat';
 import SinhVienDangKy from './components/TaiKhoan/SinhVien';
@@ -21,8 +17,8 @@ import HoatDong from './components/QuanLy/HoatDong';
 // import HoatDongChuaCoBaiViet from './components/QuanLy/DanhSanhHoatDong';
 import QuanLyHoatDong from './components/QuanLy/QuanLyCacHoatDong';
 import SuaHoatDong from './components/QuanLy/SuaHoatDong';
-// import ChatListScreen from './components/ChatFireBase/RoomChat';
-// import ChatDetailScreen from './components/ChatFireBase/Chat';
+import ChatListScreen from './components/ChatFireBase/RoomChat';
+import ChatDetailScreen from './components/ChatFireBase/Chat';
 // import DanhSachBaoThieu from './components/QuanLy/DanhSachBaoThieu';
 // import DanhSachSinhVien from './components/QuanLy/DanhSachSinhVien';
 // import ChiTietBaoThieu from './components/QuanLy/ChiTietBaoThieu';
@@ -99,7 +95,7 @@ const App = () => {
       <MyDispatchContext.Provider value={dispatch}>
         <Header />
         <Routes>
-          {/* {isAuthenticated ? ( */}
+         
             <>
               {/* Uncomment and add your protected routes here */}
               {/* <Route path="/" element={<Main />} /> */}
@@ -112,7 +108,6 @@ const App = () => {
               
               <Route path="/hoat-dong-chua-co-bai-viet" element={<HoatDongChuaCoBaiViet />} />
               
-              <Route path="/chat-list" element={<ChatListScreen />} />
               <Route path="/chat-detail" element={<ChatDetailScreen />} />
               <Route path="/danh-sach-bao-thieu" element={<DanhSachBaoThieu />} />
               <Route path="/danh-sach-sinh-vien" element={<DanhSachSinhVien />} />
@@ -134,7 +129,8 @@ const App = () => {
 
               <Route path="/chat" element={<ChatScreen />} />
 
-
+              <Route path="/chat-list" element={<ChatListScreen />} />
+              <Route path="/chat-list/:roomId" element={<ChatDetailScreen />} />
               <Route path="/export-bao-cao" element={<ExportBaoCao />} />
               <Route path="/tao-hoat-dong" element={<HoatDong />} />
               <Route path="/diem-danh" element={<DiemDanh />} />
@@ -146,7 +142,7 @@ const App = () => {
               {/* <Route path="/minh-chung" element={<MinhChung />} /> */}
 
             </>
-          {/* )} */}
+         
         </Routes>
       </MyDispatchContext.Provider>
     </MyUserContext.Provider>

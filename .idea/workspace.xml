@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0d5a70b0-8802-4011-89a8-8c3f513c968a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/trainingpointAPI/trainingpoint/views.py" beforeDir="false" />
+    <list default="true" id="0d5a70b0-8802-4011-89a8-8c3f513c968a" name="Changes" comment="update react js">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +76,7 @@
       <workItem from="1720696490537" duration="4518000" />
       <workItem from="1720756077957" duration="157000" />
       <workItem from="1720869065119" duration="270000" />
+      <workItem from="1720940767938" duration="1374000" />
     </task>
     <task id="LOCAL-00001" summary="update 1">
       <option name="closed" value="true" />
@@ -141,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720869130993</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="update react js">
+      <option name="closed" value="true" />
+      <created>1720940883113</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1720940883114</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
