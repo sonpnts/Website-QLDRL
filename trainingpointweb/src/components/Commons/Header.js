@@ -14,7 +14,7 @@ const Header = () => {
     const nav = useNavigate();
     const handleLogout = () => {
         dispatch({ type: "logout" });
-        window.location.reload(); // Navigate to the home page or any other desired route after logout
+        // window.location.reload(); // Navigate to the home page or any other desired route after logout
     };
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
@@ -108,7 +108,7 @@ const Header = () => {
                             {user.username}
                             </Nav.Link>
                             <Link 
-                            to="#" 
+                            to="/dang-nhap" 
                             onClick={handleLogout} 
                             className= "nav-link"
                             

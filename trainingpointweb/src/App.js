@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useReducer, useState, useEffect } from 'react';
-import { BrowserRouter, Route, Switch, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Routes , Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DangKy from './components/TaiKhoan/DangKy';
 import Header from './components/Commons/Header';
@@ -28,120 +28,65 @@ import HDNKDiemDanh from './components/SinhVien/HDNKDiemDanh';
 // import MinhChung from './components/SinhVien/MinhChung';
 import { MyDispatchContext, MyUserContext } from './configs/MyContext';
 import UserInfo from './components/TaiKhoan/TaiKhoan';
-// import { useReducer } from "react";
 import MyUserReducer from './reducers/MyUserReducer';
-import { auth } from './configs/Firebase'; 
-import { signInWithCustomToken } from 'firebase/auth';
-import axios from 'axios';
 import cookie from "react-cookies";
+import NoAccess from './components/NoAccess';
 
 const App = () => {
+
+
+  const ProtectedRoute = ({ element: Component, allowedRoles, user, ...rest }) => {
+    return (
+      allowedRoles.includes(user?.role) ? <Component {...rest} /> : <Navigate to="/no-access" />
+    );
+  };
+
   const [user, dispatch] = useReducer(MyUserReducer, cookie.load("user") || null);
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // const [role, setRole] = useState();
-  // const [authfire, setAuthfire] = useState(false);
-
-  // const getFireBaseToken = async () => {
-  //   try {
-  //     const token = localStorage.getItem('firebase-token');
-  //     if (token) {
-  //       signInWithCustomToken(auth, token)
-  //         .then((userCredential) => {
-  //           const user = userCredential.user;
-  //           setAuthfire(true);
-  //         })
-  //         .catch((error) => {
-  //           console.error('Error signing in:', error);
-  //         });
-  //     } else {
-  //       console.log('Không tìm thấy token trong localStorage');
-  //     }
-  //   } catch (ex) {
-  //     console.log("Lỗi", ex);
-  //   }
-  // };
-
-  // const getAccessToken = async () => {
-  //   try {
-  //     const token = localStorage.getItem('access-token');
-  //     if (token) {
-  //       const user = await axios.get('API_ENDPOINT_HERE', {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`
-  //         }
-  //       });
-  //       dispatch({
-  //         type: 'login',
-  //         payload: user.data
-  //       });
-  //       setIsAuthenticated(true);
-  //       setRole(user.data.role);
-  //     } else {
-  //       console.log('Không tìm thấy token trong localStorage');
-  //     }
-  //   } catch (ex) {
-  //     console.log("Lỗi", ex);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getAccessToken();
-  //   getFireBaseToken();
-  // }, []);
-
   return (
     <BrowserRouter>
     <MyUserContext.Provider value={user}>
       <MyDispatchContext.Provider value={dispatch}>
         <Header />
         <Routes>
-         
-            <>
-              {/* Uncomment and add your protected routes here */}
-              {/* <Route path="/" element={<Main />} /> */}
-              {/* <Route path="/bai-viet" element={<BaiViet />} /> */}
-              {/* <Route path="/sinh-vien-dang-ky" element={<SinhVienDangKy />} />
-              <Route path="/them-tro-ly-sinh-vien" element={<ThemTroLySinhVien />} />
-              <Route path="/export-bao-cao" element={<ExportBaoCao />} />
-              
-              
-              
+          
+
+          
+              {/* <Route path="/them-tro-ly-sinh-vien" element={<ThemTroLySinhVien />} />
               <Route path="/hoat-dong-chua-co-bai-viet" element={<HoatDongChuaCoBaiViet />} />
-              
               <Route path="/chat-detail" element={<ChatDetailScreen />} />
               <Route path="/danh-sach-bao-thieu" element={<DanhSachBaoThieu />} />
               <Route path="/danh-sach-sinh-vien" element={<DanhSachSinhVien />} />
               <Route path="/chi-tiet-bao-thieu" element={<ChiTietBaoThieu />} />
-              <Route path="/thanh-tich-ngoai-khoa" element={<ThanhTichNgoaiKhoa />} />
-               */}
-            </>
-          ) : (
-            <>
+              <Route path="/thanh-tich-ngoai-khoa" element={<ThanhTichNgoaiKhoa />} /> */}
+       
               <Route path="/dang-nhap" element={<DangNhap />} />
               <Route path="/dang-ky" element={<DangKy />} />
               
               <Route path="/sinh-vien-dang-ky" element={<SinhVienDangKy />} />
-              {/* <Route path="/google" element={<GoogleLogin />} /> */}
               <Route path="/" element={<BanTin />} />
               <Route path="/dang-xuat" element={<DangXuat />} />
               <Route path="/profile" element={<UserInfo />} />
-
+              <Route path="/no-access" element={<NoAccess />} />
 
               <Route path="/chat" element={<ChatScreen />} />
 
-              <Route path="/chat-list" element={<ChatListScreen />} />
-              <Route path="/chat-list/:roomId" element={<ChatDetailScreen />} />
-              <Route path="/export-bao-cao" element={<ExportBaoCao />} />
-              <Route path="/tao-hoat-dong" element={<HoatDong />} />
-              <Route path="/diem-danh" element={<DiemDanh />} />
-              <Route path="/quan-ly-hoat-dong" element={<QuanLyHoatDong />} />
-              <Route path="/sua-hoat-dong" element={<SuaHoatDong />} />
-              <Route path="/tao-bai-viet" element={<CreatePost />} />
-              {/* <Route path="/hdnk-chua-diem-danh" element={<HDNKChuaDiemDanh />} /> */}
-              <Route path="/hdnk-diem-danh" element={<HDNKDiemDanh />} />
+              <Route path="/chat-list" element={<ProtectedRoute element={ChatListScreen} allowedRoles={[3]} user={user} />} />
+              <Route path="/chat-list/:roomId" element={<ProtectedRoute element={ChatDetailScreen} allowedRoles={[3]} user={user} />} />
+              <Route path="/export-bao-cao" element={<ProtectedRoute element={ExportBaoCao} allowedRoles={[3]} user={user} />} />
+
+
+              {/* <Route path="/hdnk-chua-diem-danh" element={<ProtectedRoute element={HDNKChuaDiemDanh} allowedRoles={[3]} user={user}  />} /> */}
               {/* <Route path="/minh-chung" element={<MinhChung />} /> */}
 
-            </>
+
+              <Route path="/tao-hoat-dong" element={<ProtectedRoute element={HoatDong} allowedRoles={[3]} user={user} />} />
+              <Route path="/diem-danh" element={<ProtectedRoute element={DiemDanh} allowedRoles={[3]} user={user} />} />
+              <Route path="/quan-ly-hoat-dong" element={<ProtectedRoute element={QuanLyHoatDong} allowedRoles={[3]} user={user} />} />
+              <Route path="/sua-hoat-dong" element={<ProtectedRoute element={SuaHoatDong} allowedRoles={[3]} user={user} />} />
+              <Route path="/tao-bai-viet" element={<ProtectedRoute element={CreatePost} allowedRoles={[3]} user={user} />} />
+              <Route path="/hdnk-diem-danh" element={<ProtectedRoute element={HDNKDiemDanh} allowedRoles={[3]} user={user} />} />
+
+      
          
         </Routes>
       </MyDispatchContext.Provider>
