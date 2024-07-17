@@ -1,11 +1,9 @@
-import React, { useState, useRef   } from "react";
-import { Form, Button, Container, Row, Col, Alert, Spinner, Modal } from "react-bootstrap";
-// import axios from 'axios';
+import React, { useState, useRef } from "react";
+import { Form, Button, Container, Row, Col, Alert, Spinner, Modal, Card } from "react-bootstrap";
 import APIs, { endpoints } from "../../configs/APIs";
 import { useNavigate } from "react-router-dom";
 import sendEmail from "./send_mail";
 import Styles from './Styles.css';
-// import { set } from "react-datepicker/dist/date_utils";
 
 const DangKy = () => {
     const [user, setUser] = useState({
@@ -39,6 +37,7 @@ const DangKy = () => {
         setRandomOTP(otpNum);
         return otpNum;
     };
+
     const handleChangeText = (num, index) => {
         if (/^\d*$/.test(num) && num.length <= 1) {
             const newOtp = [...otp];
@@ -214,127 +213,122 @@ const DangKy = () => {
         <Container className="mt-5">
             <Row className="justify-content-md-center">
                 <Col md="6">
-                    <h2 className="mb-4">Đăng Ký</h2>
-                    {errors.avatar && <Alert variant="danger">{errors.avatar}</Alert>}
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Ảnh đại diện</Form.Label>
-                            <Form.Control type="file" onChange={handleChooseAvatar} />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control
-                                type="email"
-                                placeholder="Nhập email"
-                                value={user.email}
-                                onChange={handleEmailChange}
-                            />
-                            {errors.email && <Alert variant="danger">{errors.email}</Alert>}
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicUsername">
-                            <Form.Label>Username</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Nhập tên đăng nhập"
-                                value={user.username}
-                                onChange={handleUsernameChange}
-                            />
-                            {errors.username && <Alert variant="danger">{errors.username}</Alert>}
-                        </Form.Group>
-                        <Form.Group className="mb-3 position-relative" controlId="formBasicPasswordInput">
-                        <Form.Label>Mật khẩu</Form.Label>
-                            <Form.Control
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Nhập mật khẩu"
-                                value={user.password}
-                                onChange={handlePasswordChange}
-                            />
-                            <div className="position-absolute end-0 bottom-50 translate-middle-y">
-                                <Form.Check
-                                    id="formBasicShowPasswordCheckbox"
-                                    type="checkbox"
-                                    className="cursor-pointer"
-                                    label={<i className={`bi bi-eye${showPassword ? "-slash" : ""}`}></i>}
-                                    onChange={() => setShowPassword(!showPassword)}
-                                />
-                            </div>                      
-                            {errors.password && <Alert variant="danger">{errors.password}</Alert>}
-                        </Form.Group>
+                    <Card className="p-4 shadow-sm">
+                        <Card.Body>
+                            <h2 className="mb-4 text-center">Đăng Ký</h2>
+                            {errors.avatar && <Alert variant="danger">{errors.avatar}</Alert>}
+                            <Form>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Ảnh đại diện</Form.Label>
+                                    <Form.Control type="file" onChange={handleChooseAvatar} />
+                                </Form.Group>
+                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                    <Form.Label>Email</Form.Label>
+                                    <Form.Control
+                                        type="email"
+                                        placeholder="Nhập email"
+                                        value={user.email}
+                                        onChange={handleEmailChange}
+                                    />
+                                    {errors.email && <Alert variant="danger">{errors.email}</Alert>}
+                                </Form.Group>
+                                <Form.Group className="mb-3" controlId="formBasicUsername">
+                                    <Form.Label>Username</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Nhập tên đăng nhập"
+                                        value={user.username}
+                                        onChange={handleUsernameChange}
+                                    />
+                                    {errors.username && <Alert variant="danger">{errors.username}</Alert>}
+                                </Form.Group>
+                                <Form.Group className="mb-3 position-relative" controlId="formBasicPasswordInput">
+                                    <Form.Label>Mật khẩu</Form.Label>
+                                    <Form.Control
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Nhập mật khẩu"
+                                        value={user.password}
+                                        onChange={handlePasswordChange}
+                                    />
+                                    <div className="position-absolute end-0 bottom-50 translate-middle-y">
+                                        <Form.Check
+                                            id="formBasicShowPasswordCheckbox"
+                                            type="checkbox"
+                                            className="cursor-pointer"
+                                            label={<i className={`bi bi-eye${showPassword ? "-slash" : ""}`}></i>}
+                                            onChange={() => setShowPassword(!showPassword)}
+                                        />
+                                    </div>
+                                    {errors.password && <Alert variant="danger">{errors.password}</Alert>}
+                                </Form.Group>
 
-                        <Form.Group className="mb-3 position-relative" controlId="formConfirmPassword">
-                            <Form.Label>Xác nhận mật khẩu</Form.Label>
-                            <Form.Control
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Xác nhận mật khẩu"
-                                value={confirmPassword}
-                                onChange={handleConfirmPasswordChange}
-                            />
-                            <div className="position-absolute end-0 bottom-50 translate-middle-y">
-                                <Form.Check
-                                    id="formConfirmShowPasswordCheckbox"
-                                    type="checkbox"
-                                    className="cursor-pointer"
-                                    label={<i className={`bi bi-eye${showPassword ? "-slash" : ""}`}></i>}
-                                    onChange={() => setShowPassword(!showPassword)}
-                                />
-                            </div>
-                            {errors.confirmPassword && <Alert variant="danger">{errors.confirmPassword}</Alert>}
-                        </Form.Group>
+                                <Form.Group className="mb-3 position-relative" controlId="formConfirmPassword">
+                                    <Form.Label>Xác nhận mật khẩu</Form.Label>
+                                    <Form.Control
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Xác nhận mật khẩu"
+                                        value={confirmPassword}
+                                        onChange={handleConfirmPasswordChange}
+                                    />
+                                    <div className="position-absolute end-0 bottom-50 translate-middle-y">
+                                        <Form.Check
+                                            id="formConfirmShowPasswordCheckbox"
+                                            type="checkbox"
+                                            className="cursor-pointer"
+                                            label={<i className={`bi bi-eye${showPassword ? "-slash" : ""}`}></i>}
+                                            onChange={() => setShowPassword(!showPassword)}
+                                        />
+                                    </div>
+                                    {errors.confirmPassword && <Alert variant="danger">{errors.confirmPassword}</Alert>}
+                                </Form.Group>
 
-                        {loading ? <Spinner animation="border" /> : 
-                            <>
-                                <Button variant="outline-primary" className="mb-3" onClick={validateDangKy}>
-                                    Đăng ký
+                                {loading ? <Spinner animation="border" /> :
+                                    <>
+                                        <Button variant="outline-primary" className="mb-3 w-100" onClick={validateDangKy}>
+                                            Đăng ký
+                                        </Button>
+                                    </>
+                                }
+                                <Button variant="outline-secondary" className="mb-3 w-100" onClick={login}>
+                                    Đã có tài khoản? Đăng nhập
                                 </Button>
-                            </>
-                        }
-                        <Button variant="outline-secondary" className="mb-3 " onClick={login}>
-                            Đã có tài khoản? Đăng nhập
-                        </Button>
-                    </Form>
+                            </Form>
+                        </Card.Body>
+                    </Card>
                 </Col>
             </Row>
 
             <Modal show={showModal} onHide={handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Nhập mã OTP</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form className={`${Styles.modalForm}`}>
-                    <Form.Group className={`${Styles.otpInputGroup}`}>
-                        {otp.map((value, index) => (
-                            <Form.Control
-                                key={index}
-                                ref={ref => refs.current[index] = ref}
-                                className={`${Styles.OTP_input}`}
-                                value={value}
-                                onChange={(e) => handleChangeText(e.target.value, index)}
-                                type="number"
-                                maxLength={1}
-                                // onKeyDown={(e) => {
-                                //     if (e.keyCode === 13 && index < otp.length - 1) {
-                                //         refs.current[index + 1].focus();
-                                //     }
-                                // }}
-                            />
-                        ))}
-                    </Form.Group>
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Đóng
-                </Button>
-                <Button variant="primary" onClick={handleSubmit}>
-                    Xác nhận
-                </Button>
-            </Modal.Footer>
-        </Modal>
+                <Modal.Header closeButton>
+                    <Modal.Title>Nhập mã OTP</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form className={`${Styles.modalForm}`}>
+                        <Form.Group className={`${Styles.otpInputGroup} d-flex justify-content-center`}>
+                            {otp.map((value, index) => (
+                                <Form.Control
+                                    key={index}
+                                    ref={ref => refs.current[index] = ref}
+                                    className={`${Styles.OTP_input} mx-1`}
+                                    value={value}
+                                    onChange={(e) => handleChangeText(e.target.value, index)}
+                                    type="number"
+                                    maxLength={1}
+                                />
+                            ))}
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Đóng
+                    </Button>
+                    <Button variant="primary" onClick={handleSubmit}>
+                        Xác nhận
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
-
-    
-    
-
     );
 };
 

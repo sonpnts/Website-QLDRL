@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback , useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Container, Row, Col, Form, Button, Spinner } from 'react-bootstrap';
 import BaiViet from './BaiViet';
 import { isCloseToBottom } from '../Utils/Tobottom';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
-
+import debounce from 'lodash.debounce';
 
 const BanTin = () => {
     const [q, setQ] = useState('');
@@ -12,15 +13,13 @@ const BanTin = () => {
     const [refreshing, setRefreshing] = useState(false);
     const scrollContainerRef = useRef(null);
 
-
     const loadBaiViets = useCallback(async () => {
         console.log("Page", page);
         try {
             setLoading(true);
             let baiviets = await authAPI().get(`${endpoints['bai_viet']}?page=${page}`);
 
-            if(baiviets.data.next === null)
-            {
+            if (baiviets.data.next === null) {
                 setPage(0);
             }
             if (page === 1) {
@@ -38,28 +37,30 @@ const BanTin = () => {
         }
     }, [page]);
 
-    const handleSearch = async () => {
-        setPage(1);
-        try {
-            setLoading(true);
-            let baiviets = await authAPI().get(`${endpoints['bai_viet']}?q=${q}`);
-            console.log(baiviets.data);
-            if(baiviets.data.count === 0)
-            {
-                // setPage(1);
-                setBaiViets([]);
-                // loadBaiViets();
+    const handleSearch = useCallback(
+        debounce(async (query) => {
+            setPage(1);
+            try {
+                setLoading(true);
+                let baiviets = await authAPI().get(`${endpoints['bai_viet']}?q=${query}`);
+                console.log(baiviets.data);
+                if (baiviets.data.count === 0) {
+                    setBaiViets([]);
+                } else {
+                    setBaiViets(baiviets.data.results);
+                }
+            } catch (ex) {
+                console.log("Lỗi", ex);
+            } finally {
+                setLoading(false);
             }
-            else{
-                setBaiViets(baiviets.data.results);
-            }
+        }, 300),
+        []
+    );
 
-        } catch (ex) {
-            console.log("Lỗi", ex);
-        } finally {
-            setLoading(false);
-        }
-    };
+    useEffect(() => {
+        handleSearch(q);
+    }, [q, handleSearch]);
 
     useEffect(() => {
         loadBaiViets();
@@ -71,48 +72,59 @@ const BanTin = () => {
         }
     };
 
-    const handleRefresh = useCallback(() => {
-        setRefreshing(true);
-        setPage(1);
-        loadBaiViets().then(() => setRefreshing(false));
-    }, [loadBaiViets]);
+    // const handleRefresh = useCallback(() => {
+    //     setRefreshing(true);
+    //     setPage(1);
+    //     loadBaiViets().then(() => setRefreshing(false));
+    // }, [loadBaiViets]);
 
     const handleTextChange = (event) => {
         setQ(event.target.value);
-        if (event.target.value === '') {
-            setPage(1);
-        }
     };
 
     return (
-        <div onScroll={loadMore}>
-            <div style={{ margin: 10, display: 'flex', justifyContent: 'flex-end' }}>
-                <input 
-                    type="text" 
-                    placeholder="Nhập từ khóa..." 
-                    onChange={handleTextChange} 
-                    value={q} 
-                    style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc', marginRight: '10px', width: '300px' }} 
-                />
-                <button 
-                    onClick={handleSearch} 
-                    style={{ padding: '10px 15px', borderRadius: '5px', border: 'none', backgroundColor: '#007bff', color: '#fff', cursor: 'pointer' }}
-                >
-                    Tìm kiếm
-                </button>
-            </div>
-            {baiViets.length === 0 ? <p>Không có bài viết nào</p> :
-                <>
-                    {baiViets.map(b => (
-                        <BaiViet
-                            key={b.id}
-                            baiviet={b}
+        <Container onScroll={loadMore} ref={scrollContainerRef}>
+            <Row className="mt-3 mb-3">
+                <Col md={{ span: 6, offset: 3 }}>
+                    <Form inline className="d-flex">
+                        <Form.Control 
+                            type="text" 
+                            placeholder="Nhập từ khóa..." 
+                            onChange={handleTextChange} 
+                            value={q} 
+                            style={{ marginRight: '10px' }}
+                            className="mr-sm-2 flex-grow-1" 
                         />
-                    ))}
-                </>
-            }
-            {loading && page > 1 && <p>Đang tải...</p>}
-        </div>
+                        <Button onClick={() => handleSearch(q)} variant="primary">
+                            Tìm kiếm
+                        </Button>
+                    </Form>
+                </Col>
+            </Row>
+            {baiViets.length === 0 ? (
+                <Row className="justify-content-center">
+                    <Col md="auto">
+                        <p>Không có bài viết nào</p>
+                    </Col>
+                </Row>
+            ) : (
+                baiViets.map(b => (
+                    <Row key={b.id} className="justify-content-center">
+                        <Col md={8}>
+                            <BaiViet baiviet={b} />
+                        </Col>
+                    </Row>
+                ))
+            )}
+            {loading && page > 1 && (
+                <Row className="justify-content-center">
+                    <Col md="auto">
+                        <Spinner animation="border" />
+                        <span className="ml-2">Đang tải...</span>
+                    </Col>
+                </Row>
+            )}
+        </Container>
     );
 };
 

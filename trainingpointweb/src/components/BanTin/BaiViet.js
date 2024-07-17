@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button, Modal, Image } from 'react-bootstrap';
+import { Button, Modal, Image, Spinner } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import moment from 'moment';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
@@ -14,10 +14,10 @@ const BaiViet = ({ baiviet = null }) => {
     const [author, setAuthor] = useState(null);
     const [liked, setLiked] = useState(null);
     const [registered, setRegistered] = useState(false);
-    const maxDisplayWords = 20;
     const user = useContext(MyUserContext);
     const dispatch = useContext(MyDispatchContext);
-    const [loading, setLoaing] = useState(false);
+    const [loading, setLoading] = useState(false);
+    
     const toggleExpand = () => {
         setExpanded(!expanded);
     };
@@ -51,7 +51,7 @@ const BaiViet = ({ baiviet = null }) => {
     const handleLike = async (id) => {
         try {
             const response = await authAPI().post(endpoints['baiviet_like'](id), null);
-            setLiked(!liked); // Đảo ngược trạng thái liked
+            setLiked(!liked);
         } catch (error) {
             console.error("Lỗi khi xử lý like:", error);
         }
@@ -68,7 +68,7 @@ const BaiViet = ({ baiviet = null }) => {
 
     const handleRegistration = async (id) => {
         try {
-            setLoaing(true);
+            setLoading(true);
             const response = await authAPI().post(endpoints['dang_ky_hoat_dong'](id), null);
             if (response.status === 201) {
                 setRegistered(true);
@@ -76,7 +76,7 @@ const BaiViet = ({ baiviet = null }) => {
         } catch (error) {
             console.error("Lỗi khi xử lý đăng ký:", error);
         }
-        setLoaing(false);
+        setLoading(false);
     };
 
     const getHoatDong = async (id) => {
@@ -92,7 +92,6 @@ const BaiViet = ({ baiviet = null }) => {
         if (baiviet) {
             setBaiViet(baiviet);
             getHoatDong(baiviet.hd_ngoaikhoa);
-            // console.log(user);
             if(user){
                 getAuthor(baiviet.id);
                 checkLiked(baiviet.id);
@@ -100,7 +99,6 @@ const BaiViet = ({ baiviet = null }) => {
                     checkRegister(baiviet.hd_ngoaikhoa);
                 }
             }
-            
         }
     }, [baiviet]);
 
@@ -109,28 +107,26 @@ const BaiViet = ({ baiviet = null }) => {
     };
 
     return (
-        <div className="container">
-            {baiViet === null ? <></> : (
-                <>
-                    <Card style={{ width: '50%',marginBottom: '20px', borderRadius:'10px' }}>
-                    
+        <div className="container mt-4">
+            {baiViet && (
+                <Card className="mb-4 shadow-sm">
                     <Card.Body>
-                        <Card.Title >{baiViet.title}</Card.Title>
+                        <Card.Title className="text-center mb-3">{baiViet.title}</Card.Title>
                         <Card.Text>
-                        {baiViet.content}
-                        <br />
-                        Ngày tổ chức: {hoatdong ? formatISODate(hoatdong.ngay_to_chuc) : 'Loading...'}
-                        <br />
-                        Điểm rèn luyện: {hoatdong ? hoatdong.diem_ren_luyen : 'Loading...'}
-                        <br />
-                        Điều: {hoatdong ? hoatdong.dieu : 'Loading...'}
+                            {baiViet.content}
+                            <br />
+                            <strong>Ngày tổ chức:</strong> {hoatdong ? formatISODate(hoatdong.ngay_to_chuc) : <Spinner animation="border" size="sm" />}
+                            <br />
+                            <strong>Điểm rèn luyện:</strong> {hoatdong ? hoatdong.diem_ren_luyen : <Spinner animation="border" size="sm" />}
+                            <br />
+                            <strong>Điều:</strong> {hoatdong ? hoatdong.dieu : <Spinner animation="border" size="sm" />}
                         </Card.Text>
-                        <Card.Img variant="top" src={baiViet.image} style={{  objectFit: 'cover', marginBottom:'20px', width:'60%', display: 'block',  marginLeft: 'auto',  marginRight: 'auto'  }} />
+                        <Card.Img variant="top" src={baiViet.image} className="mb-3 mx-auto d-block" style={{ maxHeight: '300px', objectFit: 'cover' }} />
                         <div className="d-flex justify-content-center">
-                            <Button className="mx-2" variant={liked ? 'primary' : 'outline-primary'} onClick={() => handleLike(baiViet.id)} disabled={!user} >
+                            <Button className="mx-2" variant={liked ? 'primary' : 'outline-primary'} onClick={() => handleLike(baiViet.id)} disabled={!user}>
                                 {liked ? 'Đã Thích' : 'Thích'}
                             </Button>
-                            <Button className="mx-2" onClick={handleModalVisible} variant="outline-secondary" >
+                            <Button className="mx-2" variant="outline-secondary" onClick={handleModalVisible}>
                                 Bình luận
                             </Button>
                             {registered ? (
@@ -139,25 +135,21 @@ const BaiViet = ({ baiviet = null }) => {
                                 </Button>
                             ) : (
                                 <Button 
-                                className="mx-2" 
-                                onClick={() => handleRegistration(baiViet.hd_ngoaikhoa)} 
-                                variant="outline-dark" 
-                                disabled={!user || user.role !== 4 || loading} // Disable khi loading
-                            >
-                                {loading ? 'Đang đăng ký...' : 'Đăng ký'} {/* Thay đổi text khi loading */}
-                            </Button>
+                                    className="mx-2" 
+                                    variant="outline-dark" 
+                                    onClick={() => handleRegistration(baiViet.hd_ngoaikhoa)} 
+                                    disabled={!user || user.role !== 4 || loading}
+                                >
+                                    {loading ? 'Đang đăng ký...' : 'Đăng ký'}
+                                </Button>
                             )}
                         </div>
-                        
                     </Card.Body>
-                    
                 </Card>
-                
-                <CommentModal visible={modalVisible} onClose={handleCloseModal} postId={baiViet.id} />
-                </>
-                
             )}
-            
+            {modalVisible && (
+                <CommentModal visible={modalVisible} onClose={handleCloseModal} postId={baiViet?.id} baiviet={baiViet} hoatDong={hoatdong}/>
+            )}
         </div>
     );
 };

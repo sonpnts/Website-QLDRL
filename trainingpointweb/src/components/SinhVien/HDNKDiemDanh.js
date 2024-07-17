@@ -6,7 +6,7 @@ import './Styles.css';
 
 const HDNKDiemDanh = () => {
     const [loading, setLoading] = useState(true);
-    const [hoatDongDiemDanh, setHoatDongDiemDanh] = useState([]);
+    const [hoatDongDiemDanh, setHoatDongDiemDanh] = useState([]);   
     const [sv, setSv] = useState(null);
     const [lops, setLops] = useState([]);
     const [dieus, setDieus] = useState([]);
@@ -73,6 +73,40 @@ const HDNKDiemDanh = () => {
         fetchUserData();
     }, []);
 
+    // const handleViewReport = async (id) => {
+    //     if (!id) {
+    //         setAlertMessage('Vui lòng chọn đầy đủ thông tin.');
+    //         return;
+    //     }
+    //     try {
+    //         const reshoatdongdiemdanh = await authAPI().get(`/thamgias/hoat-dong-diem-danh/${sv.id}/${id}/`);
+    //         console.log(reshoatdongdiemdanh.data);
+    //         setHoatDongDiemDanh(reshoatdongdiemdanh.data);
+            
+    //         console.log(setHoatDongDiemDanh(reshoatdongdiemdanh.data));
+
+    //         try {
+    //             const restongDRL = await APIs.get(`/diemrenluyens/${sv.id}/${id}/`);
+    //             console.log(hoatDongDiemDanh);
+    //             if (restongDRL.status === 200)
+    //                 setDiemRenLuyen(restongDRL.data);
+    //         } catch {
+    //             setAlertMessage("Sinh viên không có điểm ở kỳ này");
+    //         }
+            
+    //     } catch (error) {
+    //         console.error(error);
+    //         setAlertMessage('Đã xảy ra lỗi khi tải dữ liệu điểm rèn luyện.');
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     if (selectedHocKyNamHoc)
+    //         handleViewReport(selectedHocKyNamHoc);
+    //     setDiemRenLuyen('');
+        
+    // }, [selectedHocKyNamHoc]);
+
     const handleViewReport = async (id) => {
         if (!id) {
             setAlertMessage('Vui lòng chọn đầy đủ thông tin.');
@@ -80,28 +114,39 @@ const HDNKDiemDanh = () => {
         }
         try {
             const reshoatdongdiemdanh = await authAPI().get(`/thamgias/hoat-dong-diem-danh/${sv.id}/${id}/`);
-            // console.log(reshoatdongdiemdanh.data);
+            console.log(reshoatdongdiemdanh.data);
             setHoatDongDiemDanh(reshoatdongdiemdanh.data);
-            
-            try {
-                const restongDRL = await APIs.get(`/diemrenluyens/${sv.id}/${id}/`);
-                console.log(hoatDongDiemDanh);
-                if (restongDRL.status === 200)
-                    setDiemRenLuyen(restongDRL.data);
-            } catch {
-                setAlertMessage("Sinh viên không có điểm ở kỳ này");
-            }
+
         } catch (error) {
             console.error(error);
             setAlertMessage('Đã xảy ra lỗi khi tải dữ liệu điểm rèn luyện.');
         }
     };
 
+    const fetchDiemRenLuyen = async (svId, hocKyId) => {
+        try {
+            const restongDRL = await APIs.get(`/diemrenluyens/${svId}/${hocKyId}/`);
+            if (restongDRL.status === 200) {
+                setDiemRenLuyen(restongDRL.data);
+            }
+        } catch {
+            setAlertMessage("Sinh viên không có điểm ở kỳ này");
+        }
+    };
+
     useEffect(() => {
-        if (selectedHocKyNamHoc)
+        if (selectedHocKyNamHoc) {
             handleViewReport(selectedHocKyNamHoc);
-        setDiemRenLuyen('');
+            setDiemRenLuyen('');
+        }
     }, [selectedHocKyNamHoc]);
+
+    useEffect(() => {
+        if (hoatDongDiemDanh.length > 0 && selectedHocKyNamHoc) {
+            fetchDiemRenLuyen(sv.id, selectedHocKyNamHoc);
+        }
+        console.log(hoatDongDiemDanh);
+    }, [hoatDongDiemDanh, selectedHocKyNamHoc]);
 
     const findClassName = (classId) => {
         const foundClass = Array.isArray(lops) && lops.find(lop => lop.id === classId);
@@ -184,6 +229,8 @@ const HDNKDiemDanh = () => {
             </Table>
 
             <div className="mt-4">
+                {/* <h4> {hoatDongDiemDanh[1].ten_HD_NgoaiKhoa}</h4>
+                <h4> {dieus[1].ma_dieu}</h4> */}
                 <h4>Tổng điểm rèn luyện: <span className="text-danger">{diemRenLuyen?.diem_tong || 0}</span></h4>
                 <h4>Xếp loại: <span className="text-danger">{xepLoaiMap[diemRenLuyen?.xep_loai] || "Chưa có"}</span></h4>
             </div>

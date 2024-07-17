@@ -123,29 +123,41 @@ const ExportBaoCao = () => {
     };
 
     return (
-        <Container>
+        <Container className="my-4">
             {alertMessage && (
-                <Alert variant={alertVariant}>
+                <Alert variant={alertVariant} onClose={() => setAlertMessage('')} dismissible>
                     {alertMessage}
                 </Alert>
             )}
             <Form>
                 <Form.Group as={Row} controlId="formHocKyNamHoc">
-                    <Form.Label column sm="2">Học kỳ năm học</Form.Label>
-                    <Col sm="10">
-                        <Form.Control as="select" value={selectedHocKyNamHoc} onChange={(e) => setSelectedHocKyNamHoc(e.target.value)}>
+                    <Form.Label column sm="3" style={{ fontWeight: 'bold' }}>Học kỳ năm học</Form.Label>
+                    <Col sm="9">
+                        <Form.Control 
+                            as="select" 
+                            value={selectedHocKyNamHoc} 
+                            onChange={(e) => setSelectedHocKyNamHoc(e.target.value)} 
+                            style={{ marginBottom: '5px' }}
+                        >
                             <option value="">Chọn học kỳ năm học</option>
                             {hocKyNamHocs.map(hocKyNamHoc => (
-                                <option key={hocKyNamHoc.id} value={hocKyNamHoc.id}>{hocKyNamHoc.hoc_ky} - {hocKyNamHoc.nam_hoc}</option>
+                                <option key={hocKyNamHoc.id} value={hocKyNamHoc.id}>
+                                    {hocKyNamHoc.hoc_ky} - {hocKyNamHoc.nam_hoc}
+                                </option>
                             ))}
                         </Form.Control>
                     </Col>
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formReportType">
-                    <Form.Label column sm="2">Loại báo cáo</Form.Label>
-                    <Col sm="10">
-                        <Form.Control as="select" value={reportType} onChange={(e) => setReportType(e.target.value)}>
+                    <Form.Label column sm="3" style={{ fontWeight: 'bold' }}>Loại báo cáo</Form.Label>
+                    <Col sm="9">
+                        <Form.Control 
+                            as="select" 
+                            value={reportType} 
+                            onChange={(e) => setReportType(e.target.value)} 
+                            style={{ marginBottom: '5px' }}
+                        >
                             <option value="">Chọn loại báo cáo</option>
                             <option value="khoa">Báo cáo theo khoa</option>
                             <option value="lop">Báo cáo theo lớp</option>
@@ -154,12 +166,19 @@ const ExportBaoCao = () => {
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="formKhoa">
-                    <Form.Label column sm="2">Khoa</Form.Label>
-                    <Col sm="10">
-                        <Form.Control as="select" value={selectedKhoa} onChange={(e) => setSelectedKhoa(e.target.value)}>
+                    <Form.Label column sm="3" style={{ fontWeight: 'bold' }}>Khoa</Form.Label>
+                    <Col sm="9">
+                        <Form.Control 
+                            as="select" 
+                            value={selectedKhoa} 
+                            onChange={(e) => setSelectedKhoa(e.target.value)} 
+                            style={{ marginBottom: '5px' }}
+                        >
                             <option value="">Chọn khoa</option>
                             {khoas.map(khoa => (
-                                <option key={khoa.id} value={khoa.id}>{khoa.ten_khoa}</option>
+                                <option key={khoa.id} value={khoa.id}>
+                                    {khoa.ten_khoa}
+                                </option>
                             ))}
                         </Form.Control>
                     </Col>
@@ -167,19 +186,31 @@ const ExportBaoCao = () => {
 
                 {reportType === 'lop' && (
                     <Form.Group as={Row} controlId="formLop">
-                        <Form.Label column sm="2">Lớp</Form.Label>
-                        <Col sm="10">
-                            <Form.Control as="select" value={selectedLop} onChange={(e) => setSelectedLop(e.target.value)} disabled={!selectedKhoa}>
+                        <Form.Label column sm="3" style={{ fontWeight: 'bold' }}>Lớp</Form.Label>
+                        <Col sm="9">
+                            <Form.Control 
+                                as="select" 
+                                value={selectedLop} 
+                                onChange={(e) => setSelectedLop(e.target.value)} 
+                                disabled={!selectedKhoa} 
+                                style={{ marginBottom: '5px' }}
+                            >
                                 <option value="">Chọn lớp</option>
                                 {lops.map(lop => (
-                                    <option key={lop.id} value={lop.id}>{lop.ten_lop}</option>
+                                    <option key={lop.id} value={lop.id}>
+                                        {lop.ten_lop}
+                                    </option>
                                 ))}
                             </Form.Control>
                         </Col>
                     </Form.Group>
                 )}
 
-                <Button variant="primary" onClick={handleViewReport}>Xem</Button>
+                <Row className="mb-3">
+                    <Col>
+                        <Button variant="primary" onClick={handleViewReport}>Xem</Button>
+                    </Col>
+                </Row>
 
                 <Container className="mt-3">
                     {diemrenluyens.length > 0 ? (
@@ -201,8 +232,14 @@ const ExportBaoCao = () => {
                     )}
                 </Container>
 
-                <Button variant="success" className="mt-3" onClick={() => exportReport('csv')}>Xuất CSV</Button>
-                <Button variant="danger" className="mt-3" onClick={() => exportReport('pdf')}>Xuất PDF</Button>
+                <Row className="mt-3">
+                    <Col md="6">
+                        <Button variant="success" className="w-100" onClick={() => exportReport('csv')}>Xuất CSV</Button>
+                    </Col>
+                    <Col md="6">
+                        <Button variant="danger" className="w-100" onClick={() => exportReport('pdf')}>Xuất PDF</Button>
+                    </Col>
+                </Row>
             </Form>
         </Container>
     );

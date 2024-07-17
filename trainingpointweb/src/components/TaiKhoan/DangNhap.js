@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Form, Button, Container, Row, Col, Alert, Spinner } from 'react-bootstrap';
-import {MyDispatchContext, MyUserContext} from "../../configs/MyContext";
+import { Form, Button, Container, Row, Col, Alert, Spinner, Card } from 'react-bootstrap';
+import { MyDispatchContext, MyUserContext } from "../../configs/MyContext";
 import APIs, { endpoints, authAPI } from "../../configs/APIs";
 import cookie from "react-cookies";
 
@@ -13,9 +13,11 @@ const DangNhap = () => {
     const nav = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const dispatch = useContext(MyDispatchContext);
+
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
     };
+    
     const login = async () => {
         setLoading(true);
         try {
@@ -74,53 +76,56 @@ const DangNhap = () => {
         <Container className="mt-5">
             <Row className="justify-content-md-center">
                 <Col md="6">
-                    <h2 className="mb-4">Đăng Nhập</h2>
-                    {error && <Alert variant="danger">{error}</Alert>}
-                    <Form>
-                        <Form.Group controlId="formBasicUsername" className="mb-3">
-                            <Form.Label>Tên đăng nhập</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Nhập tên đăng nhập"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
-                        </Form.Group>
+                    <Card className="p-4 shadow-sm">
+                        <Card.Body>
+                            <h2 className="mb-4 text-center">Đăng Nhập</h2>
+                            {error && <Alert variant="danger">{error}</Alert>}
+                            <Form>
+                                <Form.Group controlId="formBasicUsername" className="mb-3">
+                                    <Form.Label>Tên đăng nhập</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Nhập tên đăng nhập"
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                    />
+                                </Form.Group>
 
-                        <Form.Group controlId="formPassword" className="mb-3">
-                            <Form.Label>Mật khẩu</Form.Label>
-                            <Form.Control
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Nhập mật khẩu"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </Form.Group>
-                        
-                        <Form.Group controlId="formShowPassword" className="mb-3">
-                            <Form.Check
-                                type="checkbox"
-                                label="Hiển thị mật khẩu"
-                                onChange={toggleShowPassword}
-                            />
-                        </Form.Group>
+                                <Form.Group controlId="formPassword" className="mb-3">
+                                    <Form.Label>Mật khẩu</Form.Label>
+                                    <Form.Control
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Nhập mật khẩu"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </Form.Group>
+                                
+                                <Form.Group controlId="formShowPassword" className="mb-3">
+                                    <Form.Check
+                                        type="checkbox"
+                                        label="Hiển thị mật khẩu"
+                                        onChange={toggleShowPassword}
+                                    />
+                                </Form.Group>
 
-                        {loading ? <Spinner animation="border" /> : 
-                            <>
-                                <Button variant="primary" onClick={login} className="mb-3">
-                                    Đăng nhập
+                                {loading ? <div className="d-flex justify-content-center mb-3"><Spinner animation="border" /></div> : 
+                                    <Button variant="primary" onClick={login} className="w-100 mb-3">
+                                        Đăng nhập
+                                    </Button>
+                                }
+                                
+                                <Button variant="secondary" onClick={register} className="w-100">
+                                    Đăng ký
                                 </Button>
-                            </>
-                        }
-                        
-                        <Button variant="secondary" onClick={register}>
-                            Đăng ký
-                        </Button>
-                    </Form>
+                            </Form>
+                        </Card.Body>
+                    </Card>
                 </Col>
             </Row>
         </Container>
     );
 };
+
 
 export default DangNhap;

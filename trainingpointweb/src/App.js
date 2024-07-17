@@ -84,7 +84,7 @@ const App = () => {
               <Route path="/quan-ly-hoat-dong" element={<ProtectedRoute element={QuanLyHoatDong} allowedRoles={[3]} user={user} />} />
               <Route path="/sua-hoat-dong" element={<ProtectedRoute element={SuaHoatDong} allowedRoles={[3]} user={user} />} />
               <Route path="/tao-bai-viet" element={<ProtectedRoute element={CreatePost} allowedRoles={[3]} user={user} />} />
-              <Route path="/hdnk-diem-danh" element={<ProtectedRoute element={HDNKDiemDanh} allowedRoles={[3]} user={user} />} />
+              <Route path="/hdnk-diem-danh" element={<ProtectedRoute element={HDNKDiemDanh} allowedRoles={[4]} user={user} />} />
 
       
          

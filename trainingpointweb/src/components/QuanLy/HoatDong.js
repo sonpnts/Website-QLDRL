@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button, Form, Alert, Spinner, Modal } from 'react-bootstrap';
+import {Container, Button, Form, Alert, Spinner, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import APIs, { authAPI, endpoints, formatDate } from '../../configs/APIs';
 import {MyDispatchContext, MyUserContext} from '../../configs/MyContext';
@@ -91,56 +91,62 @@ const HoatDong = () => {
     };
 
     return (
-        <div className="container mt-4">
-            <h2>Tạo Hoạt Động</h2>
-            {loading && <Spinner animation="border" />}
+        <Container className="my-4">
+            <h2 className="mb-4">Tạo Hoạt Động Ngoại Khóa</h2>
+            {loading && <Spinner animation="border" variant="primary" />}
+            
             <Form>
                 <Form.Group controlId="ten_HD_NgoaiKhoa">
-                    <Form.Label>Tên hoạt động ngoại khóa:</Form.Label>
+                    <Form.Label style={{ fontWeight: 'bold' }}>Tên hoạt động ngoại khóa:</Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="Nhập tên hoạt động ngoại khóa"
                         value={hoatDong.ten_HD_NgoaiKhoa}
                         onChange={(e) => change('ten_HD_NgoaiKhoa', e.target.value)}
+                        className="mb-3"
                     />
                 </Form.Group>
 
                 <Form.Group controlId="ngay_to_chuc">
-                    <Form.Label>Ngày tổ chức ngoại khóa:</Form.Label>
+                    <Form.Label style={{ fontWeight: 'bold' }}>Ngày tổ chức:</Form.Label>
                     <Form.Control
                         type="datetime-local"
                         value={hoatDong.ngay_to_chuc}
                         onChange={(e) => change('ngay_to_chuc', e.target.value)}
+                        className="mb-3"
                     />
                 </Form.Group>
 
                 <Form.Group controlId="thong_tin">
-                    <Form.Label>Thông tin:</Form.Label>
+                    <Form.Label style={{ fontWeight: 'bold' }}>Thông tin:</Form.Label>
                     <Form.Control
                         as="textarea"
                         rows={3}
                         placeholder="Nhập thông tin cho hoạt động ngoại khóa"
                         value={hoatDong.thong_tin}
                         onChange={(e) => change('thong_tin', e.target.value)}
+                        className="mb-3"
                     />
                 </Form.Group>
 
                 <Form.Group controlId="diem_ren_luyen">
-                    <Form.Label>Điểm rèn luyện:</Form.Label>
+                    <Form.Label style={{ fontWeight: 'bold' }}>Điểm rèn luyện:</Form.Label>
                     <Form.Control
                         type="number"
                         placeholder="Nhập điểm rèn luyện"
                         value={hoatDong.diem_ren_luyen}
                         onChange={(e) => change('diem_ren_luyen', e.target.value)}
+                        className="mb-3"
                     />
                 </Form.Group>
 
                 <Form.Group controlId="dieu">
-                    <Form.Label>Chọn điều:</Form.Label>
+                    <Form.Label style={{ fontWeight: 'bold' }}>Chọn điều:</Form.Label>
                     <Form.Control
                         as="select"
                         value={hoatDong.dieu}
                         onChange={(e) => change('dieu', e.target.value)}
+                        className="mb-3"
                     >
                         <option value="">--Chọn điều--</option>
                         {dieus.map((dieu) => (
@@ -150,11 +156,12 @@ const HoatDong = () => {
                 </Form.Group>
 
                 <Form.Group controlId="hk_nh">
-                    <Form.Label>Chọn học kỳ:</Form.Label>
+                    <Form.Label style={{ fontWeight: 'bold' }}>Chọn học kỳ:</Form.Label>
                     <Form.Control
                         as="select"
                         value={hoatDong.hk_nh}
                         onChange={(e) => change('hk_nh', e.target.value)}
+                        className="mb-3"
                     >
                         <option value="">Chọn học kỳ</option>
                         {hocKyList.map((hocKyItem, index) => (
@@ -170,7 +177,7 @@ const HoatDong = () => {
                     onClick={handleSubmit}
                     disabled={loading || !hoatDong.ten_HD_NgoaiKhoa || !hoatDong.ngay_to_chuc || !hoatDong.thong_tin || !hoatDong.diem_ren_luyen || !hoatDong.dieu || !hoatDong.hk_nh}
                 >
-                    Tạo hoạt động
+                    {loading ? 'Đang tạo...' : 'Tạo hoạt động'}
                 </Button>
             </Form>
 
@@ -183,8 +190,7 @@ const HoatDong = () => {
                     <Button variant="secondary" onClick={handleDialogDismiss}>
                         Không
                     </Button>
-                    <Button variant="primary" 
-                    onClick={() => {
+                    <Button variant="primary" onClick={() => {
                         handleDialogDismiss();
                         navigate("CreatePost", { state: { hoatDongId: idhd } });
                     }}>
@@ -192,7 +198,7 @@ const HoatDong = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </Container>
     );
 };
 

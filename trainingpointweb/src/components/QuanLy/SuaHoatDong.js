@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Alert, Form, Spinner } from 'react-bootstrap';
+import { Button, Alert, Form, Spinner, Container } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
-import moment from 'moment';
+import moment from 'moment'
 
 const SuaHoatDong = () => {
   const location = useLocation();
@@ -88,8 +88,8 @@ const SuaHoatDong = () => {
   }
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Edit Activity</h2>
+    <Container className="my-4">
+      <h2 className="mb-4">Sửa Hoạt Động Ngoại Khóa</h2>
       {showAlert.message && (
         <Alert variant={showAlert.type} onClose={() => setShowAlert({ message: '', type: '' })} dismissible>
           {showAlert.message}
@@ -97,51 +97,52 @@ const SuaHoatDong = () => {
       )}
       <Form>
         <Form.Group controlId="formTenHoatDong">
-          <Form.Label>Tên hoạt động ngoại khóa:</Form.Label>
+          <Form.Label style={{ fontWeight: 'bold' }}>Tên hoạt động ngoại khóa:</Form.Label>
           <Form.Control
             type="text"
             value={hoatDong.ten_HD_NgoaiKhoa}
             onChange={(e) => handleChange('ten_HD_NgoaiKhoa', e.target.value)}
-            style={{ marginBottom: '15px' }}
+            className="mb-3"
           />
         </Form.Group>
 
         <Form.Group controlId="formNgayToChuc">
-          <Form.Label>Ngày tổ chức:</Form.Label>
+          <Form.Label style={{ fontWeight: 'bold' }}>Ngày tổ chức:</Form.Label>
           <Form.Control
             type="date"
             value={moment(hoatDong.ngay_to_chuc).format('YYYY-MM-DD')}
             onChange={(e) => handleChange('ngay_to_chuc', e.target.value)}
-            style={{ marginBottom: '15px' }}
+            className="mb-3"
           />
         </Form.Group>
 
         <Form.Group controlId="formThongTin">
-          <Form.Label>Thông tin:</Form.Label>
+          <Form.Label style={{ fontWeight: 'bold' }}>Thông tin:</Form.Label>
           <Form.Control
             as="textarea"
+            rows={3}
             value={hoatDong.thong_tin}
             onChange={(e) => handleChange('thong_tin', e.target.value)}
-            style={{ marginBottom: '15px' }}
+            className="mb-3"
           />
         </Form.Group>
 
         <Form.Group controlId="formDiemRenLuyen">
-          <Form.Label>Điểm rèn luyện:</Form.Label>
+          <Form.Label style={{ fontWeight: 'bold' }}>Điểm rèn luyện:</Form.Label>
           <Form.Control
             type="number"
             value={hoatDong.diem_ren_luyen}
             onChange={(e) => handleChange('diem_ren_luyen', e.target.value)}
-            style={{ marginBottom: '15px' }}
+            className="mb-3"
           />
         </Form.Group>
 
         <Form.Group controlId="formHocKy">
-          <Form.Label>Chọn học kỳ:</Form.Label>
+          <Form.Label style={{ fontWeight: 'bold' }}>Chọn học kỳ:</Form.Label>
           <Form.Select
             value={hoatDong.hk_nh}
             onChange={(e) => handleChange('hk_nh', e.target.value)}
-            style={{ marginBottom: '15px' }}
+            className="mb-3"
           >
             <option value="">Chọn học kỳ</option>
             {hocKyList.map((hocKyItem) => (
@@ -153,11 +154,11 @@ const SuaHoatDong = () => {
         </Form.Group>
 
         <Form.Group controlId="formDieu">
-          <Form.Label>Chọn điều:</Form.Label>
+          <Form.Label style={{ fontWeight: 'bold' }}>Chọn điều:</Form.Label>
           <Form.Select
             value={hoatDong.dieu}
             onChange={(e) => handleChange('dieu', e.target.value)}
-            style={{ marginBottom: '15px' }}
+            className="mb-3"
           >
             <option value="">--Chọn điều--</option>
             {dieus.map((dieu) => (
@@ -169,12 +170,15 @@ const SuaHoatDong = () => {
         </Form.Group>
 
         {isModified && (
-          <Button variant="primary" onClick={handleSaveChanges}>
+          <Button
+            variant="primary"
+            onClick={handleSaveChanges}
+          >
             Lưu thay đổi
           </Button>
         )}
       </Form>
-    </div>
+    </Container>
   );
 };
 
