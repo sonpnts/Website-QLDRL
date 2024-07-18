@@ -49,18 +49,31 @@ const Header = () => {
                         </>
                         ) : (
                         <>
-                            {(user.role === 2 || user.role === 3) && (
-                            <>
-                                {(user.role === 4) && (
+                            {(user.role === 4) && (
+                                <>
                                 <Link 
                                     to="/chat" 
-                                    className={`nav-link text-info ${hovered === 'chat' ? 'animate__animated animate__bounce' : ''}`}
-                                    onMouseEnter={() => setHovered('chat')}
-                                    onMouseLeave={() => setHovered(null)}
+                                    className={'nav-link'}                                    
                                 >
                                     <i className="fa-solid fa-comments"></i> Chat
                                 </Link>
+                                <Link to="/hdnk-diem-danh" 
+                                    className={'nav-link'}                                    
+                                >
+                                    <i class="fa-regular fa-star"></i> Xem thành tích các nhân
+                                </Link>
+                                <Link to="/hdnk-chua-diem-danh" 
+                                    className={'nav-link'}                                    
+                                >
+                                    <i class="fa-brands fa-slack"></i> Báo thiếu
+                                </Link>
+
+                                </>
                                 )}
+
+                            {(user.role === 2 || user.role === 3) && (
+                            <>
+                              
                                 <NavDropdown title={<span><i class="fa-solid fa-sliders"></i> Hoạt động</span>} id="basic-nav-dropdown">
                                 <NavDropdown.Item href="/quan-ly-hoat-dong" className="nav-link">
                                     <i className="fa-solid fa-tasks"></i> Quản lý các hoạt động
@@ -68,6 +81,12 @@ const Header = () => {
                                 <NavDropdown.Item href="/tao-hoat-dong" className="nav-link">
                                     <i className="fa-solid fa-plus"></i> Tạo hoạt động
                                 </NavDropdown.Item>
+                                <NavDropdown.Item href="/hoat-dong-chua-co-bai-viet" className="nav-link">
+                                <i class="fa-solid fa-pen"></i> Tạo bài viết
+                                </NavDropdown.Item>
+
+                               
+
                                 <NavDropdown.Item href="#action/3.3" className="nav-link">
                                     <i className="fa-solid fa-trash"></i> Xem lại hoạt động đã xóa
                                 </NavDropdown.Item>
@@ -76,13 +95,13 @@ const Header = () => {
                                 <NavDropdown.Item href="/diem-danh">
                                     <i className="fa-solid fa-check"></i> Điểm danh sinh viên
                                 </NavDropdown.Item>
-                                <NavDropdown.Item href="">
+                                <NavDropdown.Item href="/danh-sach-bao-thieu">
                                     <i className="fa-solid fa-exclamation"></i> Báo thiếu
                                 </NavDropdown.Item>
                                 <NavDropdown.Item href="/export-bao-cao" title="Xuất báo cáo" >
                                     <i className="fa-solid fa-file-export"></i> Xuất báo cáo
                                 </NavDropdown.Item>
-                                <NavDropdown.Item href="">
+                                <NavDropdown.Item href="/danh-sach-sinh-vien">
                                     <i className="fa-solid fa-star"></i> Xem thành tích sinh viên
                                 </NavDropdown.Item>
                                 {user.role === 2 && (

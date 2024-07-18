@@ -28,6 +28,7 @@ const CreatePost = () => {
     try {
       const response = await authAPI().get(`${endpoints['hd']}${hoatDongId}/`);
       setActivityInfo(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error('Error fetching activity:', error);
       window.alert('Error: Failed to fetch activity'); // Use window.alert instead
@@ -87,6 +88,7 @@ const CreatePost = () => {
           <p><strong>Điều:</strong> {activityInfo.dieu}</p>
           <p><strong>Điểm:</strong> {activityInfo.diem_ren_luyen}</p>
           <p><strong>Ngày tổ chức:</strong> {formatDate(activityInfo.ngay_to_chuc)}</p>
+          <p><strong>Thông tin hoạt động:</strong> {activityInfo.thong_tin}</p>
         </div>
       ) : (
         <Spinner animation="border" />

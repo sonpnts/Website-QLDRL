@@ -14,15 +14,15 @@ import ChatScreen from './components/ChatFireBase/ChatScreen';
 import DiemDanh from './components/QuanLy/UploadFileDiemDanh';
 import CreatePost from './components/QuanLy/TaoBaiViet';
 import HoatDong from './components/QuanLy/HoatDong';
-// import HoatDongChuaCoBaiViet from './components/QuanLy/DanhSanhHoatDong';
+import HoatDongChuaCoBaiViet from './components/QuanLy/DanhSanhHoatDongChuaCoBaiViet';
 import QuanLyHoatDong from './components/QuanLy/QuanLyCacHoatDong';
 import SuaHoatDong from './components/QuanLy/SuaHoatDong';
 import ChatListScreen from './components/ChatFireBase/RoomChat';
 import ChatDetailScreen from './components/ChatFireBase/Chat';
-// import DanhSachBaoThieu from './components/QuanLy/DanhSachBaoThieu';
-// import DanhSachSinhVien from './components/QuanLy/DanhSachSinhVien';
-// import ChiTietBaoThieu from './components/QuanLy/ChiTietBaoThieu';
-// import ThanhTichNgoaiKhoa from './components/QuanLy/ThanhTichNgoaiKhoa';
+import DanhSachBaoThieu from './components/QuanLy/DanhSachBaoThieu';
+import DanhSachSinhVien from './components/QuanLy/DanhSachSinhVien';
+import ChiTietBaoThieu from './components/QuanLy/ChiTietBaoThieu';
+import ThanhTichNgoaiKhoa from './components/QuanLy/ThanhTichNgoaiKhoa';
 // import HDNKChuaDiemDanh from './components/SinhVien/HDNKChuaDiemDanh';
 import HDNKDiemDanh from './components/SinhVien/HDNKDiemDanh';
 // import MinhChung from './components/SinhVien/MinhChung';
@@ -115,12 +115,11 @@ const App = () => {
 
           
               {/* <Route path="/them-tro-ly-sinh-vien" element={<ThemTroLySinhVien />} />
-              <Route path="/hoat-dong-chua-co-bai-viet" element={<HoatDongChuaCoBaiViet />} />
               <Route path="/chat-detail" element={<ChatDetailScreen />} />
-              <Route path="/danh-sach-bao-thieu" element={<DanhSachBaoThieu />} />
-              <Route path="/danh-sach-sinh-vien" element={<DanhSachSinhVien />} />
-              <Route path="/chi-tiet-bao-thieu" element={<ChiTietBaoThieu />} />
-              <Route path="/thanh-tich-ngoai-khoa" element={<ThanhTichNgoaiKhoa />} /> */}
+              
+              
+              
+               */}
        
               <Route path="/dang-nhap" element={<DangNhap />} />
               <Route path="/dang-ky" element={<DangKy />} />
@@ -138,10 +137,15 @@ const App = () => {
               <Route path="/export-bao-cao" element={<ProtectedRoute element={ExportBaoCao} allowedRoles={[3]} user={user} />} />
 
 
-              {/* <Route path="/hdnk-chua-diem-danh" element={<ProtectedRoute element={HDNKChuaDiemDanh} allowedRoles={[3]} user={user}  />} /> */}
+              {/* <Route path="/hdnk-chua-diem-danh" element={<ProtectedRoute element={HDNKChuaDiemDanh} allowedRoles={[4]} user={user}  />} /> */}
               {/* <Route path="/minh-chung" element={<MinhChung />} /> */}
 
 
+              <Route path="/chi-tiet-bao-thieu" element={<ProtectedRoute element={ChiTietBaoThieu} allowedRoles={[2, 3, 4]} user={user} />} />
+              <Route path="/danh-sach-bao-thieu" element={<ProtectedRoute element={DanhSachBaoThieu} allowedRoles={[2, 3, 4]} user={user} />} />
+              <Route path="/thanh-tich-ngoai-khoa" element={<ProtectedRoute element={ThanhTichNgoaiKhoa} allowedRoles={[2, 3, 4]} user={user} />} />
+              <Route path="/danh-sach-sinh-vien" element={<ProtectedRoute element={DanhSachSinhVien} allowedRoles={[2, 3, 4]} user={user} />} />
+              <Route path="/hoat-dong-chua-co-bai-viet" element={<ProtectedRoute element={HoatDongChuaCoBaiViet} allowedRoles={[3]} user={user} />} />
               <Route path="/tao-hoat-dong" element={<ProtectedRoute element={HoatDong} allowedRoles={[3]} user={user} />} />
               <Route path="/diem-danh" element={<ProtectedRoute element={DiemDanh} allowedRoles={[3]} user={user} />} />
               <Route path="/quan-ly-hoat-dong" element={<ProtectedRoute element={QuanLyHoatDong} allowedRoles={[3]} user={user} />} />

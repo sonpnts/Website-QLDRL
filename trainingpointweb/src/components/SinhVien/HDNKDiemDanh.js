@@ -169,8 +169,8 @@ const HDNKDiemDanh = () => {
 
     return (
         <div className="p-4 mb-4 bg-primary1 text-white">
-            <div className="p-4 mb-4 bg-primary">
-                <h1 className="text-center">THÔNG TIN SINH VIÊN</h1>
+            <div className="p-2 mb-4 bg-primary">
+                <h3 className="text-center">Xem thành tích</h3>
             </div>
             {alertMessage && <Alert variant="danger">{alertMessage}</Alert>}
             {sv ? (
