@@ -51,15 +51,16 @@ const CreatePost = () => {
     try {
       let form = new FormData();
       for (let key in post) {
-        if (key === 'image') {
-          form.append(key, {
-            uri: URL.createObjectURL(post.image),
-            name: post.image.name,
-            type: post.image.type || 'image/jpeg',
-          });
-        } else {
-          form.append(key, post[key]);
-        }
+        form.append(key, post[key]);
+
+        // if (key === 'image') {
+        //   form.append(key, {
+        //     uri: URL.createObjectURL(post.image),
+        //     name: post.image.name,
+        //     type: post.image.type || 'image/jpeg',
+        //   });
+        // } else {
+        // }
       }
 
       const response = await authAPI().post(endpoints['bai_viet'], form, {

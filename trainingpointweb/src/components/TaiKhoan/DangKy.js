@@ -131,7 +131,7 @@ const DangKy = () => {
                 setLoading(false);
                 console.error('Có lỗi gì đó đã xảy ra', 'Tài khoản sinh viên đã tồn tại!');
             }
-            console.log(tk_valid);
+            // console.log(tk_valid);
             if (!tk_valid) {
                 setLoading(true);
                
@@ -174,7 +174,7 @@ const DangKy = () => {
         try {
             setLoading(true);
             let form = new FormData();
-            console.log(user);
+            // console.log(user);
             for (let key in user) {
                 if (key === "avatar") {
                     form.append(key, user.avatar);
@@ -182,15 +182,16 @@ const DangKy = () => {
                     form.append(key, user[key]);
                 }
             }
-            console.log("FormData:", form);
+            // console.log("FormData:", form);
             let res = await APIs.post(endpoints['dang_ky'], form, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-
+            console.log(res.data);
             setLoading(false);
             if (res.status === 201) {
+                
                 console.error('Tạo tài khoản thành công!');
                 nav("/sinh-vien-dang-ky", {state: { email: user.email }});
             }

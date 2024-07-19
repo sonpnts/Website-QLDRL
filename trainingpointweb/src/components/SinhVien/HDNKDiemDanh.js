@@ -10,11 +10,11 @@ const HDNKDiemDanh = () => {
     const [sv, setSv] = useState(null);
     const [lops, setLops] = useState([]);
     const [dieus, setDieus] = useState([]);
-    const [selectedHocKyNamHoc, setSelectedHocKyNamHoc] = useState();
+    const [selectedHocKyNamHoc, setSelectedHocKyNamHoc] = useState('');
     const [hocKyNamHocs, setHocKyNamHocs] = useState([]);
     const [diemRenLuyen, setDiemRenLuyen] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
-    const user = useContext(MyUserContext)
+    const user = useContext(MyUserContext);
     const xepLoaiMap = {
         1: 'Xuất Sắc',
         2: 'Giỏi',
@@ -43,7 +43,6 @@ const HDNKDiemDanh = () => {
     const fetchDieus = async () => {
         try {
             const response = await APIs.get(endpoints['dieu']);
-            
             setDieus(response.data);
         } catch (error) {
             console.error(error);
@@ -60,7 +59,6 @@ const HDNKDiemDanh = () => {
                 const reslop = await APIs.get(endpoints['lop']);
                 setLops(reslop.data.results);
                 const ressv = await authAPI().get(endpoints['current_sinhvien']);
-                // console.log(ressv.data);
                 setSv(ressv.data);
                 setLoading(false);
             } catch (error) {
@@ -73,40 +71,6 @@ const HDNKDiemDanh = () => {
         fetchUserData();
     }, []);
 
-    // const handleViewReport = async (id) => {
-    //     if (!id) {
-    //         setAlertMessage('Vui lòng chọn đầy đủ thông tin.');
-    //         return;
-    //     }
-    //     try {
-    //         const reshoatdongdiemdanh = await authAPI().get(`/thamgias/hoat-dong-diem-danh/${sv.id}/${id}/`);
-    //         console.log(reshoatdongdiemdanh.data);
-    //         setHoatDongDiemDanh(reshoatdongdiemdanh.data);
-            
-    //         console.log(setHoatDongDiemDanh(reshoatdongdiemdanh.data));
-
-    //         try {
-    //             const restongDRL = await APIs.get(`/diemrenluyens/${sv.id}/${id}/`);
-    //             console.log(hoatDongDiemDanh);
-    //             if (restongDRL.status === 200)
-    //                 setDiemRenLuyen(restongDRL.data);
-    //         } catch {
-    //             setAlertMessage("Sinh viên không có điểm ở kỳ này");
-    //         }
-            
-    //     } catch (error) {
-    //         console.error(error);
-    //         setAlertMessage('Đã xảy ra lỗi khi tải dữ liệu điểm rèn luyện.');
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     if (selectedHocKyNamHoc)
-    //         handleViewReport(selectedHocKyNamHoc);
-    //     setDiemRenLuyen('');
-        
-    // }, [selectedHocKyNamHoc]);
-
     const handleViewReport = async (id) => {
         if (!id) {
             setAlertMessage('Vui lòng chọn đầy đủ thông tin.');
@@ -114,9 +78,7 @@ const HDNKDiemDanh = () => {
         }
         try {
             const reshoatdongdiemdanh = await authAPI().get(`/thamgias/hoat-dong-diem-danh/${sv.id}/${id}/`);
-            console.log(reshoatdongdiemdanh.data);
             setHoatDongDiemDanh(reshoatdongdiemdanh.data);
-
         } catch (error) {
             console.error(error);
             setAlertMessage('Đã xảy ra lỗi khi tải dữ liệu điểm rèn luyện.');
@@ -145,7 +107,6 @@ const HDNKDiemDanh = () => {
         if (hoatDongDiemDanh.length > 0 && selectedHocKyNamHoc) {
             fetchDiemRenLuyen(sv.id, selectedHocKyNamHoc);
         }
-        console.log(hoatDongDiemDanh);
     }, [hoatDongDiemDanh, selectedHocKyNamHoc]);
 
     const findClassName = (classId) => {
@@ -195,45 +156,48 @@ const HDNKDiemDanh = () => {
                 </Form.Control>
             </Form.Group>
 
-            <h3 className="mt-4">DS hoạt động ngoại khóa đã tham gia:</h3>
-            <Table striped bordered hover responsive>
-                <thead className="bg-primary text-white">
-                    <tr>
-                        <th>Điều</th>
-                        <th>Tên điều</th>
-                        <th>Hoạt động</th>
-                        <th>Điểm rèn luyện</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredDieus.map((dieu, index) => {
-                        const filteredHoatDongs = hoatDongDiemDanh.filter(hoatDong => hoatDong.dieu === dieu.ma_dieu);
-                        return (
-                            <React.Fragment key={index}>
-                                <tr>
-                                    <td>{dieu.ma_dieu}</td>
-                                    <td>{dieu.ten_dieu}</td>
-                                    <td colSpan="2">Điểm tối đa: {dieu.diem_toi_da}</td>
-                                </tr>
-                                {filteredHoatDongs.map((filteredHoatDong, rowIndex) => (
-                                    <tr key={rowIndex}>
-                                        <td colSpan="2"></td>
-                                        <td>{filteredHoatDong.ten_HD_NgoaiKhoa}</td>
-                                        <td>ĐRL: {filteredHoatDong.diem_ren_luyen}</td>
-                                    </tr>
-                                ))}
-                            </React.Fragment>
-                        );
-                    })}
-                </tbody>
-            </Table>
+            {selectedHocKyNamHoc && (
+                <>
+                    <h3 className="mt-4">Danh sách hoạt động ngoại khóa đã tham gia:</h3>
+                    <Table striped bordered hover responsive>
+                        <thead className="bg-primary text-white">
+                            <tr>
+                                <th>Hoạt động</th>
+                                <th>Điểm rèn luyện</th>
+                                <th>Điều</th>
+                                <th>Tên điều</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredDieus.map((dieu, index) => {
+                                const filteredHoatDongs = hoatDongDiemDanh.filter(hoatDong => hoatDong.dieu === dieu.ma_dieu);
+                                
+                                return (
+                                    <React.Fragment key={index}>
+                                        <tr>
+                                            <td colSpan="2">Điểm tối đa: {dieu.diem_toi_da}</td>
+                                            <td>{dieu.ma_dieu}</td>
+                                            <td>{dieu.ten_dieu}</td>
+                                        </tr>
+                                        {filteredHoatDongs.map((filteredHoatDong, rowIndex) => (
+                                            <tr key={rowIndex}>
+                                                <td>{filteredHoatDong.ten_HD_NgoaiKhoa}</td>
+                                                <td>ĐRL: {filteredHoatDong.diem_ren_luyen}</td>
+                                                <td colSpan="2"></td>
+                                            </tr>
+                                        ))}
+                                    </React.Fragment>
+                                );
+                            })}
+                        </tbody>
+                    </Table>
 
-            <div className="mt-4">
-                {/* <h4> {hoatDongDiemDanh[1].ten_HD_NgoaiKhoa}</h4>
-                <h4> {dieus[1].ma_dieu}</h4> */}
-                <h4>Tổng điểm rèn luyện: <span className="text-danger">{diemRenLuyen?.diem_tong || 0}</span></h4>
-                <h4>Xếp loại: <span className="text-danger">{xepLoaiMap[diemRenLuyen?.xep_loai] || "Chưa có"}</span></h4>
-            </div>
+                    <div className="mt-4">
+                        <h4>Tổng điểm rèn luyện: <span className="text-danger">{diemRenLuyen?.diem_tong || 0}</span></h4>
+                        <h4>Xếp loại: <span className="text-danger">{xepLoaiMap[diemRenLuyen?.xep_loai] || "Chưa có"}</span></h4>
+                    </div>
+                </>
+            )}
         </div>
     );
 };

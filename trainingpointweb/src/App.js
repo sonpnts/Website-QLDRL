@@ -23,9 +23,9 @@ import DanhSachBaoThieu from './components/QuanLy/DanhSachBaoThieu';
 import DanhSachSinhVien from './components/QuanLy/DanhSachSinhVien';
 import ChiTietBaoThieu from './components/QuanLy/ChiTietBaoThieu';
 import ThanhTichNgoaiKhoa from './components/QuanLy/ThanhTichNgoaiKhoa';
-// import HDNKChuaDiemDanh from './components/SinhVien/HDNKChuaDiemDanh';
+import HDNKChuaDiemDanh from './components/SinhVien/HDNKChuaDiemDanh';
 import HDNKDiemDanh from './components/SinhVien/HDNKDiemDanh';
-// import MinhChung from './components/SinhVien/MinhChung';
+import MinhChung from './components/SinhVien/MinhChung';
 import { MyDispatchContext, MyUserContext } from './configs/MyContext';
 import UserInfo from './components/TaiKhoan/TaiKhoan';
 import MyUserReducer from './reducers/MyUserReducer';
@@ -137,8 +137,8 @@ const App = () => {
               <Route path="/export-bao-cao" element={<ProtectedRoute element={ExportBaoCao} allowedRoles={[3]} user={user} />} />
 
 
-              {/* <Route path="/hdnk-chua-diem-danh" element={<ProtectedRoute element={HDNKChuaDiemDanh} allowedRoles={[4]} user={user}  />} /> */}
-              {/* <Route path="/minh-chung" element={<MinhChung />} /> */}
+              <Route path="/hdnk-chua-diem-danh" element={<ProtectedRoute element={HDNKChuaDiemDanh} allowedRoles={[4]} user={user}  />} />
+              <Route path="/minh-chung" element={<MinhChung />} />
 
 
               <Route path="/chi-tiet-bao-thieu" element={<ProtectedRoute element={ChiTietBaoThieu} allowedRoles={[2, 3, 4]} user={user} />} />

@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Form, Spinner, Image, Alert } from 'react-bootstrap';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import APIs from '../../configs/APIs';
-import APIs, { endpoints, authAPI } from '../../configs/APIs';
+import APIs, { endpoints, authAPI, formatDate } from '../../configs/APIs';
 
 const ChiTietBaoThieu = () => {
     const location = useLocation();
-
     const thamgiabaothieu_id = location.state?.thamgiabaothieu_id;
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(true);
+    const [buttonLoading, setButtonLoading] = useState({ hopLe: false, khongHopLe: false });
     const [hoatDongs, setHoatDongs] = useState([]);
     const [sv, setSv] = useState([]);
     const [chiTietBaoThieu, setChiTietBaoThieu] = useState(null);
     const [minhchung, setMinhChung] = useState({
-        "description": "",
-        "anh_minh_chung": "",
-        "tham_gia": thamgiabaothieu_id,
-        "phan_hoi": ""
+        description: "",
+        anh_minh_chung: "",
+        tham_gia: thamgiabaothieu_id,
+        phan_hoi: ""
     });
-
     const [isImageEnlarged, setIsImageEnlarged] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertVariant, setAlertVariant] = useState('success');
 
     const change = (field, value) => {
         setMinhChung(current => ({ ...current, [field]: value }));
@@ -33,13 +32,13 @@ const ChiTietBaoThieu = () => {
             try {
                 const reshd = await APIs.get(endpoints['hoatdong']);
                 const ressv = await authAPI().get(endpoints['sinh_vien']);
-                const resctbt = await authAPI().get(`/api/thamgias/${thamgiabaothieu_id}`);
-                const resmc = await authAPI().get(`/api/thamgias/${thamgiabaothieu_id}/minhchungs/`);
+                const resctbt = await authAPI().get(`/thamgias/${thamgiabaothieu_id}/`);
+                const resmc = await authAPI().get(`/thamgias/${thamgiabaothieu_id}/minhchungs/`);
                 if (resmc.data.length > 0) {
                     const minhChungData = resmc.data[0];
                     setMinhChung({
                         description: minhChungData.description,
-                        anh_minh_chung: minhChungData.anh_minh_chung, 
+                        anh_minh_chung: minhChungData.anh_minh_chung,
                         tham_gia: thamgiabaothieu_id,
                         phan_hoi: minhChungData.phan_hoi,
                     });
@@ -48,10 +47,11 @@ const ChiTietBaoThieu = () => {
                 setHoatDongs(reshd.data);
                 setSv(ressv.data);
                 setChiTietBaoThieu(resctbt.data);
-
                 setLoading(false);
             } catch (error) {
                 console.error("Lỗi khi lấy danh sách tham gia báo thiếu:", error);
+                setAlertMessage('Lỗi khi lấy dữ liệu.');
+                setAlertVariant('danger');
                 setLoading(false);
             }
         };
@@ -70,7 +70,7 @@ const ChiTietBaoThieu = () => {
                     form.append(key, minhchung[key]);
                 }
             }
-            let res = await authAPI().patch((`thamgias/${thamgiabaothieu_id}/capnhat/`), form, {
+            let res = await authAPI().patch((`/thamgias/${thamgiabaothieu_id}/capnhat/`), form, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -78,12 +78,14 @@ const ChiTietBaoThieu = () => {
 
             setLoading(false);
             if (res.status === 200) {
-                Alert.alert('Cập nhật minh chứng thành công!');
+                setAlertMessage('Cập nhật minh chứng thành công!');
+                setAlertVariant('success');
                 navigate(-1);
             }
         } catch (ex) {
             console.log(ex);
-            Alert.alert('Có lỗi gì đó đã xảy ra trong lúc cập nhật minh chứng!', ex.message);
+            setAlertMessage('Có lỗi gì đó đã xảy ra trong lúc cập nhật minh chứng!');
+            setAlertVariant('danger');
         } finally {
             setLoading(false);
         }
@@ -99,17 +101,18 @@ const ChiTietBaoThieu = () => {
             const res = await authAPI().patch(`/thamgias/${thamgiabaothieu_id}/`, updatedThamGia);
             if (res.status === 200) {
                 setChiTietBaoThieu(updatedThamGia);
-                
+                setAlertMessage('Cập nhật trạng thái thành công.');
+                setAlertVariant('success');
             }
         } catch (error) {
             console.error("Lỗi khi cập nhật trạng thái:", error);
-            Alert.alert("Đã xảy ra lỗi khi cập nhật trạng thái.");
+            setAlertMessage('Đã xảy ra lỗi khi cập nhật trạng thái.');
+            setAlertVariant('danger');
         }
     };
 
     const updateTrangThaiThanhCong = async () => {
         try {
-            const token = localStorage.getItem("access-token");
             const updatedThamGia = { ...chiTietBaoThieu, trang_thai: 1 };
             const res = await authAPI().patch(`/thamgias/${thamgiabaothieu_id}/`, updatedThamGia);
             if (res.status === 200) {
@@ -118,31 +121,38 @@ const ChiTietBaoThieu = () => {
                 const gethk_nh = await authAPI().get(`${endpoints['hd']}${hoat_dong}/`);
                 const res = gethk_nh.data;
                 await authAPI().post(`${endpoints['tinh_diem']}${chiTietBaoThieu.sinh_vien}/${res.hk_nh}/`);
+                setAlertMessage('Cập nhật trạng thái thành công.');
+                setAlertVariant('success');
             }
         } catch (error) {
             console.error("Lỗi khi cập nhật trạng thái:", error);
-            Alert.alert("Đã xảy ra lỗi khi cập nhật trạng thái.");
+            setAlertMessage('Đã xảy ra lỗi khi cập nhật trạng thái.');
+            setAlertVariant('danger');
         }
     };
 
     const handleSubmitHopLe = async () => {
         if (!minhchung.phan_hoi) {
-            Alert.alert("Vui lòng nhập phản hồi.");
+            setAlertMessage('Vui lòng nhập phản hồi.');
+            setAlertVariant('warning');
             return;
         }
-
+        setButtonLoading({ ...buttonLoading, hopLe: true });
         await updateTrangThaiThanhCong();
         await PatchMinhChung();
+        setButtonLoading({ ...buttonLoading, hopLe: false });
     };
 
     const handleSubmitKhongHopLe = async () => {
         if (!minhchung.phan_hoi) {
-            Alert.alert("Vui lòng nhập phản hồi.");
+            setAlertMessage('Vui lòng nhập phản hồi.');
+            setAlertVariant('warning');
             return;
         }
-
+        setButtonLoading({ ...buttonLoading, khongHopLe: true });
         await updateTrangThaiKhongThanhCong();
         await PatchMinhChung();
+        setButtonLoading({ ...buttonLoading, khongHopLe: false });
     };
 
     const findHoatDongInfo = (hoatdongId) => {
@@ -186,80 +196,72 @@ const ChiTietBaoThieu = () => {
         setIsImageEnlarged(!isImageEnlarged);
     };
 
+    const handleImageChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            change('anh_minh_chung', e.target.files[0]);
+        }
+    };
+
     return (
-        <Container>
+        <Container className='mb-3 mt-3'>
             <Row className="mb-3">
                 <Col>
-                    <h3>Chi Tiết Báo Thiếu</h3>
+                    <h3 className='text-center text-info'>Chi Tiết Báo Thiếu</h3>
                 </Col>
             </Row>
-            <Row>
+            {alertMessage && (
+                <Row className="mb-3">
+                    <Col>
+                        <Alert variant={alertVariant} onClose={() => setAlertMessage('')} dismissible>
+                            {alertMessage}
+                        </Alert>
+                    </Col>
+                </Row>
+            )}
+            <Row className="mb-3">
+                <Col md={6}><strong>Tên hoạt động:</strong> {baoThieuInfo.name}</Col>
+                <Col md={6}><strong>Điểm rèn luyện:</strong> {baoThieuInfo.drl}</Col>
+            </Row>
+            <Row className="mb-3">
+                <Col md={6}><strong>Thông tin hoạt động:</strong> {baoThieuInfo.thongTin}</Col>
+                <Col md={6}><strong>Ngày tổ chức:</strong> {baoThieuInfo.ngayTC ? formatDate(baoThieuInfo.ngayTC) : ''}</Col>
+            </Row>
+            <Row className="mb-3">
+                <Col md={6}><strong>Sinh viên:</strong> {findSinhVienName(chiTietBaoThieu.sinh_vien)}</Col>
+                <Col md={6}><strong>Điều:</strong> {baoThieuInfo.dieu}</Col>
+            </Row>
+            <Row className="mb-3">
                 <Col>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Hoạt động ngoại khóa:</Form.Label>
-                        <Form.Control type="text" readOnly value={baoThieuInfo.name} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Điểm rèn luyện:</Form.Label>
-                        <Form.Control type="text" readOnly value={baoThieuInfo.drl} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Chi tiết:</Form.Label>
-                        <Form.Control type="text" readOnly value={baoThieuInfo.thongTin} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Ngày tổ chức:</Form.Label>
-                        <Form.Control type="text" readOnly value={baoThieuInfo.ngayTC} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Điều:</Form.Label>
-                        <Form.Control type="text" readOnly value={baoThieuInfo.dieu} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Sinh Viên:</Form.Label>
-                        <Form.Control type="text" readOnly value={findSinhVienName(chiTietBaoThieu.sinh_vien)} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Mô tả:</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            rows={3}
-                            value={minhchung.description}
-                            onChange={(e) => change('description', e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Phản hồi:</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            rows={3}
-                            value={minhchung.phan_hoi}
-                            onChange={handlePhanHoiChange}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Ảnh minh chứng:</Form.Label>
-                        {minhchung.anh_minh_chung ? (
-                            <Image
-                                src={minhchung.anh_minh_chung}
-                                alt="Ảnh minh chứng"
-                                fluid
-                                onClick={toggleImageSize}
-                                style={{ cursor: 'pointer', maxWidth: isImageEnlarged ? '100%' : '200px' }}
-                            />
-                        ) : (
-                            <Form.Control
-                                type="file"
-                                onChange={(e) => change('anh_minh_chung', e.target.files[0])}
-                            />
+                    <Form>
+                        {minhchung.anh_minh_chung && (
+                            <div className="text-center">
+                                <Image
+                                    src={minhchung.anh_minh_chung}
+                                    alt="Minh chứng"
+                                    fluid
+                                    style={{ maxWidth: isImageEnlarged ? '100%' : '200px', cursor: 'pointer' }}
+                                    onClick={toggleImageSize}
+                                />
+                            </div>
                         )}
-                    </Form.Group>
-                </Col>
-            </Row>
-            <Row>
-                <Col className="d-flex justify-content-end">
-                    <Button variant="success" className="me-2" onClick={handleSubmitHopLe}>Hợp lệ</Button>
-                    <Button variant="danger" onClick={handleSubmitKhongHopLe}>Không hợp lệ</Button>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Phản hồi</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                value={minhchung.phan_hoi}
+                                onChange={handlePhanHoiChange}
+                            />
+                        </Form.Group>
+                        <div className="d-flex justify-content-between">
+                            <Button variant="success" onClick={handleSubmitHopLe} disabled={buttonLoading.hopLe}>
+                                {buttonLoading.hopLe ? <Spinner animation="border" size="sm" /> : 'Hợp lệ'}
+                            </Button>
+                            <Button variant="danger" onClick={handleSubmitKhongHopLe} disabled={buttonLoading.khongHopLe}>
+                                {buttonLoading.khongHopLe ? <Spinner animation="border" size="sm" /> : 'Không hợp lệ'}
+                            </Button>
+                        </div>
+                    </Form>
                 </Col>
             </Row>
         </Container>
