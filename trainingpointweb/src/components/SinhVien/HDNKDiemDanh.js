@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { MyUserContext } from '../../configs/MyContext';
 import { Button, Spinner, Form, Table, Alert } from 'react-bootstrap';
-import APIs, { authAPI,endpoints } from '../../configs/APIs';
+import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import './Styles.css';
 
 const HDNKDiemDanh = () => {
     const [loading, setLoading] = useState(true);
-    const [hoatDongDiemDanh, setHoatDongDiemDanh] = useState([]);   
+    const [hoatDongDiemDanhLoading, setHoatDongDiemDanhLoading] = useState(false);
+    const [hoatDongDiemDanh, setHoatDongDiemDanh] = useState([]);
     const [sv, setSv] = useState(null);
     const [lops, setLops] = useState([]);
     const [dieus, setDieus] = useState([]);
@@ -15,6 +16,7 @@ const HDNKDiemDanh = () => {
     const [diemRenLuyen, setDiemRenLuyen] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
     const user = useContext(MyUserContext);
+
     const xepLoaiMap = {
         1: 'Xuất Sắc',
         2: 'Giỏi',
@@ -72,16 +74,17 @@ const HDNKDiemDanh = () => {
     }, []);
 
     const handleViewReport = async (id) => {
-        if (!id) {
-            setAlertMessage('Vui lòng chọn đầy đủ thông tin.');
-            return;
-        }
+        setHoatDongDiemDanhLoading(true);
         try {
-            const reshoatdongdiemdanh = await authAPI().get(`/thamgias/hoat-dong-diem-danh/${sv.id}/${id}/`);
-            setHoatDongDiemDanh(reshoatdongdiemdanh.data);
+            const res = await authAPI().get(`/thamgias/hoat-dong-diem-danh/${sv.id}/${id}/`);
+            if (res.status === 200) {
+                setHoatDongDiemDanh(res.data);
+                setHoatDongDiemDanhLoading(false);
+            }
         } catch (error) {
             console.error(error);
             setAlertMessage('Đã xảy ra lỗi khi tải dữ liệu điểm rèn luyện.');
+            setHoatDongDiemDanhLoading(false);
         }
     };
 
@@ -107,12 +110,35 @@ const HDNKDiemDanh = () => {
         if (hoatDongDiemDanh.length > 0 && selectedHocKyNamHoc) {
             fetchDiemRenLuyen(sv.id, selectedHocKyNamHoc);
         }
-    }, [hoatDongDiemDanh, selectedHocKyNamHoc]);
+    }, [hoatDongDiemDanh]);
 
     const findClassName = (classId) => {
         const foundClass = Array.isArray(lops) && lops.find(lop => lop.id === classId);
         return foundClass ? foundClass.ten_lop : "";
     };
+
+    const groupedHoatDongDiemDanh = () => {
+        const grouped = {};
+
+        hoatDongDiemDanh.forEach((hoatDong) => {
+            const dieu = dieus.find(d => d.id === hoatDong.dieu);
+            if (dieu) {
+                if (!grouped[dieu.id]) {
+                    grouped[dieu.id] = {
+                        dieu: dieu.ten_dieu,
+                        diemToiDa: dieu.diem_toi_da,
+                        activities: [],
+                        totalDiem: 0
+                    };
+                }
+                grouped[dieu.id].activities.push(hoatDong);
+                grouped[dieu.id].totalDiem += hoatDong.diem_ren_luyen;
+            }
+        });
+
+        return grouped;
+    };
+    let globalIndex = 1;
 
     if (loading) {
         return (
@@ -123,10 +149,6 @@ const HDNKDiemDanh = () => {
             </div>
         );
     }
-
-    const filteredDieus = dieus.filter(dieu =>
-        hoatDongDiemDanh.some(hoatDong => hoatDong.dieu === dieu.ma_dieu)
-    );
 
     return (
         <div className="p-4 mb-4 bg-primary1 text-white">
@@ -156,48 +178,41 @@ const HDNKDiemDanh = () => {
                 </Form.Control>
             </Form.Group>
 
-            {selectedHocKyNamHoc && (
-                <>
-                    <h3 className="mt-4">Danh sách hoạt động ngoại khóa đã tham gia:</h3>
-                    <Table striped bordered hover responsive>
-                        <thead className="bg-primary text-white">
-                            <tr>
-                                <th>Hoạt động</th>
-                                <th>Điểm rèn luyện</th>
-                                <th>Điều</th>
-                                <th>Tên điều</th>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        
+                        <th>STT</th>
+                        <th>Minh chứng</th>
+                        <th>Điểm SV</th>
+                        <th>Điểm tối đa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {Object.entries(groupedHoatDongDiemDanh()).map(([dieuId, group], index) => (
+                        <>
+                            <tr key={`header-${dieuId}`} className="table-primary">
+                                <td colSpan="2"><strong>Điều {dieuId}: {group.dieu}</strong></td>
+                                <td>{group.totalDiem}</td>
+                                <td>{group.diemToiDa}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {filteredDieus.map((dieu, index) => {
-                                const filteredHoatDongs = hoatDongDiemDanh.filter(hoatDong => hoatDong.dieu === dieu.ma_dieu);
-                                
-                                return (
-                                    <React.Fragment key={index}>
-                                        <tr>
-                                            <td colSpan="2">Điểm tối đa: {dieu.diem_toi_da}</td>
-                                            <td>{dieu.ma_dieu}</td>
-                                            <td>{dieu.ten_dieu}</td>
-                                        </tr>
-                                        {filteredHoatDongs.map((filteredHoatDong, rowIndex) => (
-                                            <tr key={rowIndex}>
-                                                <td>{filteredHoatDong.ten_HD_NgoaiKhoa}</td>
-                                                <td>ĐRL: {filteredHoatDong.diem_ren_luyen}</td>
-                                                <td colSpan="2"></td>
-                                            </tr>
-                                        ))}
-                                    </React.Fragment>
-                                );
-                            })}
-                        </tbody>
-                    </Table>
+                            {group.activities.map((activity, idx) => (
+                                <tr key={activity.id}>
+                                    <td>{globalIndex++}</td>
+                                    <td>{activity.ten_HD_NgoaiKhoa}</td>
+                                    <td>{activity.diem_ren_luyen}</td>
+                                    <td></td>
+                                </tr>
+                            ))}
+                        </>
+                    ))}
+                </tbody>
+            </Table>
+            <div className="mt-4">
+                <h4>Tổng điểm rèn luyện: <span className="text-danger">{diemRenLuyen?.diem_tong || 0}</span></h4>
+                <h4>Xếp loại: <span className="text-danger">{xepLoaiMap[diemRenLuyen?.xep_loai] || "Chưa có"}</span></h4>
+            </div>
 
-                    <div className="mt-4">
-                        <h4>Tổng điểm rèn luyện: <span className="text-danger">{diemRenLuyen?.diem_tong || 0}</span></h4>
-                        <h4>Xếp loại: <span className="text-danger">{xepLoaiMap[diemRenLuyen?.xep_loai] || "Chưa có"}</span></h4>
-                    </div>
-                </>
-            )}
         </div>
     );
 };
