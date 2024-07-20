@@ -42,8 +42,15 @@ const CreatePost = () => {
   const handleChooseImage = (e) => {
     const file = e.target.files[0];
     if (file) {
-      handleChange('image', file);
-    }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+          handleChange('image', {
+              file, // Lưu trữ file trong state
+              preview: reader.result // Lưu trữ URL dữ liệu của file để hiển thị bản xem trước
+          });
+      };
+      reader.readAsDataURL(file); // Đọc file dưới dạng URL dữ liệu
+  }
   };
 
   const handleSubmit = async () => {
@@ -51,16 +58,11 @@ const CreatePost = () => {
     try {
       let form = new FormData();
       for (let key in post) {
-        form.append(key, post[key]);
-
-        // if (key === 'image') {
-        //   form.append(key, {
-        //     uri: URL.createObjectURL(post.image),
-        //     name: post.image.name,
-        //     type: post.image.type || 'image/jpeg',
-        //   });
-        // } else {
-        // }
+        if (key === "image") {
+          form.append(key, post.image.file, post.image.file.name); // Thêm file vào FormData
+        } else {
+            form.append(key, post[key]); // Thêm các field khác vào FormData
+        }
       }
 
       const response = await authAPI().post(endpoints['bai_viet'], form, {
@@ -112,7 +114,7 @@ const CreatePost = () => {
           <input type="file" onChange={handleChooseImage} />
           {post.image && (
             <img
-              src={URL.createObjectURL(post.image)}
+              src={URL.createObjectURL(post.image.file)}
               alt="Post"
               style={{ width: '100%', height: 'auto', marginTop: '10px' }}
             />

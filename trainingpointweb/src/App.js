@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Routes , Navigate, Link } from 'react-rou
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DangKy from './components/TaiKhoan/DangKy';
 import Header from './components/Commons/Header';
-// import ThemTroLySinhVien from './components/Home/ThemTroLySinhVien';
+import ThemTroLySinhVien from './components/QuanLy/ThemTroLySinhVien';
 import DangNhap from './components/TaiKhoan/DangNhap';
 import BanTin from './components/BanTin/BanTin';
 import DangXuat from './components/TaiKhoan/DangXuat';
@@ -114,15 +114,10 @@ const App = () => {
           
 
           
-              {/* <Route path="/them-tro-ly-sinh-vien" element={<ThemTroLySinhVien />} />
-              <Route path="/chat-detail" element={<ChatDetailScreen />} />
-              
-              
-              
-               */}
-       
+              <Route path="/them-tro-ly-khoa" element={<ProtectedRoute element={ThemTroLySinhVien} allowedRoles={[2]} user={user} />} />
               <Route path="/dang-nhap" element={<DangNhap />} />
               <Route path="/dang-ky" element={<DangKy />} />
+       
               
               <Route path="/sinh-vien-dang-ky" element={<SinhVienDangKy />} />
               <Route path="/" element={<BanTin />} />

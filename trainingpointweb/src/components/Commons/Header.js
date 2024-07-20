@@ -105,7 +105,7 @@ const Header = () => {
                                     <i className="fa-solid fa-star"></i> Xem thành tích sinh viên
                                 </NavDropdown.Item>
                                 {user.role === 2 && (
-                                    <NavDropdown.Item href="">
+                                    <NavDropdown.Item href="/them-tro-ly-khoa">
                                     <i className="fa-solid fa-user-plus"></i> Thêm trợ lý sinh viên khoa
                                     </NavDropdown.Item>
                                 )}
