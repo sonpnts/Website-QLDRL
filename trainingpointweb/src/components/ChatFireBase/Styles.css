@@ -68,3 +68,12 @@
   .send-button:hover {
     background-color: #0056b3;
   }
+  /* Đặt footer luôn nằm ở cuối trang */
+.footer3 {
+  background-color: #296571;
+  color: #ffffff;
+  padding: 20px 0;
+  position:absolute;
+  bottom: 0%;
+  width: 100%;
+}

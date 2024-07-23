@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import APIs, { endpoints, authAPI } from "../../configs/APIs";
 import axios from "axios";
+import Footer from '../Commons/Footer';
+import './Styles.css';
+
 
 const ThemTroLySinhVien = () => {
     const [assistant, setAssistant] = useState({
@@ -169,8 +172,10 @@ const ThemTroLySinhVien = () => {
     }, []);
 
     return (
-        <div className="container">
-            <h2>Thêm Trợ Lý Sinh Viên</h2>
+        <div>
+        <div>
+        <div className=" mt-4 container">
+            <h2 className="mt-4 custom-title">Thêm Trợ Lý Sinh Viên</h2>
             {alert.show && <Alert variant={alert.variant}>{alert.message}</Alert>}
             {assistant.avatar && (
                 <div className="mb-4 text-center">
@@ -247,9 +252,12 @@ const ThemTroLySinhVien = () => {
                     {errors.khoa && <Alert variant="danger">{errors.khoa}</Alert>}
                 </Form.Group>
                 {loading ? <Spinner animation="border" /> : (
-                    <Button onClick={postAssistant} className="mt-4" variant="primary">Thêm trợ lý sinh viên</Button>
+                    <Button onClick={postAssistant} className="mt-5" variant="primary">Thêm trợ lý sinh viên</Button>
                 )}
             </Form>
+        </div>
+        </div>
+        <Footer/>
         </div>
     );
 };

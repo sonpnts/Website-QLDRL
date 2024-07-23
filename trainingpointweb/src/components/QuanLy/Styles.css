@@ -1,0 +1,57 @@
+.card1 {
+    border: none;
+    border-radius: 8px;
+    background: #f7f7f7;
+  
+    max-width: 1320px;
+    z-index: 1;
+}
+
+
+/* Đảm bảo rằng body và html có chiều cao đầy đủ để footer nằm ở cuối trang */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Đảm bảo nội dung trang không bị chồng lên footer */
+.content {
+    flex: 1;
+}
+
+/* Đặt footer nằm ở dưới cùng của trang */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.custom-title {
+    text-align: center;
+    color: white;
+    background-color: #296571;
+    padding: 15px;
+    border-radius: 5px; 
+}
+.custom-card-header {
+    background-color: #296571;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    border-radius: 5px; 
+}
+
+/* Đặt footer luôn nằm ở cuối trang */
+.footer2 {
+    background-color: #296571;
+    color: #ffffff;
+    padding: 20px 0;
+    position:relative;
+    bottom: 0%;
+    width: 100%;
+}
+
+.scrollable-form {
+  max-height: 600px; /* Thiết lập chiều cao tối đa mà bạn muốn */
+  overflow-y: auto; /* Thiết lập thanh cuộn theo chiều dọc */
+}

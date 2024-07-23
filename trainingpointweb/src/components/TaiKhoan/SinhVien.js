@@ -4,7 +4,7 @@ import { Container, Form, Button } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; // Import CSS for styling
 import APIs, { endpoints } from '../../configs/APIs';
-import Styles from './Styles.css';
+import Styles from './SinhVien.css';
 import moment from 'moment';
 
 const SinhVienDangKy = () => {

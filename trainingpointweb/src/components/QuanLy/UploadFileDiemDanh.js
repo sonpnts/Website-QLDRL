@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Button, Spinner, Form, Container, Row, Col, Alert } from 'react-bootstrap';
 import { useDropzone } from 'react-dropzone';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
+import Footer2 from '../ChatFireBase/Footer2';
+import './Styles.css';
 
 const DiemDanh = () => {
     const [file, setFile] = useState(null);
@@ -107,6 +109,8 @@ const DiemDanh = () => {
     };
 
     return (
+        <div>
+            <div>
         <Container>
             {loading ? (
                 <div className="d-flex justify-content-center align-items-center vh-100">
@@ -179,6 +183,9 @@ const DiemDanh = () => {
                 </>
             )}
         </Container>
+        </div>
+        <Footer2/>
+        </div>
     );
 };
 

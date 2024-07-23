@@ -3,6 +3,7 @@ import { MyUserContext } from '../../configs/MyContext';
 import { Button, Spinner, Form, Table, Alert } from 'react-bootstrap';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import './Styles.css';
+import Footer from '../Commons/Footer';
 
 const HDNKDiemDanh = () => {
     const [loading, setLoading] = useState(true);
@@ -151,9 +152,10 @@ const HDNKDiemDanh = () => {
     }
 
     return (
-        <div className="p-4 mb-4 bg-primary1 text-white">
-            <div className="p-2 mb-4 bg-primary">
-                <h3 className="text-center">Xem thành tích</h3>
+        <div>
+        <div className="p-4 mb-4 bg-primary1 text-dark1">
+            <div className="p-2 mb-4 bg-primary1">
+                <h3 className="text-center">XEM THÀNH TÍCH</h3>
             </div>
             {alertMessage && <Alert variant="danger">{alertMessage}</Alert>}
             {sv ? (
@@ -178,10 +180,9 @@ const HDNKDiemDanh = () => {
                 </Form.Control>
             </Form.Group>
 
-            <Table striped bordered hover>
+            <Table striped bordered hover className="table-bordered">
                 <thead>
                     <tr>
-                        
                         <th>STT</th>
                         <th>Minh chứng</th>
                         <th>Điểm SV</th>
@@ -212,9 +213,11 @@ const HDNKDiemDanh = () => {
                 <h4>Tổng điểm rèn luyện: <span className="text-danger">{diemRenLuyen?.diem_tong || 0}</span></h4>
                 <h4>Xếp loại: <span className="text-danger">{xepLoaiMap[diemRenLuyen?.xep_loai] || "Chưa có"}</span></h4>
             </div>
-
+        </div>
+        <Footer/>
         </div>
     );
 };
 
 export default HDNKDiemDanh;
+

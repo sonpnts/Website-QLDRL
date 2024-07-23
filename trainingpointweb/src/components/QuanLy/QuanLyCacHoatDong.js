@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Spinner, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import APIs, { authAPI, endpoints, formatDate } from '../../configs/APIs';
+import Footer from '../Commons/Footer';
 
 const QuanLyHoatDong = () => {
   const [loading, setLoading] = useState(true);
@@ -85,6 +86,7 @@ const QuanLyHoatDong = () => {
   }
 
   return (
+    <div>
     <div style={{ padding: '20px' }}>
       <h2>Quản Lý Hoạt Động</h2>
 
@@ -138,6 +140,9 @@ const QuanLyHoatDong = () => {
           ))}
         </tbody>
       </Table>
+     
+    </div>
+      <Footer/>
     </div>
   );
 };

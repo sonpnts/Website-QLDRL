@@ -4,6 +4,8 @@ import { Form, Button, Container, Row, Col, Alert, Spinner, Card } from 'react-b
 import { MyDispatchContext, MyUserContext } from "../../configs/MyContext";
 import APIs, { endpoints, authAPI } from "../../configs/APIs";
 import cookie from "react-cookies";
+import Footer from '../Commons/Footer';
+import './DangNhap.css';
 
 const DangNhap = () => {
     const [username, setUsername] = useState('');
@@ -26,8 +28,6 @@ const DangNhap = () => {
                 'password': password,
                 'client_id': "sdUIX9LsM0sEZH8ipS6op9WPiNjEK8mGU2wV1v8u",
                 'client_secret': "rUygoi2fiap7rBvHjOULOulzYWDItVEQ8xC2QkPgn8iD0xIuSNB6gFvUhtHMtJFxg8GGveIkIYK7JDClKknom3ETDZop5Le8BRezqehWcRywwGHTxb6xjtio5xwRLAq7",
-                //  'client_id': 'YN17cy35cApl9PUiBuPCO0eTKgEEFtVWTV7I67lV',
-                // 'client_secret': '0LpVpqTQ6fcHCwCSfCqKx0JcEzFfGHnf857IuKgtsf2sl1KX3HdqlpTQBUSGiTUm3CaZeqtYZCMXn59Cqfc79pfKu1LVtNUNbIBbO0JnrfbqvAmB3N9xRCHLhDBJI1YM',
                 'grant_type': "password"
             }, {
                 headers: {
@@ -37,26 +37,16 @@ const DangNhap = () => {
 
             if (res.status === 200) {
                 cookie.save("token", res.data.access_token);
-                console.info(res.data);
-                // console.log();
                 let userdata = await authAPI(cookie.load("token")).get(endpoints['current_taikhoan']);
                 cookie.save('user', userdata.data);
                
-
                 dispatch({
                     "type": "login",
                     "payload": userdata.data
                 });
-                // let firebase = await APIs.get(endpoints['firebase'], {
-                //     headers: {
-                //         Authorization: `Bearer ${cookie.load('token')}`,
-                //     },
-                // });
-                // cookie.save('firebase-token', firebase.data.token);
-                // setLoading(false);
-                // console.log(cookie.load('firebase-token'));
+                
                 console.log("Đăng nhập thành công!");
-                nav("/"); // Điều hướng tới trang chính sau khi đăng nhập thành công
+                nav("/"); 
             } else {
                 setError("Sai tên đăng nhập hoặc mật khẩu");
             }
@@ -67,65 +57,88 @@ const DangNhap = () => {
             setLoading(false);
         }
     };
+    
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); 
+            login();
+        }
+    };
 
     const register = () => {
         nav("/dang-ky");
     };
 
     return (
-        <Container className="mt-5">
-            <Row className="justify-content-md-center">
-                <Col md="6">
-                    <Card className="p-4 shadow-sm">
-                        <Card.Body>
+        <section className="vh-100">
+            <div className="container-fluid h-custom">
+                <div className="row d-flex justify-content-center align-items-center h-100">
+                    <div className="col-md-9 col-lg-6 col-xl-5">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                            className="img-fluid" alt="Sample image" />
+                    </div>
+                    <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                        <Form onKeyDown={handleKeyDown}>
                             <h2 className="mb-4 text-center">Đăng Nhập</h2>
                             {error && <Alert variant="danger">{error}</Alert>}
-                            <Form>
-                                <Form.Group controlId="formBasicUsername" className="mb-3">
-                                    <Form.Label>Tên đăng nhập</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Nhập tên đăng nhập"
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
-                                    />
-                                </Form.Group>
-
-                                <Form.Group controlId="formPassword" className="mb-3">
-                                    <Form.Label>Mật khẩu</Form.Label>
-                                    <Form.Control
-                                        type={showPassword ? "text" : "password"}
-                                        placeholder="Nhập mật khẩu"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
-                                </Form.Group>
+                            <Form.Group controlId="formBasicUsername" className="form-outline mb-4">
+                                <Form.Label>Tên đăng nhập</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Nhập tên đăng nhập"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    className="form-control form-control-lg"
+                                />
                                 
-                                <Form.Group controlId="formShowPassword" className="mb-3">
-                                    <Form.Check
-                                        type="checkbox"
-                                        label="Hiển thị mật khẩu"
-                                        onChange={toggleShowPassword}
-                                    />
-                                </Form.Group>
+                            </Form.Group>
 
-                                {loading ? <div className="d-flex justify-content-center mb-3"><Spinner animation="border" /></div> : 
-                                    <Button variant="primary" onClick={login} className="w-100 mb-3">
+                            <Form.Group controlId="formPassword" className="form-outline mb-3">
+                                <Form.Label>Mật khẩu</Form.Label>
+                                <Form.Control
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="Nhập mật khẩu"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="form-control form-control-lg"
+                                />
+                                
+                            </Form.Group>
+                            
+                            <div className="d-flex justify-content-between align-items-center">
+                                <div className="form-check mb-0">
+                                    <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+                                    <label className="form-check-label" htmlFor="form2Example3">
+                                        Hiển thị mật khẩu
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div className="text-center text-lg-start mt-4 pt-2">
+                                {loading ? 
+                                    <div className="d-flex justify-content-center mb-3">
+                                        <Spinner animation="border" />
+                                    </div> : 
+                                    <Button 
+                                        variant="primary" 
+                                        onClick={login} 
+                                        className="btn btn-primary btn-lg"
+                                        style={{paddingLeft: '2.5rem', paddingRight: '2.5rem'}}
+                                    >
                                         Đăng nhập
                                     </Button>
                                 }
-                                
-                                <Button variant="secondary" onClick={register} className="w-100">
-                                    Đăng ký
-                                </Button>
-                            </Form>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-        </Container>
+                                <p className="small fw-bold mt-2 pt-1 mb-0">
+                                    Không có tài khoản? <a href="#!" className="link-danger" onClick={register}>Đăng ký</a>
+                                </p>
+                            </div>
+                        </Form>
+                    </div>
+                </div>
+                
+            </div><Footer/>
+        </section>
     );
 };
-
 
 export default DangNhap;

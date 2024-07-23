@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Button, Form, Spinner, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Button, Form, Spinner, Alert, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import APIs, { endpoints, authAPI } from '../../configs/APIs';
+import './Styles.css'; // Đảm bảo bạn đã nhập đúng tệp CSS
+import Footer from '../Commons/Footer';
+import './Styles.css';
 
 const DanhSachSinhVien = () => {
     const navigate = useNavigate();
@@ -83,9 +86,7 @@ const DanhSachSinhVien = () => {
         if (selectedKhoa || selectedLop) {
             handleViewReport();
         }
-       
     }, [selectedKhoa, selectedLop]);
-    
 
     const handleViewReport = async () => {
         if (!selectedKhoa || (reportType === 'lop' && !selectedLop)) {
@@ -123,61 +124,69 @@ const DanhSachSinhVien = () => {
     };
 
     return (
+        <div >
+             <div  >
         <Container className='mt-3'>
-            <h1 className="text-center text-danger my-4">Danh sách sinh viên</h1>
-            {error && <Alert variant="danger" onClose={() => setError(null)} dismissible>{error}</Alert>}
-            <Row>
-                <Col>
-                    <Form.Control
-                        type="text"
-                        placeholder="Nhập họ tên sinh viên hoặc mssv..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                    />
-                </Col>
-            </Row>
-            <Row className="mt-3">
-                <Col>
-                    <Form.Select
-                        value={reportType}
-                        onChange={(e) => setReportType(e.target.value)}
-                    >
-                        <option value="">Chọn loại xem</option>
-                        <option value="khoa">Theo khoa</option>
-                        <option value="lop">Theo lớp</option>
-                    </Form.Select>
-                </Col>
-            </Row>
-            <Row className="mt-3">
-                <Col>
-                    <Form.Select
-                        value={selectedKhoa}
-                        onChange={(e) => setSelectedKhoa(e.target.value)}
-                    >
-                        <option value="">Chọn khoa</option>
-                        {khoas.map(khoa => (
-                            <option key={khoa.id} value={khoa.id}>{khoa.ten_khoa}</option>
-                        ))}
-                    </Form.Select>
-                </Col>
-            </Row>
-            {reportType === 'lop' && (
-                <Row className="mt-3">
-                    <Col>
-                        <Form.Select
-                            value={selectedLop}
-                            onChange={(e) => setSelectedLop(e.target.value)}
-                            disabled={!selectedKhoa}
-                        >
-                            <option value="">Chọn lớp</option>
-                            {lops.map(lop => (
-                                <option key={lop.id} value={lop.id}>{lop.ten_lop}</option>
-                            ))}
-                        </Form.Select>
-                    </Col>
-                </Row>
-            )}
+            <Card className="mb-4 card1">
+                    <Card.Header className="mb-4 custom-title">
+                        <h1 >Danh sách sinh viên</h1>
+                        {error && <Alert variant="danger" onClose={() => setError(null)} dismissible>{error}</Alert>}
+                    </Card.Header>
+                <Card.Body>
+                    <Row>
+                        <Col>
+                            <Form.Control
+                                type="text"
+                                placeholder="Nhập họ tên sinh viên hoặc MSSV..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                            />
+                        </Col>
+                    </Row>
+                    <Row className="mt-3">
+                        <Col>
+                            <Form.Select
+                                value={reportType}
+                                onChange={(e) => setReportType(e.target.value)}
+                            >
+                                <option value="">Chọn loại xem</option>
+                                <option value="khoa">Theo khoa</option>
+                                <option value="lop">Theo lớp</option>
+                            </Form.Select>
+                        </Col>
+                    </Row>
+                    <Row className="mt-3">
+                        <Col>
+                            <Form.Select
+                                value={selectedKhoa}
+                                onChange={(e) => setSelectedKhoa(e.target.value)}
+                            >
+                                <option value="">Chọn khoa</option>
+                                {khoas.map(khoa => (
+                                    <option key={khoa.id} value={khoa.id}>{khoa.ten_khoa}</option>
+                                ))}
+                            </Form.Select>
+                        </Col>
+                    </Row>
+                    {reportType === 'lop' && (
+                        <Row className="mt-3">
+                            <Col>
+                                <Form.Select
+                                    value={selectedLop}
+                                    onChange={(e) => setSelectedLop(e.target.value)}
+                                    disabled={!selectedKhoa}
+                                >
+                                    <option value="">Chọn lớp</option>
+                                    {lops.map(lop => (
+                                        <option key={lop.id} value={lop.id}>{lop.ten_lop}</option>
+                                    ))}
+                                </Form.Select>
+                            </Col>
+                        </Row>
+                    )}
+                </Card.Body>
+            </Card>
             <Row className="mt-3">
                 <Col>
                     {loading ? (
@@ -185,45 +194,35 @@ const DanhSachSinhVien = () => {
                     ) : (
                         sv && sv.length > 0 ? (
                             sv.map(s => (
-                                <Row key={s.id} className="student-container">
-                                    <Col md={8}>
-                                        <p>Họ tên: {s.ho_ten}</p>
-                                        <p>MSSV: {s.mssv}</p>
-                                    </Col>
-                                    <Col md={4} className="text-right">
-                                        <Button
-                                            variant="info"
-                                            onClick={() => navigate('/thanh-tich-ngoai-khoa', { state: { sinhvien_id: s.id } })}
-                                        >
-                                            Xem chi tiết
-                                        </Button>
-                                    </Col>
-                                </Row>
+                                <Card key={s.id} className="mb-3 card1">
+                                    <Card.Body>
+                                        <Row>
+                                            <Col md={10}>
+                                                <h5>Họ tên: {s.ho_ten}</h5>
+                                                <p>MSSV: {s.mssv}</p>
+                                            </Col>
+                                            <Col md={2} className="text-right">
+                                                <Button
+                                                    variant="info"
+                                                    onClick={() => navigate('/thanh-tich-ngoai-khoa', { state: { sinhvien_id: s.id } })}
+                                                >
+                                                    Xem chi tiết
+                                                </Button>
+                                            </Col>
+                                        </Row>
+                                    </Card.Body>
+                                </Card>
                             ))
                         ) : (
                             <Alert variant="warning">Không tìm thấy sinh viên</Alert>
                         )
                     )}
                 </Col>
-            </Row>
-            <style jsx>{`
-                .student-container {
-                    padding: 1rem;
-                    border-bottom: 1px solid #ccc;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-
-                .student-container p {
-                    margin: 0;
-                }
-
-                .text-right {
-                    text-align: right;
-                }
-            `}</style>
+            </Row> 
         </Container>
+        </div>
+        <div><Footer/></div>
+        </div>
     );
 };
 

@@ -1,0 +1,21 @@
+.notification-background {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+.related-notifications {
+    margin-top: 20px;
+}
+
+.related-notifications h4 {
+    margin-bottom: 10px;
+}
+
+.related-notifications a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.related-notifications a:hover {
+    text-decoration: underline;
+}

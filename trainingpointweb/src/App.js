@@ -30,6 +30,9 @@ import { MyDispatchContext, MyUserContext } from './configs/MyContext';
 import UserInfo from './components/TaiKhoan/TaiKhoan';
 import MyUserReducer from './reducers/MyUserReducer';
 import cookie from "react-cookies";
+import NotificationDetail from './components/BanTin/NotificationDetail';
+import ThongTin1 from './components/BanTin/ThongTin1';
+
 
 const App = () => {
 
@@ -148,7 +151,10 @@ const App = () => {
               <Route path="/tao-bai-viet" element={<ProtectedRoute element={CreatePost} allowedRoles={[3]} user={user} />} />
               <Route path="/hdnk-diem-danh" element={<ProtectedRoute element={HDNKDiemDanh} allowedRoles={[4]} user={user} />} />
               <Route path="*" element={<NotFound />} />
-      
+              
+            
+              <Route path="/notifications/:id" element={<NotificationDetail />} />
+              <Route path="/thong-tin/:id" element={<ThongTin1 />} />
          
         </Routes>
       </MyDispatchContext.Provider>

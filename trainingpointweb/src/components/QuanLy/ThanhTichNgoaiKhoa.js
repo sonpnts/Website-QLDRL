@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { Button, Container, Row, Col, Form, Table, Alert } from 'react-bootstrap';
 import APIs, { endpoints, BASE_URL, authAPI } from '../../configs/APIs';
 import FileSaver from 'file-saver';
+import Footer1 from './Footer1';
+import './Styles.css';
 
 const ThanhTichNgoaiKhoa = () => {
     const location = useLocation();
@@ -129,6 +131,10 @@ const ThanhTichNgoaiKhoa = () => {
     };
 
     return (
+        <div>
+            <div>
+
+
         <Container>
             {error && <Alert variant="danger" onClose={() => setError(null)} dismissible>{error}</Alert>}
 
@@ -220,6 +226,10 @@ const ThanhTichNgoaiKhoa = () => {
                 </Col>
             </Row>
         </Container>
+        </div>
+        <br></br>
+        <Footer1/>
+        </div>
     );
 };
 

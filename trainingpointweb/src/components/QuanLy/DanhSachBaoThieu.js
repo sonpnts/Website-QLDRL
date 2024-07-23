@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Button, Spinner, Table, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Button, Spinner, Table, Alert, Card } from 'react-bootstrap';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import { useNavigate } from 'react-router-dom';
+import './Styles.css'; // Đảm bảo bạn đã nhập đúng tệp CSS
+import Footer from '../Commons/Footer';
 
 const DanhSachBaoThieu = () => {
     const [loading, setLoading] = useState(true);
@@ -54,27 +56,39 @@ const DanhSachBaoThieu = () => {
     }
 
     return (
+        <div>
+            <div>
         <Container>
-            <h1 className="text-center text-danger my-4">Danh sách hoạt động báo thiếu của sinh viên</h1>
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>Tên hoạt động</th>
-                        <th>ĐRL</th>
-                        <th>Sinh Viên</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {thamGiaBaoThieu.map((tgbt) => (
-                        <tr key={tgbt.id} onClick={() => navigate('/chi-tiet-bao-thieu', { state: { thamgiabaothieu_id: tgbt.id } })}>
-                            <td>{findHoatDongName(tgbt.hd_ngoaikhoa)}</td>
-                            <td className="text-center">{findHoatDongDRL(tgbt.hd_ngoaikhoa)}</td>
-                            <td>{findSinhVienName(tgbt.sinh_vien)}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+            <Card className="mt-4 card1">
+                <Card.Header className="mt-4 custom-title">
+                    <h1>Danh sách hoạt động báo thiếu của sinh viên</h1>
+                </Card.Header>
+                <Card.Body>
+                    <Table striped bordered hover responsive className="mt-4">
+                        <thead className="bg-primary text-white">
+                            <tr>
+                                <th>Tên hoạt động</th>
+                                <th>ĐRL</th>
+                                <th>Sinh Viên</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {thamGiaBaoThieu.map((tgbt) => (
+                                <tr key={tgbt.id} onClick={() => navigate('/chi-tiet-bao-thieu', { state: { thamgiabaothieu_id: tgbt.id } })} style={{ cursor: 'pointer' }}>
+                                    <td>{findHoatDongName(tgbt.hd_ngoaikhoa)}</td>
+                                    <td className="text-center">{findHoatDongDRL(tgbt.hd_ngoaikhoa)}</td>
+                                    <td>{findSinhVienName(tgbt.sinh_vien)}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </Card.Body>
+            </Card>
         </Container>
+        </div>
+        <Footer/>
+        </div>
+
     );
 };
 

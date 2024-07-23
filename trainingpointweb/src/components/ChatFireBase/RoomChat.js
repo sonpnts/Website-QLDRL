@@ -5,6 +5,8 @@ import { db } from '../../configs/Firebase';
 import {MyDispatchContext, MyUserContext} from '../../configs/MyContext';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import { useNavigate } from 'react-router-dom';
+import Footer2 from './Footer2';
+import './Styles.css';
 
 const ChatListScreen = () => {
   const [chatRooms, setChatRooms] = useState([]);
@@ -47,6 +49,8 @@ const ChatListScreen = () => {
   }, [user.role, navigate]);
 
   return (
+    <div>
+      <div>
     <Container>
       <Row>
         {chatRooms.map(room => (
@@ -62,6 +66,9 @@ const ChatListScreen = () => {
         ))}
       </Row>
     </Container>
+    </div>
+    <Footer2/>
+    </div>
   );
 };
 
