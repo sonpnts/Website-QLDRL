@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, Spinner, Table, Alert, Button } from 'react-
 import APIs, { endpoints, authAPI } from '../../configs/APIs';
 import { useNavigate } from 'react-router-dom';
 import './Styles.css';
-import Footer from '../Commons/Footer';
+
 
 const HDNKChuaDiemDanh = () => {
     const [loading, setLoading] = useState(true);
@@ -157,7 +157,7 @@ const HDNKChuaDiemDanh = () => {
             </Table>
         </Container>
         </div>
-        <Footer/>
+
         </div>
     );
 };

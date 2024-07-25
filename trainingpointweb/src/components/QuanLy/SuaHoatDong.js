@@ -385,7 +385,7 @@ import { Button, Alert, Form, Spinner, Container } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import moment from 'moment';
-import Footer1 from './Footer1';
+
 import './Styles.css';
 
 const SuaHoatDong = () => {
@@ -565,7 +565,6 @@ const SuaHoatDong = () => {
           )}
         </Form>
       </Container>
-      <Footer1/>
     </div>
   );
 };

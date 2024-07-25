@@ -117,7 +117,7 @@ const ChatDetailScreen = () => {
   return (
     <div className="chat-container" >
         {roomInfo && (
-        <div className="chat-header text-center p-1 bg-light border-bottom bg-primary text-white rounded">
+        <div className="chat-header text-center p-1 bg-light border-bottom bg-primary text-black rounded">
             <h5 className="mb-0">{roomInfo.mssv} - {roomInfo.ten_sv}</h5>
         </div>
         )}

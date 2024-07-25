@@ -8,7 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { MyDispatchContext, MyUserContext } from '../../configs/MyContext';
 import moment from 'moment';
 import './Styles.css';
-import Footer from '../Commons/Footer';
+
 
 const UserInfo = () => {
     // const user = useContext(MyUserContext);
@@ -273,7 +273,6 @@ const UserInfo = () => {
     </Container>
     </div>
     </div>
-    <Footer/>
     
         </div>
         

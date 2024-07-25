@@ -113,7 +113,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Spinner, Form, Button, Card, Alert } from 'react-bootstrap';
 import APIs, { authAPI, endpoints, formatDate } from '../../configs/APIs';
 import { useNavigate } from 'react-router-dom';
-import Footer1 from './Footer1';
+
 
 const HoatDongChuaCoBaiViet = () => {
   const [loading, setLoading] = useState(true);
@@ -227,7 +227,6 @@ const HoatDongChuaCoBaiViet = () => {
       )}
     </Container>
     </div>
-    <Footer1/>
     </div>
   );
 };

@@ -240,7 +240,7 @@ import { useLocation } from 'react-router-dom';
 import { Button, Container, Row, Col, Form, Table, Alert, Card, Spinner } from 'react-bootstrap';
 import APIs, { endpoints, BASE_URL, authAPI } from '../../configs/APIs';
 import FileSaver from 'file-saver';
-import Footer1 from './Footer1';
+
 import './Styles.css';
 
 const ThanhTichNgoaiKhoa = () => {
@@ -501,7 +501,6 @@ const ThanhTichNgoaiKhoa = () => {
                 </div>
         <br></br>
         </div>
-        <Footer1/>
         </div>
     );
 };

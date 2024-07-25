@@ -22,6 +22,26 @@
     height: 720px;
     z-index: 1;
 }
+.card4 {
+    border: none;
+    border-radius: 8px;
+    max-width: 1320px;
+    background: #f7f7f7;
+    padding: 12px;
+    margin-left: 4%;
+    margin-right: 4%;
+    height: 720px;
+    z-index: 1;
+}
+.card5 {
+    border: none;
+    border-radius: 8px;
+    background: #f7f7f7;
+    margin-left: 4%;
+    margin-right: 4%;
+    max-width: 1320px;
+    z-index: 1;
+}
 
 /* Đảm bảo rằng body và html có chiều cao đầy đủ để footer nằm ở cuối trang */
 html, body {
@@ -96,3 +116,14 @@ html, body {
     background: rgba(0, 0, 0, 0.5); 
     z-index: -1; 
   }
+  .form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 26px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1180px;
+    margin: auto;
+    position: relative;
+    z-index: 1;
+}

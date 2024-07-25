@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, Button, Spinner, Alert, Image, Modal } from 'react-bootstrap';
 import APIs, { endpoints, authAPI, formatDate } from '../../configs/APIs';
 import './Styles.css';
-import Footer from '../Commons/Footer';
+
 
 const MinhChung = () => {
   const location = useLocation();
@@ -297,7 +297,6 @@ const MinhChung = () => {
       </Form>
     </div>
     </div>
-        <Footer/>
         </div>
   );
 };

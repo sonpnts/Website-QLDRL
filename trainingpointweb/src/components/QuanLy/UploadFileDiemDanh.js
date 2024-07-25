@@ -3,7 +3,7 @@ import { Button, Spinner, Form, Container, Row, Col, Alert } from 'react-bootstr
 import { useDropzone } from 'react-dropzone';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import './Styles.css';
-import Footer from '../Commons/Footer';
+
 
 const DiemDanh = () => {
     const [file, setFile] = useState(null);
@@ -184,7 +184,7 @@ const DiemDanh = () => {
             )}
         </Container>
         </div>
-        <Footer/>
+
         </div>
     );
 };

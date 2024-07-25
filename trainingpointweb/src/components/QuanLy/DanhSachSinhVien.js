@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Form, Spinner, Alert, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import APIs, { endpoints, authAPI } from '../../configs/APIs';
-import './Styles.css'; // Đảm bảo bạn đã nhập đúng tệp CSS
-import Footer from '../Commons/Footer';
 import './Styles.css';
 
 const DanhSachSinhVien = () => {
@@ -221,7 +219,6 @@ const DanhSachSinhVien = () => {
             </Row> 
         </Container>
         </div>
-        <div><Footer/></div>
         </div>
     );
 };

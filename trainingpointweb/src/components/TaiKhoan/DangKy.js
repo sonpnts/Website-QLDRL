@@ -342,7 +342,7 @@ import { Form, Button, Container, Row, Col, Alert, Spinner, Modal, Card } from "
 import APIs, { endpoints } from "../../configs/APIs";
 import { useNavigate } from "react-router-dom";
 import sendEmail from "./send_mail";
-import Footer from '../Commons/Footer';
+
 import './DangKy.css';
 
 const DangKy = () => {
@@ -636,7 +636,7 @@ const DangKy = () => {
                 </Col>
             </Row>
         </Container>
-        <Footer/>
+
     </div>
     );
 };

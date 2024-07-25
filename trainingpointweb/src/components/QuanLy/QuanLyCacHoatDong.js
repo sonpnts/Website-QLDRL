@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Button, Spinner, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import APIs, { authAPI, endpoints, formatDate } from '../../configs/APIs';
-import Footer from '../Commons/Footer';
+import './Styles.css';
+
 
 const QuanLyHoatDong = () => {
   const [loading, setLoading] = useState(true);
@@ -89,7 +90,7 @@ const QuanLyHoatDong = () => {
     <div>
     <div fluid className="registration-background">
     <div style={{ padding: '20px' }}>
-      <h2>Quản Lý Hoạt Động</h2>
+      <h2 className='custom-title'>Quản Lý Hoạt Động</h2>
 
       <div className="mb-3">
         <select
@@ -144,7 +145,7 @@ const QuanLyHoatDong = () => {
      
     </div>
       
-    </div><Footer/>
+    </div>
     </div>
   );
 };

@@ -293,7 +293,6 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Container, Row, Col, Form, Button, Spinner } from 'react-bootstrap';
 import BaiViet from './BaiViet';
 import Sidebar from './Sidebar';
-import Footer from '../Commons/Footer';
 import { isCloseToBottom } from '../Utils/Tobottom';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import debounce from 'lodash.debounce';
@@ -426,7 +425,7 @@ const BanTin = () => {
                     </Row>
                 </Container>
             </div>
-            <Footer/>
+   
         </div>
     );
 };

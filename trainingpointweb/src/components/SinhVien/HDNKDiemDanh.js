@@ -3,7 +3,7 @@ import { MyUserContext } from '../../configs/MyContext';
 import { Button, Spinner, Form, Table, Alert } from 'react-bootstrap';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import './Styles.css';
-import Footer from '../Commons/Footer';
+
 
 const HDNKDiemDanh = () => {
     const [loading, setLoading] = useState(true);
@@ -217,7 +217,7 @@ const HDNKDiemDanh = () => {
         </div>
         
         </div>
-        <Footer/>
+
         </div>
     );
 };

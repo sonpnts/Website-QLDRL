@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button, Spinner, Table, Alert, Card } from 'react-bootstrap';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import { useNavigate } from 'react-router-dom';
-import './Styles.css'; // Đảm bảo bạn đã nhập đúng tệp CSS
-import Footer from '../Commons/Footer';
+import './Styles.css'; 
+
 
 const DanhSachBaoThieu = () => {
     const [loading, setLoading] = useState(true);
@@ -86,7 +86,7 @@ const DanhSachBaoThieu = () => {
             </Card>
         </Container>
         </div>
-        <Footer/>
+
         </div>
 
     );

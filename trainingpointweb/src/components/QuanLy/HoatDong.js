@@ -211,7 +211,7 @@ import { useNavigate } from 'react-router-dom';
 import APIs, { authAPI, endpoints, formatDate } from '../../configs/APIs';
 import {MyDispatchContext, MyUserContext} from '../../configs/MyContext';
 import moment from 'moment';
-import Footer from '../Commons/Footer';
+
 import './Styles.css';
 
 
@@ -414,7 +414,7 @@ const HoatDong = () => {
             </Modal>
         </Container>
         </div>
-        <Footer/>
+
         </div>
     );
 };

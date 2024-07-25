@@ -160,7 +160,7 @@ import { Button, Form, Alert, Spinner, Container, Row, Col, Card, Image } from '
 import { useLocation, useNavigate } from 'react-router-dom';
 import APIs, { authAPI, endpoints, formatDate } from '../../configs/APIs';
 import { MyUserContext } from '../../configs/MyContext';
-import Footer1 from './Footer1';
+
 import './Styles.css';
 
 const CreatePost = () => {
@@ -319,7 +319,7 @@ const CreatePost = () => {
         </div>
       </Form>
     </Container>
-        <Footer1/>
+
     </div>
   );
 };

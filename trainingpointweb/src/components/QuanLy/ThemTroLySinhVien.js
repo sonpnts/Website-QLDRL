@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Container, Row, Col, Form, Table, Alert, Card, Spinner } from 'react-bootstrap';
 import APIs, { endpoints, authAPI } from "../../configs/APIs";
 import axios from "axios";
-import Footer from '../Commons/Footer';
+
 import './Styles.css';
 
 
@@ -173,8 +173,9 @@ const ThemTroLySinhVien = () => {
 
     return (
         <div >
+            <div >
         <div fluid className="registration-background">
-            <Card className="card3"> 
+            <Card className="card4"> 
             <div className=" mt-4 container">
             <h2 className="mt-4 custom-title">Thêm Trợ Lý Sinh Viên</h2>
             {alert.show && <Alert variant={alert.variant}>{alert.message}</Alert>}
@@ -260,7 +261,8 @@ const ThemTroLySinhVien = () => {
         </Card>
        
         </div>
-        <Footer/>
+
+        </div>
         </div>
     );
 };

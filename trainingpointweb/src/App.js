@@ -32,6 +32,7 @@ import MyUserReducer from './reducers/MyUserReducer';
 import cookie from "react-cookies";
 import NotificationDetail from './components/BanTin/NotificationDetail';
 import ThongTin1 from './components/BanTin/ThongTin1';
+import Footer from './components/Commons/Footer';
 
 
 const App = () => {
@@ -157,6 +158,7 @@ const App = () => {
               <Route path="/thong-tin/:id" element={<ThongTin1 />} />
          
         </Routes>
+        <Footer/>
       </MyDispatchContext.Provider>
     </MyUserContext.Provider>
     </BrowserRouter>

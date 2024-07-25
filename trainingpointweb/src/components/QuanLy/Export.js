@@ -254,7 +254,7 @@ import APIs, { endpoints, BASE_URL, authAPI } from '../../configs/APIs';
 import axios from 'axios';
 import { saveAs } from 'file-saver';
 import cookie from 'react-cookies';
-import Footer from '../Commons/Footer';
+
 import './Styles.css';
 
 
@@ -394,7 +394,7 @@ const ExportBaoCao = () => {
     return (
         <div >
             <div fluid className="registration-background">
-    <Card className='card1'>
+    <Card className='card5'>
         <Container className="my-4">
             {alertMessage && (
                 <Alert variant={alertVariant} onClose={() => setAlertMessage('')} dismissible>
@@ -527,7 +527,7 @@ const ExportBaoCao = () => {
         </Container>
     </Card>
             </div>
-            <Footer/>
+
             </div>
     );
 };

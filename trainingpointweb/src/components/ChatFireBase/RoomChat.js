@@ -6,7 +6,7 @@ import {MyDispatchContext, MyUserContext} from '../../configs/MyContext';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import { useNavigate } from 'react-router-dom';
 import './Styles.css';
-import Footer from '../Commons/Footer';
+
 
 const ChatListScreen = () => {
   const [chatRooms, setChatRooms] = useState([]);
@@ -51,23 +51,23 @@ const ChatListScreen = () => {
   return (
     <div>
       <div fluid className="registration-background">
-    <Container >
-      <Row>
-        {chatRooms.map(room => (
-          <Col key={room.id} md={4}>
-            <Card className="mb-3">
-              <Card.Body>
-                <Card.Title>MSSV: {room.mssv}</Card.Title>
-                <Card.Text>Tên sinh viên: {room.ten_sv}</Card.Text>
-                <Button variant="primary" onClick={() => navigate(`/chat-list/${room.id}`)}>View Chat</Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+      <Container>
+            <Row>
+                {chatRooms.map(room => (
+                    <Col key={room.id} md={4}>
+                        <Card className="mb-3">
+                            <Card.Body className="custom-title">
+                                <Card.Title className="text-black">MSSV: {room.mssv}</Card.Title>
+                                <Card.Text className="text-black">Tên sinh viên: {room.ten_sv}</Card.Text>
+                                <Button variant="primary" onClick={() => navigate(`/chat-list/${room.id}`)}>View Chat</Button>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
+            </Row>
+        </Container>
     </div>
-        <Footer/>
+
         </div>
   );
 };

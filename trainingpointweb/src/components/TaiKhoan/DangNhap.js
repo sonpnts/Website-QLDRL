@@ -4,7 +4,6 @@ import { Form, Button, Container, Row, Col, Alert, Spinner, Card } from 'react-b
 import { MyDispatchContext, MyUserContext } from "../../configs/MyContext";
 import APIs, { endpoints, authAPI } from "../../configs/APIs";
 import cookie from "react-cookies";
-import Footer from '../Commons/Footer';
 import './DangNhap.css';
 
 const DangNhap = () => {
@@ -70,74 +69,76 @@ const DangNhap = () => {
     };
 
     return (
-        <section className="vh-100">
-            <div className="container-fluid h-custom">
-                <div className="row d-flex justify-content-center align-items-center h-100">
-                    <div className="col-md-9 col-lg-6 col-xl-5">
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-                            className="img-fluid" alt="Sample image" />
-                    </div>
-                    <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                        <Form onKeyDown={handleKeyDown}>
-                            <h2 className="mb-4 text-center">Đăng Nhập</h2>
-                            {error && <Alert variant="danger">{error}</Alert>}
-                            <Form.Group controlId="formBasicUsername" className="form-outline mb-4">
-                                <Form.Label>Tên đăng nhập</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Nhập tên đăng nhập"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    className="form-control form-control-lg"
-                                />
+        <div className="registration-background1">
+        <div className="form-container">
+            <section>
+                <div className="container-fluid h-custom">
+                    <div className="row d-flex justify-content-center align-items-center h-100">
+                        <div className="col-md-9 col-lg-6 col-xl-5">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                                className="img-fluid" alt="Sample image" />
+                        </div>
+                        <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                            <Form onKeyDown={handleKeyDown}>
+                                <h2 className="mb-4 text-center">Đăng Nhập</h2>
+                                {error && <Alert variant="danger">{error}</Alert>}
+                                <Form.Group controlId="formBasicUsername" className="form-outline mb-4">
+                                    <Form.Label>Tên đăng nhập</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Nhập tên đăng nhập"
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        className="form-control form-control-lg"
+                                    />
+                                </Form.Group>
+    
+                                <Form.Group controlId="formPassword" className="form-outline mb-3">
+                                    <Form.Label>Mật khẩu</Form.Label>
+                                    <Form.Control
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Nhập mật khẩu"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className="form-control form-control-lg"
+                                    />
+                                </Form.Group>
                                 
-                            </Form.Group>
-
-                            <Form.Group controlId="formPassword" className="form-outline mb-3">
-                                <Form.Label>Mật khẩu</Form.Label>
-                                <Form.Control
-                                    type={showPassword ? "text" : "password"}
-                                    placeholder="Nhập mật khẩu"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="form-control form-control-lg"
-                                />
-                                
-                            </Form.Group>
-                            
-                            <div className="d-flex justify-content-between align-items-center">
-                                <div className="form-check mb-0">
-                                    <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-                                    <label className="form-check-label" htmlFor="form2Example3">
-                                        Hiển thị mật khẩu
-                                    </label>
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div className="form-check mb-0">
+                                        <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+                                        <label className="form-check-label" htmlFor="form2Example3">
+                                            Hiển thị mật khẩu
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div className="text-center text-lg-start mt-4 pt-2">
-                                {loading ? 
-                                    <div className="d-flex justify-content-center mb-3">
-                                        <Spinner animation="border" />
-                                    </div> : 
-                                    <Button 
-                                        variant="primary" 
-                                        onClick={login} 
-                                        className="btn btn-primary btn-lg"
-                                        style={{paddingLeft: '2.5rem', paddingRight: '2.5rem'}}
-                                    >
-                                        Đăng nhập
-                                    </Button>
-                                }
-                                <p className="small fw-bold mt-2 pt-1 mb-0">
-                                    Không có tài khoản? <a href="#!" className="link-danger" onClick={register}>Đăng ký</a>
-                                </p>
-                            </div>
-                        </Form>
+    
+                                <div className="text-center text-lg-start mt-4 pt-2">
+                                    {loading ? 
+                                        <div className="d-flex justify-content-center mb-3">
+                                            <Spinner animation="border" />
+                                        </div> : 
+                                        <Button 
+                                            variant="primary" 
+                                            onClick={login} 
+                                            className="btn btn-primary btn-lg"
+                                            style={{paddingLeft: '2.5rem', paddingRight: '2.5rem'}}
+                                        >
+                                            Đăng nhập
+                                        </Button>
+                                    }
+                                    <p className="small fw-bold mt-2 pt-1 mb-0">
+                                        Không có tài khoản? <a href="#!" className="link-danger" onClick={register}>Đăng ký</a>
+                                    </p>
+                                </div>
+                            </Form>
+                        </div>
                     </div>
                 </div>
-                
-            </div><Footer/>
-        </section>
+            </section>
+        </div>
+    </div>
+    
     );
 };
 
