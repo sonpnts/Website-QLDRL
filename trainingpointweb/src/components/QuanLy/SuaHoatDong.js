@@ -472,7 +472,7 @@ const SuaHoatDong = () => {
   }
 
   return (
-    <div>
+    <div fluid className="registration-background">
       <Container className="my-4">
         <h2 className="mb-4 custom-title">Sửa Hoạt Động Ngoại Khóa</h2>
         {showAlert.message && (

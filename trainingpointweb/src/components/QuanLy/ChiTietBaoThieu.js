@@ -274,6 +274,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Form, Spinner, Image, Alert, Card } from 'react-bootstrap';
 import APIs, { endpoints, authAPI, formatDate } from '../../configs/APIs';
+import Footer1 from './Footer1';
+import './Styles.css';
 
 const ChiTietBaoThieu = () => {
     const location = useLocation();
@@ -475,10 +477,12 @@ const ChiTietBaoThieu = () => {
     };
 
     return (
-        <Container className="mb-3 mt-3">
-            <Card>
-                <Card.Header className="bg-primary text-white text-center">
-                    <h2>Chi Tiết Báo Thiếu</h2>
+                <div >
+            <div fluid className="registration-background">
+        <Container className="mb-4">
+            <Card className="shadow card1">
+                <Card.Header className="mt-4 " >
+                    <h2 className="custom-title ">Chi Tiết Báo Thiếu</h2>
                 </Card.Header>
                 <Card.Body>
                     {alertMessage && (
@@ -532,6 +536,10 @@ const ChiTietBaoThieu = () => {
                 </Card.Body>
             </Card>
         </Container>
+        </div>
+        <br></br>
+        <Footer1/>
+        </div>
     );
 };
 

@@ -255,6 +255,7 @@ import axios from 'axios';
 import { saveAs } from 'file-saver';
 import cookie from 'react-cookies';
 import Footer from '../Commons/Footer';
+import './Styles.css';
 
 
 const ExportBaoCao = () => {
@@ -391,8 +392,9 @@ const ExportBaoCao = () => {
     };
 
     return (
-        <div>
-            <div>
+        <div >
+            <div fluid className="registration-background">
+    <Card className='card1'>
         <Container className="my-4">
             {alertMessage && (
                 <Alert variant={alertVariant} onClose={() => setAlertMessage('')} dismissible>
@@ -523,6 +525,7 @@ const ExportBaoCao = () => {
                 </Form>
             )}
         </Container>
+    </Card>
             </div>
             <Footer/>
             </div>

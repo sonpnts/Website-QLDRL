@@ -168,7 +168,7 @@ const Header = () => {
 
     return (
             <Navbar expand="lg" className="bg-body-tertiary1 navbar-sticky">
-                <Container>
+                <Container >
                     <Navbar.Brand href="/" style={{ fontWeight: 'bold' }}>QUẢN LÝ ĐIỂM RÈN LUYỆN</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

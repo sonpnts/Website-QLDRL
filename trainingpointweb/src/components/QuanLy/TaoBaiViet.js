@@ -242,7 +242,7 @@ const CreatePost = () => {
   };
 
   return (
-    <div>
+    <div fluid className="registration-background">
     <Container className="my-4">
       <h2 className="text-center mb-4 custom-title">Tạo bài viết</h2>
 

@@ -87,6 +87,7 @@ const QuanLyHoatDong = () => {
 
   return (
     <div>
+    <div fluid className="registration-background">
     <div style={{ padding: '20px' }}>
       <h2>Quản Lý Hoạt Động</h2>
 
@@ -142,7 +143,8 @@ const QuanLyHoatDong = () => {
       </Table>
      
     </div>
-      <Footer/>
+      
+    </div><Footer/>
     </div>
   );
 };

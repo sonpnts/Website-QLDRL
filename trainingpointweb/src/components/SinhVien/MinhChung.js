@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, Button, Spinner, Alert, Image, Modal } from 'react-bootstrap';
 import APIs, { endpoints, authAPI, formatDate } from '../../configs/APIs';
+import './Styles.css';
+import Footer from '../Commons/Footer';
 
 const MinhChung = () => {
   const location = useLocation();
@@ -210,6 +212,8 @@ const MinhChung = () => {
   const hoatdongInfo = findHoatDongInfo(thamGia.hd_ngoaikhoa);
 
   return (
+    <div>
+        <div fluid className="registration-background">
     <div className="container mt-5">
       <h2 className='text-info text-center'>Báo thiếu hoạt động</h2>
       {alertMessage && (
@@ -292,6 +296,9 @@ const MinhChung = () => {
         </Button>
       </Form>
     </div>
+    </div>
+        <Footer/>
+        </div>
   );
 };
 

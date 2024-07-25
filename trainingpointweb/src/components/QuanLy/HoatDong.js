@@ -301,11 +301,11 @@ const HoatDong = () => {
     };
 
     return (
-        <div>
-            <div>
+        <div >
+            <div fluid className="registration-background">
 
 
-        <Container className="my-4">
+        <Container className="my-4 card3">
             <h2 className="mb-4 custom-title">Tạo Hoạt Động Ngoại Khóa</h2>
             {loading && <Spinner animation="border" variant="primary" />}
             

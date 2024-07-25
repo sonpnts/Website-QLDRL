@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Spinner, Table, Alert, Button } from 'react-bootstrap';
 import APIs, { endpoints, authAPI } from '../../configs/APIs';
 import { useNavigate } from 'react-router-dom';
+import './Styles.css';
+import Footer from '../Commons/Footer';
 
 const HDNKChuaDiemDanh = () => {
     const [loading, setLoading] = useState(true);
@@ -102,6 +104,10 @@ const HDNKChuaDiemDanh = () => {
     }
 
     return (
+        <div >
+            <div fluid className="registration-background">
+
+           
         <Container className='mt-3'>
             {/* <h1 className="my-4">Thông tin sinh viên</h1>
             {sv ? (
@@ -150,6 +156,9 @@ const HDNKChuaDiemDanh = () => {
                 </tbody>
             </Table>
         </Container>
+        </div>
+        <Footer/>
+        </div>
     );
 };
 

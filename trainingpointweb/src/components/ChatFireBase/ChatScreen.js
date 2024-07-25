@@ -4,6 +4,8 @@ import { db } from '../../configs/Firebase';
 import {MyDispatchContext, MyUserContext} from '../../configs/MyContext';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import './StylesChatScreen.css';
+import './Styles.css';
+import Footer from '../Commons/Footer';
 
 const ChatScreen = () => {
   const [message, setMessage] = useState('');
@@ -165,6 +167,8 @@ const ChatScreen = () => {
   }
 
   return (
+    <div>
+        <div fluid className="registration-background">
     <div className="chat-container">
       <div className="message-list">
         {messages.map(renderItem)}
@@ -186,6 +190,9 @@ const ChatScreen = () => {
         <button className="send-button" onClick={sendMessage}>Gửi</button>
       </div>
     </div>
+            </div>
+            <Footer/>
+            </div>
   );
 };
 

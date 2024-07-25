@@ -125,7 +125,7 @@ const DanhSachSinhVien = () => {
 
     return (
         <div >
-             <div  >
+             <div fluid className="registration-background" >
         <Container className='mt-3'>
             <Card className="mb-4 card1">
                     <Card.Header className="mb-4 custom-title">

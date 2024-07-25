@@ -153,9 +153,10 @@ const HDNKDiemDanh = () => {
 
     return (
         <div>
+        <div fluid className="registration-background">
         <div className="p-4 mb-4 bg-primary1 text-dark1">
             <div className="p-2 mb-4 bg-primary1">
-                <h3 className="text-center">XEM THÀNH TÍCH</h3>
+                <h3 className="text-center custom-title">XEM THÀNH TÍCH</h3>
             </div>
             {alertMessage && <Alert variant="danger">{alertMessage}</Alert>}
             {sv ? (
@@ -213,6 +214,8 @@ const HDNKDiemDanh = () => {
                 <h4>Tổng điểm rèn luyện: <span className="text-danger">{diemRenLuyen?.diem_tong || 0}</span></h4>
                 <h4>Xếp loại: <span className="text-danger">{xepLoaiMap[diemRenLuyen?.xep_loai] || "Chưa có"}</span></h4>
             </div>
+        </div>
+        
         </div>
         <Footer/>
         </div>

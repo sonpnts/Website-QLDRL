@@ -167,8 +167,8 @@ const HoatDongChuaCoBaiViet = () => {
   }
 
   return (
-    <div>
-      <div>
+    <div >
+      <div fluid className="registration-background">
     <Container className="my-4">
       {error && (
         <Alert variant="danger" onClose={() => setError('')} dismissible>

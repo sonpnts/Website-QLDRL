@@ -57,7 +57,7 @@ const DanhSachBaoThieu = () => {
 
     return (
         <div>
-            <div>
+            <div fluid className="registration-background">
         <Container>
             <Card className="mt-4 card1">
                 <Card.Header className="mt-4 custom-title">

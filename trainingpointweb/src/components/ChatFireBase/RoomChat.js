@@ -5,8 +5,8 @@ import { db } from '../../configs/Firebase';
 import {MyDispatchContext, MyUserContext} from '../../configs/MyContext';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
 import { useNavigate } from 'react-router-dom';
-import Footer2 from './Footer2';
 import './Styles.css';
+import Footer from '../Commons/Footer';
 
 const ChatListScreen = () => {
   const [chatRooms, setChatRooms] = useState([]);
@@ -50,8 +50,8 @@ const ChatListScreen = () => {
 
   return (
     <div>
-      <div>
-    <Container>
+      <div fluid className="registration-background">
+    <Container >
       <Row>
         {chatRooms.map(room => (
           <Col key={room.id} md={4}>
@@ -67,8 +67,8 @@ const ChatListScreen = () => {
       </Row>
     </Container>
     </div>
-    <Footer2/>
-    </div>
+        <Footer/>
+        </div>
   );
 };
 
