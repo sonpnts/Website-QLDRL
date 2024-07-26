@@ -59,13 +59,9 @@ const DiemDanh = () => {
             alert('Please select a file first');
             return;
         }
-        // console.log(file);
+       
         const formData = new FormData();
-        // formData.append('file', {
-        //     uri: file.uri,
-        //     type: file.type, 
-        //     name: file.name,
-        // });
+     
         formData.append('file', file);
         console.log(formData);
         

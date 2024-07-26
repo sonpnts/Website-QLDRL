@@ -17,7 +17,7 @@ const DangNhapModal = ({ show, handleClose }) => {
         setShowPassword(!showPassword);
     };
 
-    const login = async () => {
+    const login = async (e) => {
         try {
             let res = await APIs.post(endpoints['dang_nhap'], {
                 'username': username,
@@ -47,6 +47,7 @@ const DangNhapModal = ({ show, handleClose }) => {
                 cookie.save('firebase-token', firebase.data.token);
                 console.log("Đăng nhập thành công!");
                 handleClose(); // Đóng modal sau khi đăng nhập thành công
+                e.preventDefault();
                 nav("/main"); // Điều hướng tới trang chính sau khi đăng nhập thành công
             } else {
                 setError("Sai tên đăng nhập hoặc mật khẩu");
@@ -58,7 +59,8 @@ const DangNhapModal = ({ show, handleClose }) => {
         }
     };
 
-    const register = () => {
+    const register = (e) => {
+        e.preventDefault();
         nav("/dang-ky");
     };
 

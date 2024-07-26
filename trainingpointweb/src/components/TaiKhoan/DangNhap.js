@@ -19,7 +19,7 @@ const DangNhap = () => {
         setShowPassword(!showPassword);
     };
     
-    const login = async () => {
+    const login = async (e) => {
         setLoading(true);
         try {
             let res = await APIs.post(endpoints['dang_nhap'], {
@@ -45,6 +45,8 @@ const DangNhap = () => {
                 });
                 
                 console.log("Đăng nhập thành công!");
+                setLoading(false);
+                e.preventDefault();
                 nav("/"); 
             } else {
                 setError("Sai tên đăng nhập hoặc mật khẩu");
@@ -64,7 +66,8 @@ const DangNhap = () => {
         }
     };
 
-    const register = () => {
+    const register = (e) => {
+        e.preventDefault();
         nav("/dang-ky");
     };
 

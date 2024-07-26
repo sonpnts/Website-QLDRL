@@ -47,6 +47,10 @@ const ChatListScreen = () => {
 
     fetchData(); 
   }, [user.role, navigate]);
+  const handleViewChat = ( roomId) => (e) => {
+    e.preventDefault(); // Ngăn chặn hành vi mặc định
+    navigate(`/chat-list/${roomId}`);
+  };
 
   return (
     <div>
@@ -59,7 +63,7 @@ const ChatListScreen = () => {
                             <Card.Body className="custom-title">
                                 <Card.Title className="text-black">MSSV: {room.mssv}</Card.Title>
                                 <Card.Text className="text-black">Tên sinh viên: {room.ten_sv}</Card.Text>
-                                <Button variant="primary" onClick={() => navigate(`/chat-list/${room.id}`)}>View Chat</Button>
+                                <Button variant="primary" onClick={handleViewChat(room.id)}>View Chat</Button>
                             </Card.Body>
                         </Card>
                     </Col>

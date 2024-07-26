@@ -55,7 +55,8 @@ const QuanLyHoatDong = () => {
     }
   }, [selectedHocKy]);
 
-  const editActivity = (activityId) => {
+  const editActivity = (activityId) => (e) => {
+    e.preventDefault();
     navigate('/sua-hoat-dong', { state: { hoatDongId: activityId } });
   };
 
@@ -70,6 +71,12 @@ const QuanLyHoatDong = () => {
     } catch (error) {
       console.error('Error deleting activity:', error);
     }
+  };
+
+  const handlEditPost = (item) => (e)=>{
+    e.preventDefault(); // Ngăn chặn hành vi mặc định
+    const path = item.hasPost ? "/tao-bai-viet" : "/sua-bai-viet";
+    navigate(path, { state: { hoatDongId: item } });
   };
 
   const confirmDelete = (activityId) => {
@@ -123,18 +130,17 @@ const QuanLyHoatDong = () => {
               <td>{formatDate(item.ngay_to_chuc)}</td>
               <td>{item.thong_tin}</td>
               <td>
-                <Button variant="warning" onClick={() => editActivity(item.id)} className="me-2">
+                <Button variant="warning" onClick={editActivity(item.id)} className="me-2">
                   Chỉnh sửa
                 </Button>
-                <Button variant="danger" onClick={() => confirmDelete(item.id)} className="me-2">
+                <Button variant="danger" onClick={ () => confirmDelete(item.id)} className="me-2">
                   Xóa
                 </Button>
                 <Button
                   variant={item.hasPost ? "primary" : "info"}
-                  onClick={() => navigate(item.hasPost ?"/tao-bai-viet" : "/sua-bai-viet" , { state: { hoatDongId: item.id } })}
+                  onClick={handlEditPost(item)}
                 >
                   {item.hasPost?"Tạo bài viết" : "Chỉnh sửa bài viết" }
-                
 
                 </Button>
               </td>

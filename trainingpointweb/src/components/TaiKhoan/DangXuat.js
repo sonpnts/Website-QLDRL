@@ -8,16 +8,16 @@ const DangXuat = () => {
     // const [user, dispatch, isAuthenticated, setIsAuthenticated, role, setRole] = useContext(MyContext);
     const dispatch = useContext(MyDispatchContext);
     const nav = useNavigate();
-    const logout = () => {
+    const logout = (e) => {
         dispatch({
             type: "logout"
         });
+        cookie.save('token', null);
         console.log("Đăng xuất thành công!");
+        e.preventDefault();
         nav("/dang-nhap");
-        // // Xử lý localStorage trong ReactJS
-        // cookie.save('token', null);
-        // // setIsAuthenticated(false);
-        // cookie.save('firebase-token', null);
+        
+        
     };
 
     return (

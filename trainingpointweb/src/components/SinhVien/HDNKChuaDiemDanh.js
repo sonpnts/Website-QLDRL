@@ -68,6 +68,11 @@ const HDNKChuaDiemDanh = () => {
             alert('Lỗi', 'Đã xảy ra lỗi khi tải dữ liệu điểm rèn luyện.');
         }
     };
+    const handleClick = (id) => (e) => {
+        e.preventDefault();
+        navigate("/minh-chung", { state: { thamgia_id: id } });
+    };
+    
 
     useEffect(() => {
         fetchHocKyNamHocs();
@@ -147,7 +152,7 @@ const HDNKChuaDiemDanh = () => {
                 </thead>
                 <tbody>
                     {hoatDongChuaDiemDanh.map(hd => (
-                        <tr key={hd.id} onClick={() => navigate("/minh-chung", { state: { thamgia_id: hd.id }})}>
+                        <tr key={hd.id} onClick={handleClick(hd.id)}>
                             <td>{findHoatDongName(hd.hd_ngoaikhoa)}</td>
                             <td>{findHoatDongDRL(hd.hd_ngoaikhoa)}</td>
                             <td>{trangThaiMap[hd.trang_thai]}</td>

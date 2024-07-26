@@ -120,6 +120,10 @@ const DanhSachSinhVien = () => {
             setLoading(false);
         }
     };
+    const handleNavigateToAchievements = (sinhvien)=>(e) => {
+        e.preventDefault(); // Ngăn chặn hành vi mặc định
+        navigate('/thanh-tich-ngoai-khoa', { state: { sinhvien_id: sinhvien.id } });
+      };
 
     return (
         <div >
@@ -202,7 +206,7 @@ const DanhSachSinhVien = () => {
                                             <Col md={2} className="text-right">
                                                 <Button
                                                     variant="info"
-                                                    onClick={() => navigate('/thanh-tich-ngoai-khoa', { state: { sinhvien_id: s.id } })}
+                                                    onClick={handleNavigateToAchievements(s)}
                                                 >
                                                     Xem chi tiết
                                                 </Button>

@@ -4,7 +4,6 @@ import { Form, Button, Spinner, Alert, Image, Modal } from 'react-bootstrap';
 import APIs, { endpoints, authAPI, formatDate } from '../../configs/APIs';
 import './Styles.css';
 
-
 const MinhChung = () => {
   const location = useLocation();
   const thamgia_id = location.state?.thamgia_id;
@@ -213,91 +212,103 @@ const MinhChung = () => {
 
   return (
     <div>
-        <div fluid className="registration-background">
-    <div className="container mt-5">
-      <h2 className='text-info text-center'>Báo thiếu hoạt động</h2>
-      {alertMessage && (
-        <Alert variant={alertVariant} onClose={() => setAlertMessage(null)} dismissible>
-          {alertMessage}
-        </Alert>
-      )}
-      <Form>
-        <Form.Group className="mb-3">
-          <Form.Label>Hoạt động ngoại khóa:</Form.Label>
-          <Form.Control type="text" value={hoatdongInfo.name} readOnly />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Điểm rèn luyện:</Form.Label>
-          <Form.Control type="text" value={hoatdongInfo.drl} readOnly />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Chi tiết:</Form.Label>
-          <Form.Control type="text" value={hoatdongInfo.thongTin} readOnly />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Ngày tổ chức:</Form.Label>
-          <Form.Control type="text" value={formatDate(hoatdongInfo.ngayTC)} readOnly />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Điều:</Form.Label>
-          <Form.Control type="text" value={hoatdongInfo.dieu} readOnly />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Trạng thái:</Form.Label>
-          <Form.Control type="text" value={trangThaiMap[thamGia.trang_thai]} readOnly />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Nội dung minh chứng:</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            value={minhchung.description}
-            onChange={handleDescriptionChange}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Ảnh minh chứng:</Form.Label>
-          <Form.Control type="file" onChange={handleChooseImg} accept="image/*" />
-          {minhchung.anh_minh_chung && (
-            <>
-              <Image
-                src={URL.createObjectURL(minhchung.anh_minh_chung)}
-                alt="Ảnh minh chứng"
-                style={{ maxWidth: "200px", maxHeight: "200px", cursor: "pointer" }}
-                onClick={toggleImageSize}
-              />
-              <Modal show={showModal} onHide={toggleImageSize} centered>
-                <Modal.Body>
-                  <Image
-                    src={URL.createObjectURL(minhchung.anh_minh_chung)}
-                    alt="Ảnh minh chứng"
-                    style={{ width: "100%", height: "auto" }}
-                  />
-                </Modal.Body>
-              </Modal>
-            </>
+      <div className="registration-background">
+        <div className="container mt-5">
+          <h2 className='text-info text-center'>Báo thiếu hoạt động</h2>
+          {alertMessage && (
+            <Alert variant={alertVariant} onClose={() => setAlertMessage(null)} dismissible>
+              {alertMessage}
+            </Alert>
           )}
-        </Form.Group>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Hoạt động ngoại khóa:</Form.Label>
+              <Form.Control type="text" value={hoatdongInfo.name} readOnly />
+            </Form.Group>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Phản hồi:</Form.Label>
-          <Form.Control as="textarea" rows={3} value={minhchung.phan_hoi} readOnly />
-        </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Điểm rèn luyện:</Form.Label>
+              <Form.Control type="text" value={hoatdongInfo.drl} readOnly />
+            </Form.Group>
 
-        <Button variant="primary" onClick={handleSubmit} disabled={loading}>
-          {loading ? <Spinner animation="border" size="sm" /> : "Gửi báo thiếu"}
-        </Button>
-      </Form>
-    </div>
-    </div>
+            <Form.Group className="mb-3">
+              <Form.Label>Chi tiết:</Form.Label>
+              <Form.Control type="text" value={hoatdongInfo.thongTin} readOnly />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Ngày tổ chức:</Form.Label>
+              <Form.Control type="text" value={hoatdongInfo.ngayTC} readOnly />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Điều:</Form.Label>
+              <Form.Control type="text" value={hoatdongInfo.dieu} readOnly />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Mô tả:</Form.Label>
+              <Form.Control
+                as="textarea"
+                value={minhchung.description}
+                onChange={handleDescriptionChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Ảnh minh chứng:</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleChooseImg}
+              />
+            </Form.Group>
+
+            {minhchung.anh_minh_chung && minhchung.anh_minh_chung instanceof File && (
+              <div>
+                <Image
+                  src={URL.createObjectURL(minhchung.anh_minh_chung)}
+                  thumbnail
+                  className={`minhchung-image ${isImageEnlarged ? 'enlarged' : ''}`}
+                  onClick={toggleImageSize}
+                  alt="Minh chứng"
+                />
+                <Modal show={showModal} onHide={toggleImageSize} centered>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Ảnh minh chứng</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Image src={URL.createObjectURL(minhchung.anh_minh_chung)} fluid alt="Minh chứng" />
+                  </Modal.Body>
+                </Modal>
+              </div>
+            )}
+
+
+            {thamGia && thamGia.trang_thai === 3 && (
+              <Form.Group className="mb-3">
+                <Form.Label>Phản hồi:</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  value={minhchung.phan_hoi}
+                  readOnly
+                />
+              </Form.Group>
+            )}
+
+            <div className="d-flex justify-content-center">
+              <Button variant="primary" onClick={handleSubmit} disabled={loading}>
+                {loading ? 'Đang xử lý...' : 'Lưu'}
+              </Button>
+              <Button variant="secondary" className="ml-3" onClick={() => navigate(-1)} disabled={loading}>
+                Hủy
+              </Button>
+            </div>
+          </Form>
         </div>
+      </div>
+    </div>
   );
 };
 

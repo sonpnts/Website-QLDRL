@@ -14,7 +14,6 @@ const UserInfo = () => {
     // const user = useContext(MyUserContext);
     const [user, setUser] = useState(null);
     const [avatarFile, setAvatarFile] = useState(null);
-
     const [sv, setSv] = useState(null);
     const fileInputRef = useRef(null);
     const [lops, setLops] = useState([]);
@@ -35,7 +34,6 @@ const UserInfo = () => {
             try {
                 const reslop = await authAPI().get(endpoints['lop']);
                 const response = await authAPI().get(endpoints['current_taikhoan']);
-
                 setLops(reslop.data.results);
                 setUser(response.data);
 
