@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Badge, Button, Col, Container, Form, Image, Nav, Navbar, NavDropdown, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MyDispatchContext, MyUserContext } from "../../configs/MyContext";
 import APIs, { endpoints } from "../../configs/APIs";
 import './Styles.css';
@@ -37,46 +37,41 @@ const Header = () => {
                         </Nav.Link>
                         {user === null ? (
                             <>
-                                <Link 
-                                    to="/dang-ky" 
+                                <Nav.Link 
                                     className="nav-link"
-                                    onClick={(e) => e.preventDefault()}
+                                    onClick={(e) => handleNavigate(e, "/dang-ky")}
                                 >
                                     <i className="fa-solid fa-user-plus"></i> Đăng ký
-                                </Link>
-                                <Link 
-                                    to="/dang-nhap" 
+                                </Nav.Link>
+                                <Nav.Link 
                                     className="nav-link"
-                                    onClick={(e) => e.preventDefault()}
+                                    onClick={(e) => handleNavigate(e, "/dang-nhap")}
                                 >
                                     <i className="fa-solid fa-right-to-bracket"></i> Đăng nhập
-                                </Link>
+                                </Nav.Link>
                             </>
                         ) : (
                             <>
                                 {user.role === 4 && (
                                     <>
-                                        <Link 
-                                            to="/chat" 
+                                        <Nav.Link 
                                             className="nav-link"
-                                            onClick={(e) => e.preventDefault()}
+                                            onClick={(e) => handleNavigate(e, "/chat")}
                                         >
                                             <i className="fa-solid fa-comments"></i> Chat
-                                        </Link>
-                                        <Link 
-                                            to="/hdnk-diem-danh" 
+                                        </Nav.Link>
+                                        <Nav.Link 
                                             className="nav-link"
-                                            onClick={(e) => e.preventDefault()}
+                                            onClick={(e) => handleNavigate(e, "/hdnk-diem-danh")}
                                         >
-                                            <i className="fa-regular fa-star"></i> Xem thành tích các nhân
-                                        </Link>
-                                        <Link 
-                                            to="/hdnk-chua-diem-danh" 
+                                            <i className="fa-regular fa-star"></i> Xem thành tích cá nhân
+                                        </Nav.Link>
+                                        <Nav.Link 
                                             className="nav-link"
-                                            onClick={(e) => e.preventDefault()}
+                                            onClick={(e) => handleNavigate(e, "/hdnk-chua-diem-danh")}
                                         >
                                             <i className="fa-brands fa-slack"></i> Báo thiếu
-                                        </Link>
+                                        </Nav.Link>
                                     </>
                                 )}
                                 {(user.role === 2 || user.role === 3) && (
@@ -119,25 +114,23 @@ const Header = () => {
                                         </NavDropdown>
                                     </>
                                 )}
-                                <Link 
-                                    to="/profile" 
+                                <Nav.Link 
                                     className={`nav-link text-success ${hovered === 'profile' ? 'animate__animated animate__bounce' : ''}`}
                                     onMouseEnter={() => setHovered('profile')}
                                     onMouseLeave={() => setHovered(null)}
-                                    onClick={(e) => e.preventDefault()}
+                                    onClick={(e) => handleNavigate(e, "/profile")}
                                 >
                                     <Image src={user.avatar} width="30" height="30" roundedCircle />
-                                </Link>
+                                </Nav.Link>
                                 <Nav.Link href="/profile" style={{marginLeft:0}} className="nav-link text-info" onClick={(e) => e.preventDefault()}>
                                     {user.username}
                                 </Nav.Link>
-                                <Link 
-                                    to="/dang-nhap" 
+                                <Nav.Link 
                                     onClick={handleLogout} 
                                     className="nav-link"
                                 >
                                     <i className="fa-solid fa-right-from-bracket"></i> Đăng xuất
-                                </Link>
+                                </Nav.Link>
                             </>
                         )}
                     </Nav>
@@ -148,4 +141,3 @@ const Header = () => {
 }
 
 export default Header;
-
