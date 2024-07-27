@@ -109,12 +109,19 @@ const DangNhap = () => {
                                 
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div className="form-check mb-0">
-                                        <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+                                        <input 
+                                            className="form-check-input me-2" 
+                                            type="checkbox" 
+                                            value="" 
+                                            id="form2Example3" 
+                                            onChange={toggleShowPassword} 
+                                        />
                                         <label className="form-check-label" htmlFor="form2Example3">
                                             Hiển thị mật khẩu
                                         </label>
                                     </div>
                                 </div>
+
     
                                 <div className="text-center text-lg-start mt-4 pt-2">
                                     {loading ? 

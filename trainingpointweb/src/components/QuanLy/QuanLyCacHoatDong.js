@@ -75,7 +75,7 @@ const QuanLyHoatDong = () => {
 
   const handlEditPost = (item) => (e)=>{
     e.preventDefault(); // Ngăn chặn hành vi mặc định
-    const path = item.hasPost ? "/tao-bai-viet" : "/sua-bai-viet";
+    const path = item.hasPost ? "/tao-bai-viet" : null;
     navigate(path, { state: { hoatDongId: item } });
   };
 
@@ -136,13 +136,15 @@ const QuanLyHoatDong = () => {
                 <Button variant="danger" onClick={ () => confirmDelete(item.id)} className="me-2">
                   Xóa
                 </Button>
-                <Button
-                  variant={item.hasPost ? "primary" : "info"}
-                  onClick={handlEditPost(item)}
-                >
-                  {item.hasPost?"Tạo bài viết" : "Chỉnh sửa bài viết" }
+                {item.hasPost && (
+                  <Button
+                      variant="primary"
+                      onClick={() => handlEditPost(item)}
+                  >
+                      Tạo bài viết
+                  </Button>
+              )}
 
-                </Button>
               </td>
             </tr>
           ))}

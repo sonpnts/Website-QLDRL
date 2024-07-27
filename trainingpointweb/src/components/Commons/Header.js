@@ -86,9 +86,9 @@ const Header = () => {
                                             <NavDropdown.Item onClick={(e) => handleNavigate(e, "/hoat-dong-chua-co-bai-viet")} className="nav-link">
                                                 <i className="fa-solid fa-pen"></i> Tạo bài viết
                                             </NavDropdown.Item>
-                                            <NavDropdown.Item onClick={(e) => e.preventDefault()} className="nav-link">
+                                            {/* <NavDropdown.Item onClick={(e) => e.preventDefault()} className="nav-link">
                                                 <i className="fa-solid fa-trash"></i> Xem lại hoạt động đã xóa
-                                            </NavDropdown.Item>
+                                            </NavDropdown.Item> */}
                                         </NavDropdown>
                                         <NavDropdown title={<span><i className="fa-solid fa-gears"></i> Thao tác</span>} id="basic-nav-dropdown">
                                             <NavDropdown.Item onClick={(e) => handleNavigate(e, "/diem-danh")}>
@@ -115,9 +115,7 @@ const Header = () => {
                                     </>
                                 )}
                                 <Nav.Link 
-                                    className={`nav-link text-success ${hovered === 'profile' ? 'animate__animated animate__bounce' : ''}`}
-                                    onMouseEnter={() => setHovered('profile')}
-                                    onMouseLeave={() => setHovered(null)}
+                                    className={'nav-link text-success'}
                                     onClick={(e) => handleNavigate(e, "/profile")}
                                 >
                                     <Image src={user.avatar} width="30" height="30" roundedCircle />

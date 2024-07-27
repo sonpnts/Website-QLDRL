@@ -56,6 +56,7 @@ const DanhSachBaoThieu = () => {
     }
     const handleNavigateToDetail = (thamgiabaothieu) => (e) => {
         e.preventDefault(); // Ngăn chặn hành vi mặc định
+        // console.log(thamgiabaothieu);
         navigate('/chi-tiet-bao-thieu', { state: { thamgiabaothieu_id: thamgiabaothieu } });
       };
 
@@ -78,7 +79,7 @@ const DanhSachBaoThieu = () => {
                         </thead>
                         <tbody>
                             {thamGiaBaoThieu.map((tgbt) => (
-                                <tr key={tgbt.id} onClick={handleNavigateToDetail(thamGiaBaoThieu.id)} style={{ cursor: 'pointer' }}>
+                                <tr key={tgbt.id} onClick={handleNavigateToDetail(tgbt.id)} style={{ cursor: 'pointer' }}>
                                     <td>{findHoatDongName(tgbt.hd_ngoaikhoa)}</td>
                                     <td className="text-center">{findHoatDongDRL(tgbt.hd_ngoaikhoa)}</td>
                                     <td>{findSinhVienName(tgbt.sinh_vien)}</td>
