@@ -13,7 +13,6 @@ const ChiTietBaoThieu = () => {
     const thamgiabaothieu_id = location.state?.thamgiabaothieu_id;
     const navigate = useNavigate();
     const user = useContext(MyUserContext);
-
     const [loading, setLoading] = useState(true);
     const [buttonLoading, setButtonLoading] = useState({ hopLe: false, khongHopLe: false });
     const [hoatDongs, setHoatDongs] = useState([]);
@@ -68,7 +67,9 @@ const ChiTietBaoThieu = () => {
     }, [thamgiabaothieu_id]);
 
     const PatchMinhChung = async (e) => {
+        e.preventDefault();
         try {
+            
             setLoading(true);
             let form = new FormData();
             for (let key in minhchung) {
@@ -88,7 +89,7 @@ const ChiTietBaoThieu = () => {
             if (res.status === 200) {
                 setAlertMessage('Cập nhật minh chứng thành công!');
                 setAlertVariant('success');
-                e.preventDefault();
+                
                 navigate(-1);
             }
         } catch (ex) {
