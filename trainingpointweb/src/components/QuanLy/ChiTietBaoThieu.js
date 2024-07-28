@@ -53,7 +53,7 @@ const ChiTietBaoThieu = () => {
                 }
 
                 setHoatDongs(reshd.data);
-                setSv(ressv.data);
+                // setSv(ressv.data);
                 setChiTietBaoThieu(resctbt.data);
                 setLoading(false);
             } catch (error) {
