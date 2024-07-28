@@ -4,6 +4,7 @@ import { Container, Row, Col, Button, Form, Spinner, Image, Alert, Card } from '
 import APIs, { endpoints, authAPI, formatDate } from '../../configs/APIs';
 import { db } from '../../configs/Firebase';
 import { collection, addDoc, onSnapshot, query, orderBy, Timestamp, getDocs, where} from 'firebase/firestore';
+import { MyUserContext } from '../../configs/MyContext';
 
 import './Styles.css';
 
@@ -11,6 +12,7 @@ const ChiTietBaoThieu = () => {
     const location = useLocation();
     const thamgiabaothieu_id = location.state?.thamgiabaothieu_id;
     const navigate = useNavigate();
+    const user = useContext(MyUserContext);
 
     const [loading, setLoading] = useState(true);
     const [buttonLoading, setButtonLoading] = useState({ hopLe: false, khongHopLe: false });
@@ -35,9 +37,11 @@ const ChiTietBaoThieu = () => {
         const fetchUserData = async () => {
             try {
                 const reshd = await APIs.get(endpoints['hoatdong']);
-                const ressv = await authAPI().get(endpoints['sinh_vien']);
+                // const ressv = await authAPI().get(endpoints['sinh_vien']);
                 const resctbt = await authAPI().get(`/thamgias/${thamgiabaothieu_id}/`);
                 const resmc = await authAPI().get(`/thamgias/${thamgiabaothieu_id}/minhchungs/`);
+                const ressv = await authAPI().get(`/sinhviens/?id=${resctbt.data.sinh_vien}`);
+                setSv(ressv.data[0]);
                 if (resmc.data.length > 0) {
                     const minhChungData = resmc.data[0];
                     setMinhChung({
