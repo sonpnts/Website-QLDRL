@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Form, Spinner, Image, Alert, Card } from 'react-bootstrap';
 import APIs, { endpoints, authAPI, formatDate } from '../../configs/APIs';
+import { db } from '../../configs/Firebase';
+import { collection, addDoc, onSnapshot, query, orderBy, Timestamp, getDocs, where} from 'firebase/firestore';
 
 import './Styles.css';
 
@@ -105,6 +107,7 @@ const ChiTietBaoThieu = () => {
             if (res.status === 200) {
                 setChiTietBaoThieu(updatedThamGia);
                 setAlertMessage('Cập nhật trạng thái thành công.');
+                thongbao(0);
                 setAlertVariant('success');
             }
         } catch (error) {
@@ -124,6 +127,7 @@ const ChiTietBaoThieu = () => {
                 const gethk_nh = await authAPI().get(`${endpoints['hd']}${hoat_dong}/`);
                 const res = gethk_nh.data;
                 await authAPI().post(`${endpoints['tinh_diem']}${chiTietBaoThieu.sinh_vien}/${res.hk_nh}/`);
+                thongbao(1);
                 setAlertMessage('Cập nhật trạng thái thành công.');
                 setAlertVariant('success');
             }
@@ -133,6 +137,63 @@ const ChiTietBaoThieu = () => {
             setAlertVariant('danger');
         }
     };
+
+    const thongbao = async (code) => {
+        try {
+            let chat = null;
+            if(code===1){
+                 chat= "đã được CHẤP NHẬN"
+            }
+            else{
+                 chat= "đã bị TỪ CHỐI"
+            }
+            // Tham chiếu đến collection 'chatRooms'
+            const chatRoomsRef = collection(db, 'chatRooms');
+            console.log('chatRoomsRef:', chatRoomsRef);
+            // Tạo truy vấn để tìm phòng chat theo mssv
+            console.log('sv:', sv.mssv);
+            const q = query(chatRoomsRef, where('mssv', '==', sv.mssv));
+            const querySnapshot = await getDocs(q);
+        
+            console.log('querySnapshot:', querySnapshot);
+        
+            let chatRoomId = null;
+            if (!querySnapshot.empty) {
+              // Phòng chat đã tồn tại
+              chatRoomId = querySnapshot.docs[0].id;
+              console.log('Chat room exists. chatRoomId:', chatRoomId);
+            } else {
+              // Tạo phòng chat mới
+              const newRoomRef = await addDoc(chatRoomsRef, {
+                createdAt: Timestamp.now(),
+                // participants: [sv.id],
+                mssv: sv.mssv,
+                ten_sv: sv.ho_ten, // Tên sinh viên
+                khoa: user.khoa_id, // ID khoa của người dùng
+              });
+              chatRoomId = newRoomRef.id;
+              console.log('Created new chat room. chatRoomId:', chatRoomId);
+            }
+        
+            if (chatRoomId) {
+              // Thêm tin nhắn vào phòng chat
+              const messagesRef = collection(db, `chatRooms/${chatRoomId}/messages`);
+              await addDoc(messagesRef, {
+                text: `Minh chứng báo thiếu cho hoạt động ${baoThieuInfo.name}, được tổ chức ngày ${formatDate(baoThieuInfo.ngayTC)}, sau khi xem xét minh chứng của bạn
+                thì minh chứng của bạn ${chat}. Điểm rèn luyện của bạn đã được cập nhật, vui lòng kiểm tra lại.
+                Nếu có sai sót xin vui lòng gửi email qua: support@qldrl.com`,
+                createdAt: Timestamp.now(),
+                // userId: user.id,
+                // role: user.role,
+                email: user.email,
+                ten: "Hệ Thống Quản Lý Điểm Rèn Luyện Sinh Viên", // Tên người gửi
+              });
+              console.log('Message sent to chat room:', chatRoomId);
+            }
+          } catch (error) {
+            console.error('Error handling chat room:', error);
+          }
+        }
 
     const handleSubmitHopLe = async () => {
         if (!minhchung.phan_hoi) {
