@@ -94,3 +94,46 @@
     background: rgba(0, 0, 0, 0.5); 
     z-index: -1; 
   }
+  .card1 {
+    border: none;
+    border-radius: 8px;
+    background: #f7f7f7;
+    max-width: 1320px;
+    z-index: 1;
+}
+.card2 {
+    border: none;
+    border-radius: 8px;
+    max-width: 1320px;
+    z-index: 1;
+}
+
+.card3 {
+    border: none;
+    border-radius: 8px;
+    max-width: 1320px;
+    background: #f7f7f7;
+    padding: 12px;
+    height: 720px;
+    z-index: 1;
+}
+.card4 {
+    border: none;
+    border-radius: 8px;
+    max-width: 1320px;
+    background: #f7f7f7;
+    padding: 12px;
+    margin-left: 4%;
+    margin-right: 4%;
+    height: 720px;
+    z-index: 1;
+}
+.card5 {
+    border: none;
+    border-radius: 8px;
+    background: #f7f7f7;
+    margin-left: 4%;
+    margin-right: 4%;
+    max-width: 1320px;
+    z-index: 1;
+}
