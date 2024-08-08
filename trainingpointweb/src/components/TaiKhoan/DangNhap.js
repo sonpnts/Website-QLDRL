@@ -251,54 +251,53 @@ const DangNhap = () => {
             setLoading(true);
             const result = await signInWithPopup(auth, googleProvider);
             const {isNewUser}  = getAdditionalUserInfo(result)    
-            // console.log('Result:', result);
             const user = result._tokenResponse;
-            // const user = result.user;
             const token = await user.idToken;
             console.log('Token:', token);
             cookie.save('token', token);
-            // if(isNewUser == true){
-            if (user.email.endsWith("@ou.edu.vn")) {
-                let form = new FormData();
-                form.append('email', user.email);
-                form.append('first_name', user.firstName);
-                form.append('last_name', user.lastName);
-                form.append('role', "4");
-                form.append('uid', result.user.uid); // UID từ Firebase
-                form.append('username', user.email);
-                await uploadImageToForm(form, user.photoUrl);
-                let res = await APIs.post(endpoints['dang_ky'], form, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
+            if(isNewUser == true){
+                if (user.email.endsWith("@ou.edu.vn")) {
+                    let form = new FormData();
+                    form.append('email', user.email);
+                    form.append('first_name', user.firstName);
+                    form.append('last_name', user.lastName);
+                    form.append('role', "4");
+                    form.append('uid', result.user.uid); // UID từ Firebase
+                    form.append('username', user.email);
+                    await uploadImageToForm(form, user.photoUrl);
+                    let res = await APIs.post(endpoints['dang_ky'], form, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+                    let userdata = await authAPI(token).get(endpoints['current_taikhoan']);
+                    cookie.save('user', userdata.data);
+                    dispatch({
+                        type: 'login',
+                        payload: userdata.data
+                    });
+                
+                    nav("/");
+                    // nav("/sinh-vien-dang-ky", { state: { 
+                    //     email: user.email, 
+                    //     hoten: `${user.lastName} ${user.firstName}`, 
+                    // }});
+                    
+                } else {
+                    setError("Chỉ chấp nhận email thuộc miền @ou.edu.vn.");
+                    setLoading(false);
+                    await auth.currentUser.delete();      
+                }
+            }else{
                 let userdata = await authAPI(token).get(endpoints['current_taikhoan']);
                 cookie.save('user', userdata.data);
                 dispatch({
                     type: 'login',
                     payload: userdata.data
                 });
-                nav("/");
-                // nav("/sinh-vien-dang-ky", { state: { 
-                //     email: user.email, 
-                //     hoten: `${user.lastName} ${user.firstName}`, 
-                // }});
-                 
-            } else {
-                setError("Chỉ chấp nhận email thuộc miền @ou.edu.vn.");
-                setLoading(false);
-                await auth.currentUser.delete();      
+                console.log("Đăng nhập thành công!");
+            nav("/");
             }
-            // }else{
-            //     let userdata = await authAPI(token).get(endpoints['current_taikhoan']);
-            //     cookie.save('user', userdata.data);
-            //     dispatch({
-            //         type: 'login',
-            //         payload: userdata.data
-            //     });
-            //     console.log("Đăng nhập thành công!");
-            // nav("/");
-            // }
         } catch (error) {
             console.error("Lỗi đăng nhập:", error);
             setError("Đăng nhập không thành công. Vui lòng thử lại.");
