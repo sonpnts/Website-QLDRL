@@ -37,12 +37,12 @@ const Header = () => {
                         </Nav.Link>
                         {user === null ? (
                             <>
-                                <Nav.Link 
+                                {/* <Nav.Link 
                                     className="nav-link"
                                     onClick={(e) => handleNavigate(e, "/dang-ky")}
                                 >
                                     <i className="fa-solid fa-user-plus"></i> Đăng ký
-                                </Nav.Link>
+                                </Nav.Link> */}
                                 <Nav.Link 
                                     className="nav-link"
                                     onClick={(e) => handleNavigate(e, "/dang-nhap")}

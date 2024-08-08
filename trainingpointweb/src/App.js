@@ -32,7 +32,7 @@ import MyUserReducer from './reducers/MyUserReducer';
 import cookie from "react-cookies";
 import NotificationDetail from './components/BanTin/NotificationDetail';
 import Footer from './components/Commons/Footer';
-
+import ForgotPassword from './components/TaiKhoan/ForgotPassword';
 
 const App = () => {
 
@@ -152,7 +152,8 @@ const App = () => {
               <Route path="/hdnk-diem-danh" element={<ProtectedRoute element={HDNKDiemDanh} allowedRoles={[4]} user={user} />} />
               <Route path="*" element={<NotFound />} />
               
-            
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+
               <Route path="/notifications/:id" element={<NotificationDetail />} />
          
         </Routes>

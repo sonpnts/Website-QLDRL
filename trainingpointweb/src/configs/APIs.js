@@ -2,7 +2,7 @@ import axios from "axios";
 import moment from "moment";
 import cookie from "react-cookies";
 
-// export const BASE_URL = 'http://192.168.1.218:8000/';
+// export const BASE_URL = 'http://192.168.96.1:8000/';
 
 export const formatNS= (dateString) => {
     const [year, month, day] = dateString.split('-');
