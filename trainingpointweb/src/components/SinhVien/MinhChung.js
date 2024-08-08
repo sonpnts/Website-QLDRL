@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Form, Button, Spinner, Alert, Image, Modal } from 'react-bootstrap';
+import { Form, Button, Spinner, Alert, Image, Modal , Card, Container} from 'react-bootstrap';
 import APIs, { endpoints, authAPI, formatDate } from '../../configs/APIs';
 import './Styles.css';
 
@@ -213,8 +213,10 @@ const MinhChung = () => {
   return (
     <div>
       <div className="registration-background">
-        <div className="container mt-5">
-          <h2 className='text-info text-center'>Báo thiếu hoạt động</h2>
+      <Container> 
+        <Card className="mt-3 card5" >
+        <div className="container mt-5 ">
+          <h2 className='text-center custom-title '>Báo thiếu hoạt động</h2>
           {alertMessage && (
             <Alert variant={alertVariant} onClose={() => setAlertMessage(null)} dismissible>
               {alertMessage}
@@ -297,16 +299,24 @@ const MinhChung = () => {
               </Form.Group>
             )}
 
-            <div className="d-flex justify-content-center">
-              <Button variant="primary" onClick={handleSubmit} disabled={loading}>
-                {loading ? 'Đang xử lý...' : 'Lưu'}
-              </Button>
-              <Button variant="secondary" className="ml-3" onClick={() => navigate(-1)} disabled={loading}>
-                Hủy
-              </Button>
-            </div>
+              <div className="container">
+                    <div className="row justify-content-center mt-3">
+                      <div className="col-12 col-md-6">
+                        <div className="d-flex justify-content-center">
+                          <Button variant="primary" onClick={handleSubmit} disabled={loading}>
+                            {loading ? 'Đang xử lý...' : 'Lưu'}
+                          </Button>
+                          <Button variant="secondary" className="ml-3" onClick={() => navigate(-1)} disabled={loading}>
+                            Hủy
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
           </Form>
         </div>
+        </Card>
+      </Container>
       </div>
     </div>
   );
