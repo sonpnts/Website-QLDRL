@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Modal, Button, Form, Spinner, Row, Col, Card } from 'react-bootstrap';
+import { Container, Modal, Button, Form, Spinner, Row, Col, Card } from 'react-bootstrap';
 import moment from 'moment';
 import { isCloseToBottom } from '../Utils/Tobottom';
 import APIs, { authAPI, endpoints } from '../../configs/APIs';
@@ -95,13 +95,14 @@ const CommentModal = ({ visible, onClose, postId, baiviet, hoatDong }) => {
     }, [visible, onClose]);
 
     return (
-        <Modal show={visible} onHide={onClose} size="lg" centered>
+        <Modal show={visible} onHide={onClose} size="xl" centered>
             <Modal.Header closeButton>
-                <Modal.Title>Comments</Modal.Title>
+                <Modal.Title>Bình luận</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Row>
-                    <Col xs={12} md={8}>
+                <Container fluid>
+                    <Row>
+                        <Col xs={12} md={7}>
                             <Card className="mb-4 shadow-sm">
                                 <Card.Body>
                                     <Card.Title className="text-center mb-3">{baiviet.title}</Card.Title>
@@ -114,57 +115,58 @@ const CommentModal = ({ visible, onClose, postId, baiviet, hoatDong }) => {
                                         <br />
                                         <strong>Điều:</strong> {hoatDong.dieu ? hoatDong.dieu : <Spinner animation="border" size="sm" />}
                                     </Card.Text>
-                                    <Card.Img variant="top" src={baiviet.image} className="mb-3 mx-auto d-block" style={{ maxHeight: '300px', objectFit: 'cover' }} />
+                                    <Card.Img variant="top" src={baiviet.image} className="mb-3 mx-auto d-block" style={{ maxHeight: '400px', objectFit: 'cover' }} />
                                 </Card.Body>
                             </Card>
-                    </Col>
-                    <Col xs={12} md={4}>
-                        <div className="comments-list" onScroll={loadMore} style={{ maxHeight: '400px', overflowY: 'auto' }}>
-                            {comments.map((c, index) => (
-                                <div key={index} className="comment mb-3 p-3 border rounded">
-                                    <Row>
-                                        <Col xs={12} md={8}>
-                                            <p><strong>{c.author}</strong></p>
-                                            <p className="text-muted">{moment(c.created_date).format('HH:mm - DD/MM/YYYY')}</p>
-                                            <p>{c.content}</p>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            ))}
-                            {loading && page > 1 && (
-                                <div className="text-center">
-                                    <Spinner animation="border" />
-                                    <p className="mt-2">Loading more comments...</p>
-                                </div>
-                            )}
-                            {!loading && comments.length === 0 && <p className="text-center">No comments found.</p>}
-                        </div>
-                    </Col>
-                </Row>
-                <hr />
-                <Row className="mb-3">
-                    <Col xs={12} md={8} className="mb-2">
-                        <Form.Control
-                            as="textarea"
-                            placeholder="Enter your comment..."
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            onFocus={() => setInputFocused(true)}
-                            onBlur={() => setInputFocused(false)}
-                            rows={3}
-                        />
-                    </Col>
-                    <Col xs={12} md={4}>
-                        <Button
-                            variant="primary"
-                            onClick={handlePostComment}
-                            disabled={!comment || loading || !user}
-                            className="w-100"
-                        >
-                            {loading ? <Spinner animation="border" size="sm" /> : 'Post Comment'}
-                        </Button>
-                    </Col>
-                </Row>
+                        </Col>
+                        <Col xs={12} md={5}>
+                            <div className="comments-list" onScroll={loadMore} style={{ maxHeight: '500px', overflowY: 'auto' }}>
+                                {comments.map((c, index) => (
+                                    <Card key={index} className="comment mb-3 p-3 border rounded shadow-sm">
+                                        <Row>
+                                            <Col>
+                                                <p><strong>{c.author}</strong></p>
+                                                <p className="text-muted">{moment(c.created_date).format('HH:mm - DD/MM/YYYY')}</p>
+                                                <p>{c.content}</p>
+                                            </Col>
+                                        </Row>
+                                    </Card>
+                                ))}
+                                {loading && page > 1 && (
+                                    <div className="text-center">
+                                        <Spinner animation="border" />
+                                        <p className="mt-2">Đang tải bình luận...</p>
+                                    </div>
+                                )}
+                                {!loading && comments.length === 0 && <p className="text-center">Không tìm thấy bình luận nào.</p>}
+                            </div>
+                        </Col>
+                    </Row>
+                    <hr />
+                    <Row className="mb-3">
+                        <Col xs={12} md={8} className="mb-2">
+                            <Form.Control
+                                as="textarea"
+                                placeholder="Nhập bình luận của bạn..."
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                onFocus={() => setInputFocused(true)}
+                                onBlur={() => setInputFocused(false)}
+                                rows={3}
+                            />
+                        </Col>
+                        <Col xs={12} md={4}>
+                            <Button
+                                variant="primary"
+                                onClick={handlePostComment}
+                                disabled={!comment || loading || !user}
+                                className="w-100"
+                            >
+                                {loading ? <Spinner animation="border" size="sm" /> : 'Post Commment'}
+                            </Button>
+                        </Col>
+                    </Row>
+                </Container>
             </Modal.Body>
         </Modal>
     );
