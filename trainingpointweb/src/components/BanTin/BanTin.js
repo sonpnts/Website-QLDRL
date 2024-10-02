@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Container, Row, Col, Form, Button, Spinner } from 'react-bootstrap';
 import BaiViet from './BaiViet';
@@ -19,17 +18,20 @@ const BanTin = () => {
         console.log("Page", page);
         try {
             setLoading(true);
-            let baiviets = await APIs.get(`${endpoints['bai_viet']}?page=${page}`);
-
+            let baiviets = await authAPI().get(`${endpoints['bai_viet']}?page=${page}`);
+    
+            // Kiểm tra xem còn trang tiếp theo không
             if (baiviets.data.next === null) {
-                setPage(0);
+                setPage(0); // Dừng việc nạp thêm khi không còn trang tiếp theo
             }
+    
+            // Nạp bài viết mới, kết hợp với những bài đã có
             if (page === 1) {
                 setBaiViets(baiviets.data.results);
             } else {
                 setBaiViets(current => [...current, ...baiviets.data.results]);
             }
-
+    
         } catch (ex) {
             console.log("Lỗi", ex);
         } finally {
@@ -67,8 +69,11 @@ const BanTin = () => {
     }, [loadBaiViets, page]);
 
     const loadMore = () => {
-        if (!loading && page > 0 && scrollContainerRef.current && isCloseToBottom(scrollContainerRef.current)) {
-            setPage(page + 1);
+        if (!loading && page > 0 && scrollContainerRef.current) {
+            console.log('Checking scroll:', isCloseToBottom(scrollContainerRef.current));
+            if (isCloseToBottom(scrollContainerRef.current)) {
+                setPage(page + 1);
+            }
         }
     };
 
@@ -135,7 +140,6 @@ const BanTin = () => {
                     </Row>
                 </Container>
             </div>
-   
         </div>
     );
 };
