@@ -18,7 +18,7 @@ const BanTin = () => {
         console.log("Page", page);
         try {
             setLoading(true);
-            let baiviets = await authAPI().get(`${endpoints['bai_viet']}?page=${page}`);
+            let baiviets = await APIs.get(`${endpoints['bai_viet']}?page=${page}`);
     
             // Kiểm tra xem còn trang tiếp theo không
             if (baiviets.data.next === null) {
