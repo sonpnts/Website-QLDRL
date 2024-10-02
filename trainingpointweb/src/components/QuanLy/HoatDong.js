@@ -406,7 +406,7 @@ const HoatDong = () => {
                     </Button>
                     <Button variant="primary" onClick={() => {
                         handleDialogDismiss();
-                        navigate("CreatePost", { state: { hoatDongId: idhd } });
+                        navigate("/tao-bai-viet", { state: { hoatDongId: idhd } });
                     }}>
                         Có
                     </Button>
