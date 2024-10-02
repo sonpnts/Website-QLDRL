@@ -2,8 +2,8 @@ body, html {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Ngăn cuộn toàn trang */
-}
+/*     overflow: hidden; /* Ngăn cuộn toàn trang */
+} */
 
 #root {
     display: flex;
